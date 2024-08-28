@@ -1,11 +1,19 @@
 <?php
 
+use App\Http\Controllers\EndsAccountController;
 use App\Http\Controllers\LoginController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-Route::post('/login', [LoginController::class, 'loginUserApi']);
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::prefix('v1')->group(function () {
+    Route::post('/login', [LoginController::class, 'loginUserApi']);
+
+    Route::middleware(['auth:sanctum'])->group(function () {
+        Route::get('/profile', function (Request $request) {
+            return  $request->user();
+        });
+
+        Route::apiResource('end-account', EndsAccountController::class)->only(['index', 'store', 'show', 'update', 'destroy']);
+    });
 });
