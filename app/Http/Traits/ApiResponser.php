@@ -10,7 +10,7 @@ trait ApiResponser
         return response()->json(
             [
                 "result" => true,
-                "message" => $message ?? "Success",
+                "message" => $message ?? __('lang.success'),
                 "data" => $data
             ],
             $code
@@ -21,7 +21,7 @@ trait ApiResponser
     {
         return response()->json([
             "result" => false,
-            "message" => $message ?? "Error",
+            "message" => $message ?? __('lang.error'),
             "data" => $data,
         ], $code);
     }

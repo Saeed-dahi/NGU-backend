@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\EndsAccountResource;
 use App\Http\Traits\ApiResponser;
 use App\Http\Traits\SharedFunctions;
 use App\Models\EndsAccount;
@@ -18,7 +19,7 @@ class EndsAccountController extends Controller
     {
         $endsAccount = EndsAccount::all();
 
-        return $this->success($endsAccount, 'success');
+        return $this->success(EndsAccountResource::collection($endsAccount));
     }
 
     /**
@@ -38,7 +39,7 @@ class EndsAccountController extends Controller
 
         $endAccount = EndsAccount::create($validated);
 
-        return $this->success($endAccount, 'success');
+        return $this->success(EndsAccountResource::make($endAccount));
     }
 
     /**
@@ -50,7 +51,7 @@ class EndsAccountController extends Controller
 
         $endAccount = $this->navigateRecord($endAccount, $request);
 
-        return $this->success($endAccount, 'success');
+        return $this->success(EndsAccountResource::make($endAccount));
     }
 
     /**
@@ -71,7 +72,7 @@ class EndsAccountController extends Controller
 
         $endAccount->update($validated);
 
-        return $this->success($endAccount, 'success');
+        return $this->success(EndsAccountResource::make($endAccount));
     }
 
     /**
@@ -81,6 +82,6 @@ class EndsAccountController extends Controller
     {
         EndsAccount::findOrFail($id)->delete();
 
-        return $this->success(null, 'success');
+        return $this->success(null);
     }
 }

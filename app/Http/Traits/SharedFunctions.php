@@ -30,4 +30,9 @@ trait SharedFunctions
 
         return $record;
     }
+
+    public function customDateFormat($date)
+    {
+        return $date->format('Y-m-d h:m');
+    }
 }
