@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\App;
 
-class EndsAccountResource extends JsonResource
+class ClosingAccountResource extends JsonResource
 {
     use SharedFunctions;
 

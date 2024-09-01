@@ -13,7 +13,6 @@ trait SharedFunctions
         $record = $model;
 
         switch ($direction) {
-
             case 'next':
                 $record = $model::where('id', '>', $model->id)->first() ?? $model::first();
                 break;

@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class EndsAccount extends Model
+class ClosingAccount extends Model
 {
     use HasFactory;
 

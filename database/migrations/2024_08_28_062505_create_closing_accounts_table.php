@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('ends_accounts', function (Blueprint $table) {
+        Schema::create('closing_accounts', function (Blueprint $table) {
             $table->id();
             $table->string('ar_name');
             $table->string('en_name');

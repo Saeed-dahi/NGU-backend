@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\EndsAccountResource;
+use App\Http\Resources\ClosingAccountResource;
+
 use App\Http\Traits\ApiResponser;
 use App\Http\Traits\SharedFunctions;
-use App\Models\EndsAccount;
+use App\Models\ClosingAccount;
+
 use Illuminate\Http\Request;
 
-class EndsAccountController extends Controller
+class ClosingAccountController extends Controller
 {
     use ApiResponser, SharedFunctions;
 
@@ -17,9 +19,9 @@ class EndsAccountController extends Controller
      */
     public function index()
     {
-        $endsAccount = EndsAccount::all();
+        $ClosingAccounts = ClosingAccount::all();
 
-        return $this->success(EndsAccountResource::collection($endsAccount));
+        return $this->success(ClosingAccountResource::collection($ClosingAccounts));
     }
 
     /**
@@ -37,9 +39,9 @@ class EndsAccountController extends Controller
             'en_name' => 'required|string',
         ]);
 
-        $endAccount = EndsAccount::create($validated);
+        $ClosingAccount = ClosingAccount::create($validated);
 
-        return $this->success(EndsAccountResource::make($endAccount));
+        return $this->success(ClosingAccountResource::make($ClosingAccount));
     }
 
     /**
@@ -47,11 +49,11 @@ class EndsAccountController extends Controller
      */
     public function show(string $id, Request $request)
     {
-        $endAccount = EndsAccount::findOrFail($id);
+        $ClosingAccount = ClosingAccount::findOrFail($id);
 
-        $endAccount = $this->navigateRecord($endAccount, $request);
+        $ClosingAccount = $this->navigateRecord($ClosingAccount, $request);
 
-        return $this->success(EndsAccountResource::make($endAccount));
+        return $this->success(ClosingAccountResource::make($ClosingAccount));
     }
 
     /**
@@ -64,15 +66,15 @@ class EndsAccountController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $endAccount = EndsAccount::findOrFail($id);
+        $ClosingAccount = ClosingAccount::findOrFail($id);
         $validated = $request->validate([
             'ar_name' => 'required|string',
             'en_name' => 'required|string',
         ]);
 
-        $endAccount->update($validated);
+        $ClosingAccount->update($validated);
 
-        return $this->success(EndsAccountResource::make($endAccount));
+        return $this->success(ClosingAccountResource::make($ClosingAccount));
     }
 
     /**
@@ -80,7 +82,7 @@ class EndsAccountController extends Controller
      */
     public function destroy(string $id)
     {
-        EndsAccount::findOrFail($id)->delete();
+        ClosingAccount::findOrFail($id)->delete();
 
         return $this->success(null);
     }
