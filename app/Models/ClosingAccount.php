@@ -10,4 +10,9 @@ class ClosingAccount extends Model
     use HasFactory;
 
     protected $fillable = ['id', 'ar_name', 'en_name'];
+
+    function Accounts()
+    {
+        return $this->hasMany(Account::class);
+    }
 }

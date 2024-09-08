@@ -25,7 +25,6 @@ class ClosingAccountResource extends JsonResource
             'en_name' => $this->en_name,
             'created_at' => $this->customDateFormat($this->created_at),
             'updated_at' => $this->customDateFormat($this->updated_at),
-
         ];
     }
 }

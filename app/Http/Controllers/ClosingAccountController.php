@@ -47,13 +47,11 @@ class ClosingAccountController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id, Request $request)
+    public function show(ClosingAccount $closingAccount, Request $request)
     {
-        $ClosingAccount = ClosingAccount::findOrFail($id);
+        $closingAccount = $this->navigateRecord($closingAccount, $request);
 
-        $ClosingAccount = $this->navigateRecord($ClosingAccount, $request);
-
-        return $this->success(ClosingAccountResource::make($ClosingAccount));
+        return $this->success(ClosingAccountResource::make($closingAccount));
     }
 
     /**
@@ -64,25 +62,25 @@ class ClosingAccountController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, ClosingAccount $closingAccount)
     {
-        $ClosingAccount = ClosingAccount::findOrFail($id);
         $validated = $request->validate([
             'ar_name' => 'required|string',
             'en_name' => 'required|string',
         ]);
 
-        $ClosingAccount->update($validated);
+        $closingAccount->update($validated);
 
-        return $this->success(ClosingAccountResource::make($ClosingAccount));
+        return $this->success(ClosingAccountResource::make($closingAccount));
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(ClosingAccount $closingAccount)
     {
-        ClosingAccount::findOrFail($id)->delete();
+        // Todo: Delete with conditions
+        // $closingAccount->delete();
 
         return $this->success(null);
     }

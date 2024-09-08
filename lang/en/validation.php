@@ -186,6 +186,26 @@ return [
     |
     */
 
-    'attributes' => [],
+    'attributes' => [
+        'email' => 'Email',
+        'code' => 'Code',
+        'en_name' => 'English Name',
+        'ar_name' => 'Arabic Name',
+        'account_type' => 'Account Type',
+        'account_nature' => 'Account Nature',
+        'account_category' => 'Account Category',
+        'closing_account_id' => 'Closing Account Id',
+        'parent_id' => 'Parent Account',
+        'account_id' => 'Account Id',
+        'phone' => 'Phone',
+        'mobile' => 'Mobile',
+        'fax' => 'Fax',
+        'contact_person_name' => 'Contact Person Name',
+        'address' => 'Address',
+        'barcode' => 'Barcode',
+        'info_in_invoice' => 'Info in Invoice',
+        'description' => 'Description',
+        'file' => 'File',
+    ],
 
 ];
