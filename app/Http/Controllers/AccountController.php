@@ -42,6 +42,7 @@ class AccountController extends Controller
 
             return $this->success(AccountResource::make($account));
         } catch (\Throwable $th) {
+            info($th);
             return $this->error(null, $th->getMessage(), $th->getCode());
         }
     }
@@ -51,7 +52,7 @@ class AccountController extends Controller
      */
     public function show(Account $account, Request $request)
     {
-        $account = $this->navigateRecord($account, $request);
+        $account = $this->navigateRecord($account, $request, 'code');
 
         return $this->success(AccountResource::make($account));
     }
@@ -74,6 +75,18 @@ class AccountController extends Controller
         // TODO: Delete account with conditions
         // $account->delete();
         return $this->success(null);
+    }
+
+    /** */
+    function getSuggestionCode(Request $request)
+    {
+        $request->validate([
+            'parent_id' => 'required|exists:accounts,id'
+        ]);
+        $parenAccount = Account::find($request->parent_id);
+        $code = $this->accountService->getSuggestedCodePerParent($parenAccount);
+
+        return $this->success($code);
     }
 
     /**

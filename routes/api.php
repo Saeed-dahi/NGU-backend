@@ -27,5 +27,6 @@ Route::prefix('v1')->group(function () {
         // To upload file cuz put did not work
         Route::Post('account-information/{account_information}', [AccountInformationController::class, 'update']);
         Route::get('search-account', [AccountController::class, 'searchAccount']);
+        Route::get('get-suggestion-code', [AccountController::class, 'getSuggestionCode']);
     });
 });

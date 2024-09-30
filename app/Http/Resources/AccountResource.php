@@ -17,17 +17,18 @@ class AccountResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        $lang = app()->getLocale();
+
 
         return [
             'id' => $this->id,
             'code' => $this->code,
-            'name' => $this->{$lang . '_name'},
+            'ar_name' => $this->ar_name,
+            'en_name' => $this->en_name,
             'account_type' => $this->account_type,
             'account_nature' => $this->account_nature,
             'account_category' => $this->account_category,
             'balance' => $this->calculateBalance(),
-            // 'closing_account' => ClosingAccountResource::make($this->ClosingAccount),
+            'closing_account_id' => $this->ClosingAccount->id,
             // 'account_information' => AccountInformationResource::make($this->AccountInformation),
             'sub_accounts' => AccountResource::collection($this->subAccounts),
             // 'parent' => AccountResource::make($this->parentAccount),

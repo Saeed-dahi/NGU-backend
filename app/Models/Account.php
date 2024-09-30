@@ -24,7 +24,6 @@ class Account extends Model
 
     public function calculateBalance()
     {
-        info('1');
         $balance = $this->balance;
 
         foreach ($this->subAccounts as $subAccount) {

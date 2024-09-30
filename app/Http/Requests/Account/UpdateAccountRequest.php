@@ -31,7 +31,7 @@ class UpdateAccountRequest extends FormRequest
         $accountId = $this->account ? $this->account->id : -1;
 
         return [
-            'code' => [Rule::unique('Accounts', 'code')->ignore($accountId),],
+            'code' => ['numeric', Rule::unique('Accounts', 'code')->ignore($accountId),],
             'en_name' => [Rule::unique('Accounts', 'en_name')->ignore($accountId),],
             'ar_name' => [Rule::unique('Accounts', 'ar_name')->ignore($accountId),],
             'account_type' => [Rule::enum(AccountType::class)],

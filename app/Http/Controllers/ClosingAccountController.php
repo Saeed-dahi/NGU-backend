@@ -9,6 +9,7 @@ use App\Http\Traits\SharedFunctions;
 use App\Models\ClosingAccount;
 
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class ClosingAccountController extends Controller
 {
@@ -35,8 +36,8 @@ class ClosingAccountController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'ar_name' => 'required|string',
-            'en_name' => 'required|string',
+            'ar_name' => 'required|string|unique:closing_accounts',
+            'en_name' => 'required|string|unique:closing_accounts',
         ]);
 
         $ClosingAccount = ClosingAccount::create($validated);
@@ -65,8 +66,8 @@ class ClosingAccountController extends Controller
     public function update(Request $request, ClosingAccount $closingAccount)
     {
         $validated = $request->validate([
-            'ar_name' => 'required|string',
-            'en_name' => 'required|string',
+            'ar_name' => Rule::unique('closing_accounts', 'ar_name')->ignore($closingAccount->id),
+            'en_name' => Rule::unique('closing_accounts', 'en_name')->ignore($closingAccount->id),
         ]);
 
         $closingAccount->update($validated);

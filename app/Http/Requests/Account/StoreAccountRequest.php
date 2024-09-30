@@ -28,14 +28,14 @@ class StoreAccountRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'code' => 'required|unique:accounts',
+            'code' => 'required|unique:accounts|numeric',
             'en_name' => 'required|unique:accounts',
             'ar_name' => 'required|unique:accounts',
             'account_type' => [Rule::enum(AccountType::class)],
             'account_nature' => [Rule::enum(AccountNature::class)],
             'account_category' => [Rule::enum(AccountCategory::class)],
             'parent_id' => 'exists:Accounts,id|nullable',
-            'closing_account_id' => 'required|exists:closing_accounts,id',
+            // 'closing_account_id' => 'required|exists:closing_accounts,id',
         ];
     }
 }

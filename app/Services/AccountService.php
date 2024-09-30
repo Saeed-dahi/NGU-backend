@@ -19,9 +19,13 @@ class AccountService
         if ($request->has('parent_id')) {
             $parentAccount = Account::findOrFail($request->parent_id);
             if (!$this->isMainAccount($parentAccount)) {
-                throw new \Exception("you should change account type", 400);
+                throw new \Exception(__('lang.error_account_type'), 400);
             }
         }
+        // Always budget is the the closing account
+        $validatedRequest = array_merge($validatedRequest, ['closing_account_id' => 1]);
+
+
         $account = Account::create($validatedRequest);
 
         return $account;
@@ -30,12 +34,12 @@ class AccountService
     function updateAccount($request, $account)
     {
         $validatedRequest = $request->validated();
-
+        // TODO
         // if user change account code, change parent per new code
-        if ($request->has('code')) {
-            $parent = $this->getParentFromCode($request->code);
-            $validatedRequest['parent_id'] = $parent->id ?? null;
-        }
+        // if ($request->has('code')) {
+        //     $parent = $this->getParentFromCode($request->code);
+        //     $validatedRequest['parent_id'] = $parent->id ?? null;
+        // }
         $account->update($validatedRequest);
 
         return $account;
@@ -77,7 +81,12 @@ class AccountService
     function getSuggestedCodePerParent(Account $parentAccount)
     {
         $lastSub = $parentAccount->subAccounts()->latest('id')->first();
-        $suggestedCode = $lastSub->code + 1;
+        if ($lastSub) {
+            $suggestedCode = $lastSub->code + 1;
+        } else {
+            $suggestedCode = $parentAccount->code . '1';
+        }
+
 
         return $suggestedCode;
     }
