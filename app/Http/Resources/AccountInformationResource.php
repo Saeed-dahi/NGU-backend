@@ -21,6 +21,7 @@ class AccountInformationResource extends JsonResource
             'fax' => $this->fax,
             'email' => $this->email,
             'contact_person_name' => $this->contact_person_name,
+            'closing_account' => $this->account->closingAccount->{app()->getLocale() . '_name'},
             'address' => $this->address,
             'description' => $this->description,
             'info_in_invoice' => $this->info_in_invoice,

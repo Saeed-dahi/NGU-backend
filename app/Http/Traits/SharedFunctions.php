@@ -48,6 +48,7 @@ trait SharedFunctions
      */
     public function uploadMultipleFilesToDisk($value, $attribute_name, $disk, $destination_path)
     {
+        info(request());
         $originalModelValue = $this->getOriginal()[$attribute_name] ?? [];
 
         if (! is_array($originalModelValue)) {
@@ -56,30 +57,29 @@ trait SharedFunctions
             $attribute_value = $originalModelValue;
         }
 
-        $files_to_clear = request()->get('clear_' . $attribute_name);
-
-        // if a file has been marked for removal,
-        // delete it from the disk and from the db
-        if ($files_to_clear) {
-            foreach ($files_to_clear as $key => $filename) {
+        $files_to_delete = request()->get('files_to_delete');
+        if ($files_to_delete) {
+            $files_to_delete_array = explode(',', $files_to_delete);
+            foreach ($files_to_delete_array as $filename) {
                 Storage::disk($disk)->delete($filename);
                 $attribute_value = Arr::where($attribute_value, function ($value, $key) use ($filename) {
                     return $value != $filename;
                 });
             }
         }
-        // to delete all file from db and disk
-        if ($files_to_clear[0] == 'all') {
-            Storage::disk($disk)->deleteDirectory($destination_path);
-            $attribute_value = [];
-        }
 
         // if a new file is uploaded, store it on disk and its filename in the database
         if (request()->hasFile($attribute_name)) {
             foreach (request()->file($attribute_name) as $file) {
                 if ($file->isValid()) {
+                    // Get the original name of the uploaded file
+                    $original_file_name = str_replace(' ', '_', $file->getClientOriginalName());
+                    info('Original file name: ' . $original_file_name);
+
                     // 1. Generate a new file name
-                    $new_file_name = md5($file->getClientOriginalName() . random_int(1, 9999) . time()) . '.' . $file->getClientOriginalExtension();
+                    // $new_file_name = md5($original_file_name) . '.' . $file->getClientOriginalExtension();
+                    $new_file_name = $original_file_name . '.' . $file->getClientOriginalExtension();
+
 
                     // 2. Move the new file to the correct path
                     $file_path = $file->storeAs($destination_path, $new_file_name, $disk);

@@ -31,11 +31,12 @@ class AccountInformation extends Model
 
     public function setFileAttribute($value)
     {
-        $account = Account::find($this->account_id);
+
 
         $attribute_name = "file";
         $disk = "public";
-        $destination_path = "uploads/account-files/" . $account->en_name;
+        $destination_path = "uploads/account-files/" . str_replace(' ', '_', $this->account->en_name);
+
 
         $this->uploadMultipleFilesToDisk($value, $attribute_name, $disk, $destination_path);
     }

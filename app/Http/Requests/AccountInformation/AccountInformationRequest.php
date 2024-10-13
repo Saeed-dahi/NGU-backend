@@ -23,15 +23,15 @@ class AccountInformationRequest extends FormRequest
     {
         return [
             'account_id' => 'integer|exists:Accounts,id',
-            'phone' => 'integer',
-            'mobile' => 'integer',
-            'fax' => 'integer',
-            'email' => 'email',
-            'contact_person_name' => 'string',
-            'address' => 'string',
-            'description' => 'string',
-            'info_in_invoice' => 'string',
-            'barcode' => 'string',
+            'phone' => 'integer|nullable',
+            'mobile' => 'integer|nullable',
+            'fax' => 'integer|nullable',
+            'email' => 'email|nullable',
+            'contact_person_name' => 'string|nullable',
+            'address' => 'string|nullable',
+            'description' => 'string|nullable',
+            'info_in_invoice' => 'string|nullable',
+            'barcode' => 'string|nullable',
             'file' => 'array', // Validate that it's an array of files
             'file.*' => 'file|mimes:jpeg,png,jpg,pdf|max:2048',
         ];

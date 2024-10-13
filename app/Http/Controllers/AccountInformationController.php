@@ -28,7 +28,9 @@ class AccountInformationController extends Controller
      */
     public function update(AccountInformationRequest $request, AccountInformation $accountInformation)
     {
-        $accountInformation->update($request->validated());
+        // to Edit file
+        $requestData = array_merge($request->all(), ['file' => []]);
+        $accountInformation->update($requestData);
 
         return $this->success(AccountInformationResource::make($accountInformation));
     }
