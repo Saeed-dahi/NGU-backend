@@ -2,9 +2,12 @@
 
 namespace App\Services;
 
+use App\Enum\Account\AccountNature;
 use App\Enum\Account\AccountType;
 use App\Http\Traits\ApiResponser;
 use App\Models\Account;
+use App\Models\Transaction;
+use Carbon\Carbon;
 use Exception;
 
 class AccountService
@@ -90,4 +93,17 @@ class AccountService
 
         return $suggestedCode;
     }
+
+    function updateAccountBalance(Transaction $transaction, $isDelete = false)
+    {
+        $account = $transaction->account;
+        $amount = $transaction->type == AccountNature::DEBIT->value ? $transaction->amount : -$transaction->amount;
+
+        if ($isDelete) {
+            $amount = -$amount;
+        }
+
+        $account->increment('balance', $amount);
+    }
+
 }

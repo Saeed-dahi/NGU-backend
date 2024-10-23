@@ -67,4 +67,9 @@ class Account extends Model
     {
         return $this->belongsTo(Account::class, 'parent_id');
     }
+
+    public function transactions()
+    {
+        return $this->hasMany(Transaction::class);
+    }
 }

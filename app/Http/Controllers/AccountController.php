@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Account\StoreAccountRequest;
 use App\Http\Requests\Account\UpdateAccountRequest;
 use App\Http\Resources\AccountResource;
+use App\Http\Resources\AccountStatementResource;
 use App\Http\Traits\ApiResponser;
 use App\Http\Traits\SharedFunctions;
 use App\Models\Account;
@@ -100,5 +101,10 @@ class AccountController extends Controller
         $accounts = $this->accountService->searchAccount($request->search_query);
 
         return $this->success($accounts);
+    }
+
+    function accountStatement(Account $account)
+    {
+        return $this->success(AccountStatementResource::make($account));
     }
 }

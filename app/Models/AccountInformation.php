@@ -31,8 +31,6 @@ class AccountInformation extends Model
 
     public function setFileAttribute($value)
     {
-
-
         $attribute_name = "file";
         $disk = "public";
         $destination_path = "uploads/account-files/" . str_replace(' ', '_', $this->account->en_name);
