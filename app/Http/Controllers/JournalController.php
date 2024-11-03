@@ -5,12 +5,14 @@ namespace App\Http\Controllers;
 use App\Http\Requests\JournalRequest;
 use App\Http\Resources\JournalResource;
 use App\Http\Traits\ApiResponser;
+use App\Http\Traits\SharedFunctions;
 use App\Models\Journal;
 use App\Services\TransactionService;
+use Illuminate\Http\Request;
 
 class JournalController extends Controller
 {
-    use ApiResponser;
+    use ApiResponser, SharedFunctions;
 
     protected $transactionService;
 
@@ -45,8 +47,9 @@ class JournalController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Journal $journal)
+    public function show(Journal $journal, Request $request)
     {
+        $journal = $this->navigateRecord($journal, $request);
         return $this->success(JournalResource::make($journal));
     }
 

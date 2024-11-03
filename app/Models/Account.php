@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enum\Account\AccountNature;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -37,6 +38,37 @@ class Account extends Model
         return $balance;
     }
 
+    public function debitBalance()
+    {
+        return $this->transactions()
+            ->where('type', AccountNature::DEBIT->value)
+            ->savedTransactable()
+            ->sum('amount');
+    }
+
+
+    public function creditBalance()
+    {
+        return $this->transactions()
+            ->where('type', AccountNature::CREDIT->value)
+            ->savedTransactable()
+            ->sum('amount');
+    }
+
+    public function allTransactions()
+    {
+        $transactions = collect();
+
+        if ($this->subAccounts()->exists()) {
+            foreach ($this->subAccounts as $key => $subAccount) {
+                $transactions = $transactions->merge($subAccount->allTransactions());
+            }
+        }
+
+        $transactions = $transactions->merge($this->transactions()->savedTransactable()->get());
+
+        return $transactions;
+    }
 
     static function boot()
     {

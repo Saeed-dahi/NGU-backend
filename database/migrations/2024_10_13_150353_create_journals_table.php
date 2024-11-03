@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('journals', function (Blueprint $table) {
             $table->id();
-            $table->string('voucher_number');
+            // $table->string('voucher_number');
             $table->string('description')->nullable();
             $table->string('document')->nullable();
-            $table->enum('status', ['draft', 'final']);
+            $table->enum('status', ['draft', 'saved']);
             $table->timestamps();
         });
     }

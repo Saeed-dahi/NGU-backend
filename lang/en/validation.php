@@ -206,6 +206,10 @@ return [
         'info_in_invoice' => 'Info in Invoice',
         'description' => 'Description',
         'file' => 'File',
+        'voucher_number' => 'Voucher Number',
+        'document' => 'Document',
+        'status' => 'Status',
+        'entries' => 'Entires'
     ],
 
 ];

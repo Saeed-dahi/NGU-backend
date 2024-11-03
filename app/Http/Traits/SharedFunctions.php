@@ -38,9 +38,9 @@ trait SharedFunctions
     /**
      * Custom date format
      */
-    public function customDateFormat($date)
+    public function customDateFormat($date, $format = 'Y-m-d h:m')
     {
-        return $date->format('Y-m-d h:m');
+        return $date->format($format);
     }
 
     /**

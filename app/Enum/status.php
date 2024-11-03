@@ -6,5 +6,5 @@ namespace App\Enum;
 enum Status: String
 {
     case DRAFT = 'draft';
-    case FINAL = 'final';
+    case SAVED = 'saved';
 }

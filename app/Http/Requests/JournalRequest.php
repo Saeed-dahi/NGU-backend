@@ -19,13 +19,15 @@ class JournalRequest extends FormRequest
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
+
+
     public function rules(): array
     {
         return [
-            'voucher_number' => 'required',
-            'description' => 'string',
-            'document' => 'string',
-            'status' => 'required|in:draft,final'
+            // 'voucher_number' => 'required',
+            'description' => '',
+            'document' => '',
+            'status' => 'required|in:draft,saved'
         ];
     }
 }

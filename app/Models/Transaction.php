@@ -24,19 +24,25 @@ class Transaction extends Model
         return $this->morphTo();
     }
 
+    public function scopeSavedTransactable($query)
+    {
+        return $query->whereHas('transactable', function ($query) {
+            $query->where('status', Status::SAVED->value);
+        });
+    }
 
     protected static function boot()
     {
         parent::boot();
         static::deleting(function ($transaction) {
-            if ($transaction->transactable->status == Status::FINAL->value) {
+            if ($transaction->transactable->status == Status::SAVED->value) {
                 $accountService = new AccountService();
                 $accountService->updateAccountBalance($transaction, true);
             }
         });
 
         static::created(function ($transaction) {
-            if ($transaction->transactable->status == Status::FINAL->value) {
+            if ($transaction->transactable->status == Status::SAVED->value) {
                 $accountService = new AccountService();
                 $accountService->updateAccountBalance($transaction);
             }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enum\Account\AccountType;
 use App\Http\Requests\Account\StoreAccountRequest;
 use App\Http\Requests\Account\UpdateAccountRequest;
 use App\Http\Resources\AccountResource;
@@ -105,6 +106,7 @@ class AccountController extends Controller
 
     function accountStatement(Account $account)
     {
+
         return $this->success(AccountStatementResource::make($account));
     }
 }

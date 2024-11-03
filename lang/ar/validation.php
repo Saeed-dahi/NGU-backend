@@ -202,6 +202,11 @@ return [
         'info_in_invoice' => 'معلومات في الفاتورة',
         'description' => 'الوصف',
         'file' => 'ملف مرفق',
+        'voucher_number' => 'Voucher Number',
+        'document' => 'المستند',
+        'status' => 'الحالة',
+        'entries' => 'التحويلات'
+
     ],
 
 ];
