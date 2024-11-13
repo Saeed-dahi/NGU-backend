@@ -22,7 +22,7 @@ class TransactionResource extends JsonResource
             'description' => $this->description,
             'amount' => $this->amount,
             'document_number' => $this->document_number,
-            'account_name' => $this->account->ar_name,
+            'account_name' => $this->account->ar_name . ' - ' . $this->account->en_name,
             'account_code' => $this->account->code,
             'account_new_balance' => $this->account_new_balance,
             'created_at' => $this->customDateFormat($this->created_at, 'Y-m-d'),

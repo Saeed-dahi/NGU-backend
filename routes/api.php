@@ -24,6 +24,7 @@ Route::prefix('v1')->group(function () {
         // Accounts => {closing, account, account information}
         Route::apiResource('closing-account', ClosingAccountController::class)->only(['index', 'store', 'show', 'update', 'destroy']);
         Route::apiResource('account', AccountController::class)->only(['index', 'store', 'show', 'update', 'destroy']);
+        Route::get('accounts-name', [AccountController::class, 'getAccountsNameWithCode']);
         Route::get('account-statement/{account}', [AccountController::class, 'accountStatement']);
         Route::apiResource('account-information', AccountInformationController::class)->only(['show']);
         // To upload file cuz put did not work

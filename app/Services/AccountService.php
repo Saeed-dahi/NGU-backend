@@ -96,6 +96,7 @@ class AccountService
 
     function updateAccountBalance(Transaction $transaction, $isDelete = false)
     {
+        info('sldkasldkasl');
         $account = $transaction->account;
         $amount = $transaction->type == AccountNature::DEBIT->value ? $transaction->amount : -$transaction->amount;
 
@@ -105,5 +106,4 @@ class AccountService
 
         $account->increment('balance', $amount);
     }
-
 }

@@ -24,6 +24,11 @@ class Transaction extends Model
         return $this->morphTo();
     }
 
+    public function getAmountAttribute($value)
+    {
+        return round($this->attributes['amount'], 2);
+    }
+
     public function scopeSavedTransactable($query)
     {
         return $query->whereHas('transactable', function ($query) {

@@ -16,11 +16,11 @@ return new class extends Migration
             $table->morphs('transactable');
             $table->unsignedBigInteger('account_id');
             $table->enum('type', ['debit', 'credit']);
-            $table->decimal('amount', 15, 2);
+            $table->double('amount');
             $table->string('description')->nullable();
             $table->string('document_number')->nullable();
             $table->foreign('account_id')->references('id')->on('accounts');
-            $table->decimal('account_new_balance', 10, 2)->default(0);
+            $table->double('account_new_balance')->default(0);
             $table->timestamps();
         });
     }

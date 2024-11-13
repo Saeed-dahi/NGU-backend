@@ -109,4 +109,10 @@ class AccountController extends Controller
 
         return $this->success(AccountStatementResource::make($account));
     }
+
+    function getAccountsNameWithCode()
+    {
+        $accounts = Account::select('ar_name', 'en_name', 'code')->get();
+        return $this->success($accounts);
+    }
 }

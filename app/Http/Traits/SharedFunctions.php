@@ -43,6 +43,11 @@ trait SharedFunctions
         return $date->format($format);
     }
 
+    public function customNumberFormat($number)
+    {
+        return number_format($number);
+    }
+
     /**
      * upload multiple files
      */
