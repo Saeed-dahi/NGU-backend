@@ -24,7 +24,6 @@ class AccountInformation extends Model
         'file',
     ];
 
-
     protected $casts = [
         'file' => 'array'
     ];
@@ -34,7 +33,6 @@ class AccountInformation extends Model
         $attribute_name = "file";
         $disk = "public";
         $destination_path = "uploads/account-files/" . str_replace(' ', '_', $this->account->en_name);
-
 
         $this->uploadMultipleFilesToDisk($value, $attribute_name, $disk, $destination_path);
     }

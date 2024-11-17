@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Enum\Account\AccountType;
 use App\Http\Traits\ApiResponser;
 use App\Models\Account;
 
@@ -25,12 +26,20 @@ class TransactionService
     {
         $validatedData = request()->validate([
             'entries' => 'array|required',
-            // 'entries.*.account_id' => 'required|exists:accounts,id',
-            'entries.*.account_id' => 'required',
+            'entries.*.account_id' => [
+                'required',
+                'exists:accounts,code',
+                function ($attribute, $value, $fail) {
+                    $account = Account::where('code', $value)->first();
+                    if ($account->account_type == AccountType::MAIN->value) {
+                        $fail(__('lang.error_account_type') . ' ' . $account->ar_name . '-' . $account->en_name);
+                    }
+                },
+            ],
             'entries.*.type' => 'required|in:credit,debit',
             'entries.*.amount' => 'required|numeric',
-            'entries.*.description' => 'string',
-            'entries.*.document_number' => 'string',
+            'entries.*.description' => '',
+            'entries.*.document_number' => '',
         ]);
 
         return $validatedData;

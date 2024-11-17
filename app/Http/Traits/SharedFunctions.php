@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 trait SharedFunctions
 {
@@ -48,12 +49,23 @@ trait SharedFunctions
         return number_format($number);
     }
 
+    public function customSearchNormalize($query)
+    {
+        $query = Str::of($query)
+            ->replace(['أ', 'إ', 'آ'], 'ا')
+            ->replace(['ي', 'ى'], 'ي')
+            ->replace(['ة', 'ه'], 'ه')
+            ->replace('ء', '')
+            ->toString();
+
+        return $query;
+    }
+
     /**
      * upload multiple files
      */
     public function uploadMultipleFilesToDisk($value, $attribute_name, $disk, $destination_path)
     {
-        info(request());
         $originalModelValue = $this->getOriginal()[$attribute_name] ?? [];
 
         if (! is_array($originalModelValue)) {

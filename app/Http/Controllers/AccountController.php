@@ -44,7 +44,7 @@ class AccountController extends Controller
 
             return $this->success(AccountResource::make($account));
         } catch (\Throwable $th) {
-            info($th);
+
             return $this->error(null, $th->getMessage(), $th->getCode());
         }
     }

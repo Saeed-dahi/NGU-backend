@@ -5,14 +5,14 @@ namespace App\Services;
 use App\Enum\Account\AccountNature;
 use App\Enum\Account\AccountType;
 use App\Http\Traits\ApiResponser;
+use App\Http\Traits\SharedFunctions;
 use App\Models\Account;
 use App\Models\Transaction;
-use Carbon\Carbon;
-use Exception;
+
 
 class AccountService
 {
-    use ApiResponser;
+    use ApiResponser, SharedFunctions;
 
     function createNewAccount($request)
     {
@@ -50,7 +50,8 @@ class AccountService
 
     function searchAccount($query)
     {
-        $accounts = Account::where('ar_name', 'LIKE', '%' . $query . '%')
+        $query = $this->customSearchNormalize($query);
+        $accounts = Account::whereRaw("REPLACE(REPLACE(REPLACE(ar_name, 'أ', 'ا'), 'إ', 'ا'), 'ء', '') LIKE ?", ['%' . $query . '%'])
             ->orWhere('en_name', 'LIKE', '%' . $query . '%')
             ->orWhere('code', 'LIKE', '%' . $query . '%')->get();
 
@@ -96,7 +97,6 @@ class AccountService
 
     function updateAccountBalance(Transaction $transaction, $isDelete = false)
     {
-        info('sldkasldkasl');
         $account = $transaction->account;
         $amount = $transaction->type == AccountNature::DEBIT->value ? $transaction->amount : -$transaction->amount;
 

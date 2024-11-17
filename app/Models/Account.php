@@ -92,7 +92,7 @@ class Account extends Model
 
     function subAccounts()
     {
-        return $this->hasMany(Account::class, 'parent_id');
+        return $this->hasMany(Account::class, 'parent_id')->orderBy('code');
     }
 
     function parentAccount()
