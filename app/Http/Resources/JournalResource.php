@@ -21,6 +21,7 @@ class JournalResource extends JsonResource
             'document' => $this->document,
             'description' => $this->description,
             'status' => $this->status,
+            'date' => $this->date,
             'created_at' => $this->customDateFormat($this->created_at, 'Y-m-d'),
             'updated_at' => $this->customDateFormat($this->updated_at, 'Y-m-d'),
             'transactions' => TransactionResource::collection($this->transactions)

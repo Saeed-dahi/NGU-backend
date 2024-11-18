@@ -10,7 +10,7 @@ class Journal extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['voucher_number', 'description', 'document', 'status'];
+    protected $fillable = ['voucher_number', 'description', 'document', 'status', 'date'];
 
     public function transactions()
     {

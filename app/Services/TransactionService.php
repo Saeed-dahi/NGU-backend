@@ -15,6 +15,7 @@ class TransactionService
         foreach ($validatedData as $key => $entry) {
             $account = Account::where('code', $entry['account_id'])->first();
             $entry['account_id'] = $account->id;
+            $entry['date'] = $transactable->date;
             $transaction = $transactable->transactions()->create($entry);
 
             // Update the newly created transaction with the correct account balance

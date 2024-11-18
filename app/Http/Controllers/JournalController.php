@@ -35,7 +35,6 @@ class JournalController extends Controller
      */
     public function store(JournalRequest $journalRequest)
     {
-
         $validatedData = $this->transactionService->validateTransactionRequest();
 
         $journal = Journal::create($journalRequest->validated());

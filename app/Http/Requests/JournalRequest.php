@@ -27,7 +27,8 @@ class JournalRequest extends FormRequest
             // 'voucher_number' => 'required',
             'description' => '',
             'document' => '',
-            'status' => 'required|in:draft,saved'
+            'status' => 'required|in:draft,saved',
+            'date' => 'date'
         ];
     }
 }

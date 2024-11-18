@@ -12,7 +12,7 @@ class Transaction extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['account_id', 'type', 'amount', 'description', 'document_number', 'account_new_balance'];
+    protected $fillable = ['account_id', 'type', 'amount', 'description', 'document_number', 'account_new_balance', 'date'];
 
     public function account()
     {

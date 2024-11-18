@@ -25,6 +25,7 @@ class TransactionResource extends JsonResource
             'account_name' => $this->account->ar_name . ' - ' . $this->account->en_name,
             'account_code' => $this->account->code,
             'account_new_balance' => $this->account_new_balance,
+            'date' => $this->date,
             'created_at' => $this->customDateFormat($this->created_at, 'Y-m-d'),
             'updated_at' => $this->customDateFormat($this->updated_at, 'Y-m-d'),
 

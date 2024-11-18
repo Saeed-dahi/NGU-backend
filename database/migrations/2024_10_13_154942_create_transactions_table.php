@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('document_number')->nullable();
             $table->foreign('account_id')->references('id')->on('accounts');
             $table->double('account_new_balance')->default(0);
+            $table->date('date');
             $table->timestamps();
         });
     }
