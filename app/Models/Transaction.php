@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Enum\Account\AccountNature;
 use App\Enum\Status;
 use App\Services\AccountService;
+use App\Services\TransactionService;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -39,18 +40,16 @@ class Transaction extends Model
     protected static function boot()
     {
         parent::boot();
-        static::deleting(function ($transaction) {
-            if ($transaction->transactable->status == Status::SAVED->value) {
-                $accountService = new AccountService();
-                $accountService->updateAccountBalance($transaction, true);
-            }
-        });
 
         static::created(function ($transaction) {
-            if ($transaction->transactable->status == Status::SAVED->value) {
-                $accountService = new AccountService();
-                $accountService->updateAccountBalance($transaction);
-            }
+            $accountTransactionsQuery = $transaction->account->transactions()->savedTransactable();
+            $accountTransactions = $accountTransactionsQuery->orderBy('date', 'desc')->orderBy('id', 'desc')->get();
+
+            $accountService = new AccountService();
+            $accountService->updateAccountBalance($transaction);
+
+            $transactionService = new TransactionService();
+            $transactionService->updateTransactionsBalance($transaction->account->balance, $accountTransactions);
         });
     }
 }

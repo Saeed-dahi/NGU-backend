@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('description')->nullable();
             $table->string('document')->nullable();
             $table->enum('status', ['draft', 'saved']);
-            $table->date('date');
+            $table->datetime('date');
             $table->timestamps();
         });
     }

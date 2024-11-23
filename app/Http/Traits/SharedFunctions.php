@@ -2,6 +2,7 @@
 
 namespace App\Http\Traits;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
@@ -42,6 +43,13 @@ trait SharedFunctions
     public function customDateFormat($date, $format = 'Y-m-d h:m')
     {
         return $date->format($format);
+    }
+
+    public function addNowTimeToDate($date)
+    {
+        $currentDateTime = Carbon::createFromFormat('Y-m-d', $date)->setTimeFrom(Carbon::now())->format('Y-m-d H:i:s');
+
+        return $currentDateTime;
     }
 
     public function customNumberFormat($number)

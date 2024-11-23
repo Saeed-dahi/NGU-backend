@@ -2,24 +2,23 @@
 
 namespace App\Services;
 
+use App\Enum\Account\AccountNature;
 use App\Enum\Account\AccountType;
 use App\Http\Traits\ApiResponser;
+use App\Http\Traits\SharedFunctions;
 use App\Models\Account;
 
 class TransactionService
 {
-    use ApiResponser;
+    use ApiResponser, SharedFunctions;
 
     function createTransactions($transactable, $validatedData)
     {
         foreach ($validatedData as $key => $entry) {
             $account = Account::where('code', $entry['account_id'])->first();
             $entry['account_id'] = $account->id;
-            $entry['date'] = $transactable->date;
-            $transaction = $transactable->transactions()->create($entry);
-
-            // Update the newly created transaction with the correct account balance
-            $transaction->update(['account_new_balance' => $transaction->account->balance]);
+            $entry['date'] = $this->addNowTimeToDate($transactable->date);
+            $transactable->transactions()->create($entry);
         }
     }
 
@@ -50,6 +49,31 @@ class TransactionService
     {
         foreach ($transactable->transactions as $key => $transaction) {
             $transaction->delete();
+        }
+    }
+
+    function getNextTransactions(Account $account, $date)
+    {
+        $nextTransactions = $account->transactions()->savedTransactable()->where('date', '>', $date)->get();
+
+        return $nextTransactions;
+    }
+
+    function getPreviousTransactions(Account $account, $date)
+    {
+        $previousTransactions = $account->transactions()->savedTransactable()->where('date', '<', $date)->get();
+
+        return $previousTransactions;
+    }
+
+    function updateTransactionsBalance($currentBalance, $transactions)
+    {
+        foreach ($transactions as $key => $transaction) {
+            $currentTransactionAmount = $transaction->type == AccountNature::DEBIT->value ? -$transaction->amount : +$transaction->amount;
+
+            $transaction->update(['account_new_balance' => $currentBalance]);
+
+            $currentBalance += $currentTransactionAmount;
         }
     }
 }

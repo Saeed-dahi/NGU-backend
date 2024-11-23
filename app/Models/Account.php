@@ -31,6 +31,7 @@ class Account extends Model
             $balance += $subAccount->calculateBalance(); // Recursively add the balance of sub accounts
         }
 
+
         //  if we want t save the account balance in db
         // $this->balance = $balance;
         // $this->save();
@@ -65,7 +66,9 @@ class Account extends Model
             }
         }
 
-        $transactions = $transactions->merge($this->transactions()->savedTransactable()->get());
+        $transactions = $transactions->merge(
+            $this->transactions()->savedTransactable()->orderBy('date')->orderBy('id')->get()
+        );
 
         return $transactions;
     }

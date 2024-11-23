@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Enum\Account\AccountNature;
 use App\Enum\Account\AccountType;
+use App\Enum\Status;
 use App\Http\Traits\ApiResponser;
 use App\Http\Traits\SharedFunctions;
 use App\Models\Account;
@@ -95,15 +96,29 @@ class AccountService
         return $suggestedCode;
     }
 
-    function updateAccountBalance(Transaction $transaction, $isDelete = false)
+    /**
+     * this function will help me to automatic update account balance depend on it's transactions
+     * @param Account,Transactions (we can get it use relationship)
+     */
+    function updateAccountBalanceAutomatically($account, $transactions)
+    {
+        $newBalance = 0;
+        foreach ($transactions as $key => $transaction) {
+            $amount = $transaction->type == AccountNature::DEBIT->value ? $transaction->amount : -$transaction->amount;
+            $newBalance += $amount;
+        }
+        $account->update(['balance' => $newBalance]);
+    }
+
+    function updateAccountBalance($transaction)
     {
         $account = $transaction->account;
+        $transactable = $transaction->transactable;
         $amount = $transaction->type == AccountNature::DEBIT->value ? $transaction->amount : -$transaction->amount;
+        $incrementAmount  = $transactable->status == Status::SAVED->value ?  +$amount :  -$amount;
 
-        if ($isDelete) {
-            $amount = -$amount;
+        if ($transactable->created_at != $transactable->updated_at) {
+            $account->increment('balance', $incrementAmount);
         }
-
-        $account->increment('balance', $amount);
     }
 }
