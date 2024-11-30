@@ -30,8 +30,6 @@ class Account extends Model
         foreach ($this->subAccounts as $subAccount) {
             $balance += $subAccount->calculateBalance(); // Recursively add the balance of sub accounts
         }
-
-
         //  if we want t save the account balance in db
         // $this->balance = $balance;
         // $this->save();

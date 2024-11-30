@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Enum\Account\AccountNature;
 use App\Enum\Status;
 use App\Services\AccountService;
 use App\Services\TransactionService;
@@ -46,7 +45,8 @@ class Transaction extends Model
             $accountTransactions = $accountTransactionsQuery->orderBy('date', 'desc')->orderBy('id', 'desc')->get();
 
             $accountService = new AccountService();
-            $accountService->updateAccountBalance($transaction);
+            // $accountService->updateAccountBalanceAutomatically($transaction);
+            $accountService->updateAccountBalanceAutomatically($transaction->account, $accountTransactions);
 
             $transactionService = new TransactionService();
             $transactionService->updateTransactionsBalance($transaction->account->balance, $accountTransactions);

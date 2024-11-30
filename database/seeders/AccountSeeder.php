@@ -180,7 +180,7 @@ class AccountSeeder extends Seeder
 
             ['id' => 4, 'code' => '2', 'en_name' => 'Liabilities', 'ar_name' => 'الخصوم', 'account_type' => 'main', 'balance' => '0.00', 'closing_account_id' => 1],
             ['id' => 5, 'code' => '21', 'en_name' => 'Capital', 'ar_name' => 'رأس المال', 'account_type' => 'main', 'balance' => '0.00', 'closing_account_id' => 1, 'parent_code' => '2'],
-            ['id' => 6, 'code' => '211', 'en_name' => 'Paid-up Capital', 'ar_name' => 'رأس المال المدفوع', 'account_type' => 'main', 'balance' => '0.00', 'closing_account_id' => 1, 'parent_code' => '21'],
+            ['id' => 6, 'code' => '211', 'en_name' => 'Paid-up Capital', 'ar_name' => 'رأس المال المدفوع', 'account_type' => 'sub', 'balance' => '0.00', 'closing_account_id' => 1, 'parent_code' => '21'],
             ['id' => 7, 'code' => '3', 'en_name' => 'Expenses', 'ar_name' => 'الاستخدامات', 'account_type' => 'main', 'balance' => '0.00', 'closing_account_id' => 1],
             ['id' => 8, 'code' => '31', 'en_name' => 'Payroll', 'ar_name' => 'الاجور', 'account_type' => 'main', 'balance' => '0.00', 'closing_account_id' => 1, 'parent_code' => '3'],
             ['id' => 9, 'code' => '311', 'en_name' => 'Cash Wages', 'ar_name' => 'أجور نقدية', 'account_type' => 'main', 'balance' => '0.00', 'closing_account_id' => 1, 'parent_code' => '31'],

@@ -78,7 +78,12 @@ class AccountController extends Controller
         return $this->success(null);
     }
 
-    /** */
+    /**
+     * Get Suggestion code
+     * @param Request
+     * @return JsonResponse
+     */
+
     function getSuggestionCode(Request $request)
     {
         $request->validate([
@@ -91,8 +96,11 @@ class AccountController extends Controller
     }
 
     /**
-     * Search for specific Account
+     * Search for account
+     * @param Request
+     * @return JsonResponse
      */
+
     function searchAccount(Request $request)
     {
         $request->validate([
@@ -103,12 +111,21 @@ class AccountController extends Controller
         return $this->success($accounts);
     }
 
+    /**
+     * Get Account Statement
+     * @param Account
+     * @return JsonResponse
+     */
     function accountStatement(Account $account)
     {
-
         return $this->success(AccountStatementResource::make($account));
     }
 
+    /**
+     * Get Accounts Name With code
+     * @param
+     * @return JsonResponse
+     */
     function getAccountsNameWithCode()
     {
         $accounts = Account::select('ar_name', 'en_name', 'code')->get();

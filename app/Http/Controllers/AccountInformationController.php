@@ -7,7 +7,6 @@ use App\Http\Resources\AccountInformationResource;
 use App\Http\Traits\ApiResponser;
 use App\Models\Account;
 use App\Models\AccountInformation;
-use Illuminate\Http\Request;
 
 class AccountInformationController extends Controller
 {

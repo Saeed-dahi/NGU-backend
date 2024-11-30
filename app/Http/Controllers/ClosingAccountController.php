@@ -3,11 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\ClosingAccountResource;
-
 use App\Http\Traits\ApiResponser;
 use App\Http\Traits\SharedFunctions;
 use App\Models\ClosingAccount;
-
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
@@ -24,11 +22,6 @@ class ClosingAccountController extends Controller
 
         return $this->success(ClosingAccountResource::collection($ClosingAccounts));
     }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create() {}
 
     /**
      * Store a newly created resource in storage.
@@ -54,11 +47,6 @@ class ClosingAccountController extends Controller
 
         return $this->success(ClosingAccountResource::make($closingAccount));
     }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id) {}
 
     /**
      * Update the specified resource in storage.

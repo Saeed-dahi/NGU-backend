@@ -8,17 +8,21 @@ use App\Enum\Status;
 use App\Http\Traits\ApiResponser;
 use App\Http\Traits\SharedFunctions;
 use App\Models\Account;
-use App\Models\Transaction;
+
 
 
 class AccountService
 {
     use ApiResponser, SharedFunctions;
 
+    /**
+     * Create new account
+     * @param Request
+     * @return Account,Exception (if the account is not main)
+     */
     function createNewAccount($request)
     {
         $validatedRequest = $request->validated();
-
         // check if parent account is Main
         if ($request->has('parent_id')) {
             $parentAccount = Account::findOrFail($request->parent_id);
@@ -29,12 +33,16 @@ class AccountService
         // Always budget is the the closing account
         $validatedRequest = array_merge($validatedRequest, ['closing_account_id' => 1]);
 
-
         $account = Account::create($validatedRequest);
 
         return $account;
     }
 
+    /**
+     * Update existing account
+     * @param Request,Account
+     * @return Account
+     */
     function updateAccount($request, $account)
     {
         $validatedRequest = $request->validated();
@@ -49,6 +57,11 @@ class AccountService
         return $account;
     }
 
+    /**
+     * Search for account
+     * @param Query
+     * @return Array_of_Accounts
+     */
     function searchAccount($query)
     {
         $query = $this->customSearchNormalize($query);
@@ -59,16 +72,31 @@ class AccountService
         return $accounts;
     }
 
+    /**
+     * Check if account is main
+     * @param Account
+     * @return Boolean
+     */
     function isMainAccount($account)
     {
         return $account->account_type == AccountType::MAIN->value;
     }
 
+    /**
+     * Check if account is sub
+     * @param Account
+     * @return Boolean
+     */
     function isSubAccount($account)
     {
         return $account->account_type == AccountType::SUB->value;
     }
 
+    /**
+     * Get Parent account from code
+     * @param Code
+     * @return Account_Or_Null
+     */
     function getParentFromCode($code)
     {
         for ($i = strlen($code) - 1; $i > 0; $i--) {
@@ -83,6 +111,11 @@ class AccountService
         return null;
     }
 
+    /**
+     * Get Suggestion code
+     * @param Account
+     * @return Code
+     */
     function getSuggestedCodePerParent(Account $parentAccount)
     {
         $lastSub = $parentAccount->subAccounts()->latest('id')->first();
@@ -92,13 +125,13 @@ class AccountService
             $suggestedCode = $parentAccount->code . '1';
         }
 
-
         return $suggestedCode;
     }
 
     /**
      * this function will help me to automatic update account balance depend on it's transactions
      * @param Account,Transactions (we can get it use relationship)
+     * @return Void
      */
     function updateAccountBalanceAutomatically($account, $transactions)
     {
@@ -110,6 +143,9 @@ class AccountService
         $account->update(['balance' => $newBalance]);
     }
 
+    /**
+     * TODO: fix this function
+     */
     function updateAccountBalance($transaction)
     {
         $account = $transaction->account;

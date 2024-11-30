@@ -12,16 +12,11 @@ class TransactionService
 {
     use ApiResponser, SharedFunctions;
 
-    function createTransactions($transactable, $validatedData)
-    {
-        foreach ($validatedData as $key => $entry) {
-            $account = Account::where('code', $entry['account_id'])->first();
-            $entry['account_id'] = $account->id;
-            $entry['date'] = $this->addNowTimeToDate($transactable->date);
-            $transactable->transactions()->create($entry);
-        }
-    }
-
+    /**
+     * Validate Transaction Request
+     * @param
+     * @return ValidatedData
+     */
     function validateTransactionRequest()
     {
         $validatedData = request()->validate([
@@ -45,6 +40,26 @@ class TransactionService
         return $validatedData;
     }
 
+    /**
+     * Create New Transaction
+     * @param Transactable,Data
+     * @return Void
+     */
+    function createTransactions($transactable, $validatedData)
+    {
+        foreach ($validatedData as $key => $entry) {
+            $account = Account::where('code', $entry['account_id'])->first();
+            $entry['account_id'] = $account->id;
+            $entry['date'] = $this->addNowTimeToDate($transactable->date);
+            $transactable->transactions()->create($entry);
+        }
+    }
+
+    /**
+     * Delete All Transaction per transactable
+     * @param Transactable
+     * @return Void
+     */
     function deleteTransactions($transactable)
     {
         foreach ($transactable->transactions as $key => $transaction) {
@@ -52,6 +67,11 @@ class TransactionService
         }
     }
 
+    /**
+     * Get Next transaction per date
+     * @param Account,Date
+     * @return Array_of_transaction
+     */
     function getNextTransactions(Account $account, $date)
     {
         $nextTransactions = $account->transactions()->savedTransactable()->where('date', '>', $date)->get();
@@ -59,6 +79,11 @@ class TransactionService
         return $nextTransactions;
     }
 
+    /**
+     * Get Previous transaction per date
+     * @param Account,Date
+     * @return Array_of_transaction
+     */
     function getPreviousTransactions(Account $account, $date)
     {
         $previousTransactions = $account->transactions()->savedTransactable()->where('date', '<', $date)->get();
@@ -66,6 +91,11 @@ class TransactionService
         return $previousTransactions;
     }
 
+    /**
+     * Update All Transactions Balance depend on current balance
+     * @param CurrentBalance,Array_of_transactions
+     * @return Void
+     */
     function updateTransactionsBalance($currentBalance, $transactions)
     {
         foreach ($transactions as $key => $transaction) {

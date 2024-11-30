@@ -29,7 +29,6 @@ class JournalController extends Controller
         return $this->success(JournalResource::collection($journals));
     }
 
-
     /**
      * Store a newly created resource in storage.
      */
