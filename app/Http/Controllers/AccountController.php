@@ -128,7 +128,12 @@ class AccountController extends Controller
      */
     function getAccountsNameWithCode()
     {
-        $accounts = Account::select('ar_name', 'en_name', 'code')->get();
+        $accounts = Account::select(
+            'id',
+            'ar_name',
+            'en_name',
+            'code'
+        )->get();
         return $this->success($accounts);
     }
 }
