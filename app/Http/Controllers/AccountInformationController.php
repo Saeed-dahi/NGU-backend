@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\AccountInformation\AccountInformationRequest;
-use App\Http\Resources\AccountInformationResource;
+use App\Http\Resources\Account\AccountInformationResource;
 use App\Http\Traits\ApiResponser;
 use App\Models\Account;
 use App\Models\AccountInformation;

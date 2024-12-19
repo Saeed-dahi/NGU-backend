@@ -2,16 +2,25 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\ClosingAccountResource;
+use App\Http\Resources\ClosingAccount\ClosingAccountResource;
 use App\Http\Traits\ApiResponser;
 use App\Http\Traits\SharedFunctions;
 use App\Models\ClosingAccount;
+use App\Services\ClosingAccountService;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
 class ClosingAccountController extends Controller
 {
     use ApiResponser, SharedFunctions;
+
+    protected $closingAccountService;
+
+
+    public function __construct(ClosingAccountService $closingAccountService)
+    {
+        $this->closingAccountService = $closingAccountService;
+    }
 
     /**
      * Display a listing of the resource.
@@ -61,6 +70,16 @@ class ClosingAccountController extends Controller
         $closingAccount->update($validated);
 
         return $this->success(ClosingAccountResource::make($closingAccount));
+    }
+
+    public function closingAccountSts()
+    {
+        try {
+            $data =  $this->closingAccountService->closingAccountsStatement();
+            return $this->success($data);
+        } catch (\Throwable $th) {
+            return $this->error(null, $th->getMessage(), $th->getCode());
+        }
     }
 
     /**

@@ -5,6 +5,7 @@ use App\Http\Controllers\AccountInformationController;
 use App\Http\Controllers\ClosingAccountController;
 use App\Http\Controllers\JournalController;
 use App\Http\Controllers\LoginController;
+use App\Models\ClosingAccount;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -23,6 +24,7 @@ Route::prefix('v1')->group(function () {
 
         // Accounts => {closing, account, account information}
         Route::apiResource('closing-account', ClosingAccountController::class)->only(['index', 'store', 'show', 'update', 'destroy']);
+        Route::get('closing-account-sts', [ClosingAccountController::class, 'closingAccountSts']);
         Route::apiResource('account', AccountController::class)->only(['index', 'store', 'show', 'update', 'destroy']);
         Route::get('accounts-name', [AccountController::class, 'getAccountsNameWithCode']);
         Route::get('account-statement/{account}', [AccountController::class, 'accountStatement']);
