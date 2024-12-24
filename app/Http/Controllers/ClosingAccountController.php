@@ -72,10 +72,11 @@ class ClosingAccountController extends Controller
         return $this->success(ClosingAccountResource::make($closingAccount));
     }
 
-    public function closingAccountSts()
+    public function closingAccountSts(Request $request)
     {
+
         try {
-            $data =  $this->closingAccountService->closingAccountsStatement();
+            $data =  $this->closingAccountService->closingAccountsStatement($request);
             return $this->success($data);
         } catch (\Throwable $th) {
             return $this->error(null, $th->getMessage(), $th->getCode());

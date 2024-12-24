@@ -10,13 +10,15 @@ use Exception;
 
 class ClosingAccountService
 {
-    public function closingAccountsStatement()
+    public function closingAccountsStatement($request)
     {
         $tradingAccount = ClosingAccount::firstWhere('en_name', 'Trading');
         $profitLossAccount = ClosingAccount::firstWhere('en_name', 'Profit and Loss');
         $budgetAccount = ClosingAccount::firstWhere('en_name', 'Budget');
 
-        $completedProductsAccount = $this->setCompletedProductAccountBalance();
+
+
+        $completedProductsAccount = $this->setCompletedProductAccountBalance($request->completed_product_value ?? 0);
 
 
         if (!$tradingAccount || !$profitLossAccount || !$budgetAccount) {
