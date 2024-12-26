@@ -3,6 +3,8 @@
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\AccountInformationController;
 use App\Http\Controllers\ClosingAccountController;
+use App\Http\Controllers\Inventory\StoreController;
+use App\Http\Controllers\Inventory\StoreHouseController;
 use App\Http\Controllers\JournalController;
 use App\Http\Controllers\LoginController;
 use App\Models\ClosingAccount;
@@ -33,6 +35,9 @@ Route::prefix('v1')->group(function () {
         Route::Post('account-information/{account_information}', [AccountInformationController::class, 'update']);
         Route::get('search-account', [AccountController::class, 'searchAccount']);
         Route::get('get-suggestion-code', [AccountController::class, 'getSuggestionCode']);
+
+        // Inventory
+        Route::apiResource('store', StoreController::class)->only(['index', 'store', 'update']);
 
 
         Route::apiResource('journal', JournalController::class);
