@@ -2,12 +2,14 @@
 
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\AccountInformationController;
+
 use App\Http\Controllers\ClosingAccountController;
+use App\Http\Controllers\Inventory\CategoryController;
 use App\Http\Controllers\Inventory\StoreController;
-use App\Http\Controllers\Inventory\StoreHouseController;
+
 use App\Http\Controllers\JournalController;
 use App\Http\Controllers\LoginController;
-use App\Models\ClosingAccount;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -38,6 +40,7 @@ Route::prefix('v1')->group(function () {
 
         // Inventory
         Route::apiResource('store', StoreController::class)->only(['index', 'store', 'update']);
+        Route::apiResource('category', CategoryController::class)->only(['index', 'store', 'update']);
 
 
         Route::apiResource('journal', JournalController::class);

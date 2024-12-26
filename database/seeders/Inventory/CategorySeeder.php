@@ -5,7 +5,7 @@ namespace Database\Seeders\Inventory;
 use App\Models\Inventory\Store;
 use Illuminate\Database\Seeder;
 
-class StoreSeeder extends Seeder
+class CategorySeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -13,18 +13,18 @@ class StoreSeeder extends Seeder
     public function run(): void
     {
         Store::create([
-            'ar_name' => 'المستودع الرئيسي',
-            'en_name' => 'Main Store',
+            'ar_name' => 'المنتجات السورية',
+            'en_name' => 'Syrian Products',
             'description' => '',
         ]);
         Store::create([
-            'ar_name' => 'المستودع الثاني',
-            'en_name' => 'Second Store',
+            'ar_name' => 'زيوت',
+            'en_name' => 'Oils',
             'description' => '',
         ]);
         Store::create([
-            'ar_name' => 'المستودع الثالث',
-            'en_name' => 'Third Store',
+            'ar_name' => 'بقوليات',
+            'en_name' => 'Legumes',
             'description' => '',
         ]);
     }

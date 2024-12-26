@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
+use Database\Seeders\Inventory\CategorySeeder;
 use Database\Seeders\Inventory\StoreSeeder;
 use Illuminate\Database\Seeder;
 
@@ -17,6 +18,7 @@ class DatabaseSeeder extends Seeder
         // $this->call(ClosingAccountSeeder::class);
         // $this->call(UserSeeder::class);
         // $this->call(AccountSeeder::class);
-        $this->call(StoreSeeder::class);
+        // $this->call(StoreSeeder::class);
+        $this->call(CategorySeeder::class);
     }
 }
