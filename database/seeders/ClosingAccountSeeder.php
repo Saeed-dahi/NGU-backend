@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\ClosingAccount;
-
 use Illuminate\Database\Seeder;
 
 class ClosingAccountSeeder extends Seeder
