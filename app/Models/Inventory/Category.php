@@ -9,4 +9,9 @@ class Category extends Model
 {
     use HasFactory;
     protected $fillable = ['ar_name', 'en_name', 'description'];
+
+    public function products()
+    {
+        return $this->hasMany(Product::class);
+    }
 }
