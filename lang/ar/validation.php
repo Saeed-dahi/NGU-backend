@@ -193,6 +193,7 @@ return [
         'closing_account_id' => 'الحساب الختامي',
         'parent_id' => 'الحساب الرئيسي',
         'account_id' => 'رقم الحساب',
+        'category_id' => 'رقم الفئة',
         'phone' => 'رقم الهاتف',
         'mobile' => 'رقم الموبايل',
         'fax' => 'الفاكس',

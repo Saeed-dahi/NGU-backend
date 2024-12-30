@@ -5,13 +5,13 @@ use App\Http\Controllers\AccountInformationController;
 
 use App\Http\Controllers\ClosingAccountController;
 use App\Http\Controllers\Inventory\CategoryController;
+use App\Http\Controllers\Inventory\ProductController;
 use App\Http\Controllers\Inventory\StoreController;
 use App\Http\Controllers\Inventory\UnitController;
 use App\Http\Controllers\JournalController;
 use App\Http\Controllers\LoginController;
 
 use Illuminate\Http\Request;
-use Illuminate\Routing\RouteGroup;
 use Illuminate\Support\Facades\Route;
 
 
@@ -43,6 +43,7 @@ Route::prefix('v1')->group(function () {
             Route::apiResource('store', StoreController::class)->only(['index', 'store', 'update']);
             Route::apiResource('category', CategoryController::class)->only(['index', 'store', 'update']);
             Route::apiResource('unit', UnitController::class)->only(['index', 'store', 'update']);
+            Route::apiResource('product', ProductController::class)->only(['index', 'store', 'update']);
         });
 
         Route::apiResource('journal', JournalController::class);

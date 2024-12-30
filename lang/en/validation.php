@@ -197,6 +197,7 @@ return [
         'closing_account_id' => 'Closing Account Id',
         'parent_id' => 'Parent Account',
         'account_id' => 'Account Id',
+        'category_id' => 'Category Id',
         'phone' => 'Phone',
         'mobile' => 'Mobile',
         'fax' => 'Fax',
