@@ -24,7 +24,7 @@ class ProductUnitRequest extends FormRequest
         return [
             'product_id' => 'required|integer',
             'unit_id' => 'required|integer',
-            'base_product_unit_id' => 'integer',
+            'base_product_unit_id' => 'integer|exists:product_units,id',
             'conversion_factor' => 'numeric',
             'export_price' => 'numeric',
             'import_price' => 'numeric',

@@ -24,7 +24,7 @@ class ProductResource extends JsonResource
             'type' => $this->type,
             'category_id' => $this->category_id,
             'file' => $this->file,
-            'units' => ProductUnitResource::collection($this->productUnits),
+            'units' => ProductUnitResource::collection($this->productUnits()->where('base_product_unit_id', null)->get()),
         ];
     }
 }

@@ -21,8 +21,13 @@ class ProductUnitController extends Controller
      */
     public function store(ProductUnitRequest $request)
     {
-        $productUnit = ProductUnit::create($request->validated());
+        $productUnit = ProductUnit::where('id', $request->base_product_unit_id)->first();
 
+        if ($productUnit && $productUnit->subUnit()->count() > 0) {
+            return $this->error(null, __('lang.error_unit_type'), 400);
+        }
+
+        $productUnit = ProductUnit::create($request->validated());
         return $this->success(ProductUnitResource::make($productUnit));
     }
 
