@@ -6,11 +6,13 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Inventory\ProductRequest;
 use App\Http\Resources\Inventory\ProductResource;
 use App\Http\Traits\ApiResponser;
+use App\Http\Traits\SharedFunctions;
 use App\Models\Inventory\Product;
+use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
-    use ApiResponser;
+    use ApiResponser, SharedFunctions;
     /**
      * Display a listing of the resource.
      */
@@ -35,8 +37,9 @@ class ProductController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Product $product)
+    public function show(Product $product, Request $request)
     {
+        $product = $this->navigateRecord($product, $request);
         return $this->success(ProductResource::make($product));
     }
 
