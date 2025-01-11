@@ -18,11 +18,6 @@ class CategorySeeder extends Seeder
             // 'image' => 'uploads/category/8af35352e1d00275287e335249ae5162.webp',
         ]);
         Category::create([
-            'ar_name' => 'المكسرات',
-            'en_name' => 'Nuts',
-            // 'image' => 'uploads/category/e4d223526352acd72f8ba063e435d7fc.png',
-        ]);
-        Category::create([
             'ar_name' => 'زيوت',
             'en_name' => 'Oil',
             // 'image' => 'uploads/category/c28018b3f91d16212dcb2a7719dd47ee.png',
@@ -51,6 +46,11 @@ class CategorySeeder extends Seeder
             'ar_name' => 'أغذية معلبة وصلصات',
             'en_name' => 'Canned Food & Sauce',
             // 'image' => 'uploads/category/865e86c3e7cd64ba0a914d637666f529.png',
+        ]);
+        Category::create([
+            'ar_name' => 'المكسرات',
+            'en_name' => 'Nuts',
+            // 'image' => 'uploads/category/e4d223526352acd72f8ba063e435d7fc.png',
         ]);
         Category::create([
             'ar_name' => 'المشروبات',

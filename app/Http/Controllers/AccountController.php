@@ -51,8 +51,9 @@ class AccountController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Account $account, Request $request)
+    public function show($id, Request $request)
     {
+        $account = $id == 1 ? Account::first() : Account::find($id);
         $account = $this->navigateRecord($account, $request, 'code');
 
         return $this->success(AccountResource::make($account));

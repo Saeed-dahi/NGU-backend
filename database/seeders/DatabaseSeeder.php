@@ -19,7 +19,7 @@ class DatabaseSeeder extends Seeder
         // $this->call(ClosingAccountSeeder::class);
         // $this->call(UserSeeder::class);
         // $this->call(AccountSeeder::class);
-        $this->call(StoreSeeder::class);
+        // $this->call(StoreSeeder::class);
         $this->call(CategorySeeder::class);
         // $this->call(UnitSeeder::class);
     }

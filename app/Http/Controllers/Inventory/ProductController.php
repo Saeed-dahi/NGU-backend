@@ -37,8 +37,9 @@ class ProductController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Product $product, Request $request)
+    public function show($id, Request $request)
     {
+        $product = $id == 1 ? Product::first() : Product::find($id);
         $product = $this->navigateRecord($product, $request);
         return $this->success(ProductResource::make($product));
     }

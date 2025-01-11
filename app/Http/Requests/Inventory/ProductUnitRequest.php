@@ -22,8 +22,8 @@ class ProductUnitRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'product_id' => 'required|integer',
-            'unit_id' => 'required|integer',
+            'product_id' => 'required|integer|exists:products,id',
+            'unit_id' => 'required|integer|exists:units,id',
             'base_product_unit_id' => 'integer|exists:product_units,id',
             'conversion_factor' => 'numeric',
             'export_price' => 'numeric',

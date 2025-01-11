@@ -6,7 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Inventory\UnitRequest;
 use App\Http\Resources\Inventory\UnitResource;
 use App\Http\Traits\ApiResponser;
+use App\Models\Inventory\Product;
 use App\Models\Inventory\Unit;
+use Illuminate\Http\Request;
 
 class UnitController extends Controller
 {
@@ -14,9 +16,17 @@ class UnitController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
+        $productId = $request->product_id;
         $units = Unit::all();
+        // to get only specific units depend on product Ids
+        if ($productId) {
+            $product = Product::find($productId);
+            $productUnitsIds = $product->productUnits()->pluck('unit_id');
+            $units = $units->whereNotIn('id', $productUnitsIds);
+        }
+
         return $this->success(UnitResource::collection($units));
     }
 

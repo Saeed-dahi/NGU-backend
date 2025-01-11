@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('document')->nullable();
             $table->enum('status', ['draft', 'saved']);
             $table->datetime('date');
+            $table->softDeletes();
             $table->timestamps();
         });
     }
