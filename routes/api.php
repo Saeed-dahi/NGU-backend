@@ -44,7 +44,8 @@ Route::prefix('v1')->group(function () {
             Route::apiResource('store', StoreController::class)->only(['index', 'store', 'update']);
             Route::apiResource('category', CategoryController::class)->only(['index', 'store', 'update']);
             Route::apiResource('unit', UnitController::class)->only(['index', 'store', 'update']);
-            Route::apiResource('product', ProductController::class)->only(['index', 'show', 'store', 'update']);
+            Route::apiResource('product', ProductController::class)->only(['index', 'show', 'store']);
+            Route::post('product/{product}', [ProductController::class, 'update']);
             Route::apiResource('product-unit', ProductUnitController::class)->only(['store', 'update']);
         });
 

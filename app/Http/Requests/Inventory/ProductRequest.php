@@ -36,7 +36,7 @@ class ProductRequest extends FormRequest
             'description' => 'string|nullable',
             'barcode' => 'string|nullable',
             'type' => [Rule::enum(ProductType::class)],
-            'category_id' => 'numeric|required|exists:categories,id',
+            'category_id' => 'numeric|exists:categories,id',
             'file' => 'array',
             'file.*' => 'file|mimes:jpeg,png,jpg,pdf|max:2048',
         ];
