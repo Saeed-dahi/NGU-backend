@@ -14,6 +14,7 @@ class ProductResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        info($this->productUnits);
         return [
             'id' => $this->id,
             'ar_name' => $this->ar_name,
@@ -24,7 +25,7 @@ class ProductResource extends JsonResource
             'type' => $this->type,
             'category' => CategoryResource::make($this->category),
             'file' => $this->file,
-            'units' => ProductUnitResource::collection($this->productUnits()->where('base_product_unit_id', null)->get()),
+            'units' => ProductUnitResource::collection($this->productUnits),
         ];
     }
 }

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Inventory\ProductUnitRequest;
 use App\Http\Resources\Inventory\ProductUnitResource;
 use App\Http\Traits\ApiResponser;
+use App\Models\Inventory\Product;
 use App\Models\Inventory\ProductUnit;
 
 class ProductUnitController extends Controller
@@ -21,10 +22,15 @@ class ProductUnitController extends Controller
      */
     public function store(ProductUnitRequest $request)
     {
-        $productUnit = ProductUnit::where('id', $request->base_product_unit_id)->first();
+        // TODO: Refactor this function
+        $baseUnit = $request->base_product_unit_id;
+        if ($baseUnit) {
+            $product = Product::findOrFail($request->product_id);
+            $productUnit = $product->productUnits()->where('id', $request->base_product_unit_id)->first();
 
-        if ($productUnit && $productUnit->subUnit()->count() > 0) {
-            return $this->error(null, __('lang.error_unit_type'), 400);
+            if (!$productUnit || $productUnit->subUnit()->count() > 0) {
+                return $this->error(null, __('lang.error_unit_type'), 400);
+            }
         }
 
         $productUnit = ProductUnit::create($request->validated());
