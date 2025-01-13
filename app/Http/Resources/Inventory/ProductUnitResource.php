@@ -20,7 +20,6 @@ class ProductUnitResource extends JsonResource
             'id' => $this->id,
             'product_id' => $this->product_id,
             'name' => $this->unit->{app()->getLocale() . '_name'},
-
             'unit_id' => $this->unit_id,
             'sub_unit' => ProductUnitResource::make($this->subUnit),
             'conversion_factor' => $this->conversion_factor,

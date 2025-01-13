@@ -49,6 +49,8 @@ class ProductUnitController extends Controller
      */
     public function update(ProductUnitRequest $request, ProductUnit $productUnit)
     {
+        info('ssssss');
+        info($request);
         $productUnit->update($request->validated());
 
         return $this->success(ProductUnitResource::make($productUnit));
