@@ -15,11 +15,12 @@ class ProductUnitResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+
         return [
             'id' => $this->id,
             'product_id' => $this->product_id,
-            'ar_name' => $this->unit->ar_name,
-            'en_name' => $this->unit->en_name,
+            'name' => $this->unit->{app()->getLocale() . '_name'},
+
             'unit_id' => $this->unit_id,
             'sub_unit' => ProductUnitResource::make($this->subUnit),
             'conversion_factor' => $this->conversion_factor,
