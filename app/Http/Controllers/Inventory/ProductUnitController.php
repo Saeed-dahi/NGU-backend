@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Inventory;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Inventory\ProductUnitRequest;
+use App\Http\Resources\Inventory\ProductResource;
 use App\Http\Resources\Inventory\ProductUnitResource;
 use App\Http\Traits\ApiResponser;
 use App\Models\Inventory\Product;
@@ -49,11 +50,9 @@ class ProductUnitController extends Controller
      */
     public function update(ProductUnitRequest $request, ProductUnit $productUnit)
     {
-        info('ssssss');
-        info($request);
         $productUnit->update($request->validated());
 
-        return $this->success(ProductUnitResource::make($productUnit));
+        return $this->success(ProductResource::make($productUnit->product));
     }
 
     public function destroy(string $id) {}
