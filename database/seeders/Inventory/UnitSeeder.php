@@ -13,9 +13,80 @@ class UnitSeeder extends Seeder
     public function run(): void
     {
         Unit::create([
+            'ar_name' => 'كرتونة',
+            'en_name' => 'CTN',
+        ]);
+        Unit::create([
             'ar_name' => 'قطعة',
             'en_name' => 'Pcs',
         ]);
+        Unit::create([
+            'ar_name' => 'قنينة',
+            'en_name' => 'Bottle',
+        ]);
+        Unit::create([
+            'ar_name' => 'غالون',
+            'en_name' => 'Galon',
+        ]);
+        Unit::create([
+            'ar_name' => 'كيلو',
+            'en_name' => 'KG',
+        ]);
+        Unit::create([
+            'ar_name' => 'شوال',
+            'en_name' => 'Bag',
+        ]);
+        Unit::create([
+            'ar_name' => 'ليتر',
+            'en_name' => 'Liter',
+        ]);
+        Unit::create([
+            'ar_name' => 'باكيت',
+            'en_name' => 'Packet',
+        ]);
+        Unit::create([
+            'ar_name' => 'سطل',
+            'en_name' => 'Pot',
+        ]);
+        Unit::create([
+            'ar_name' => 'تنكة',
+            'en_name' => 'Tinker',
+        ]);
+        Unit::create([
+            'ar_name' => '100غرام',
+            'en_name' => '100g',
+        ]);
+        Unit::create([
+            'ar_name' => 'طبق',
+            'en_name' => 'Tray',
+        ]);
+        Unit::create([
+            'ar_name' => '6قطع',
+            'en_name' => '6pcs',
+        ]);
+        Unit::create([
+            'ar_name' => 'كيس',
+            'en_name' => 'Sac',
+        ]);
+        Unit::create([
+            'ar_name' => 'علبة',
+            'en_name' => 'Box',
+        ]);
+        Unit::create([
+            'ar_name' => '500غرام',
+            'en_name' => '500g',
+        ]);
+        Unit::create([
+            'ar_name' => '2كغ',
+            'en_name' => '2Kg',
+        ]);
+        Unit::create([
+            'ar_name' => '2.5كغ',
+            'en_name' => '2.5Kg',
+        ]);
+
+
+
         Unit::create([
             'ar_name' => 'طقم',
             'en_name' => 'Set',
@@ -29,22 +100,6 @@ class UnitSeeder extends Seeder
             'en_name' => 'Bunch',
         ]);
         Unit::create([
-            'ar_name' => 'علبة',
-            'en_name' => 'Box',
-        ]);
-        Unit::create([
-            'ar_name' => 'كرتونة',
-            'en_name' => 'CTN',
-        ]);
-        Unit::create([
-            'ar_name' => 'قنينة',
-            'en_name' => 'Bottle',
-        ]);
-        Unit::create([
-            'ar_name' => 'غالون',
-            'en_name' => 'Galon',
-        ]);
-        Unit::create([
             'ar_name' => 'برميل',
             'en_name' => 'Barrel',
         ]);
@@ -56,18 +111,12 @@ class UnitSeeder extends Seeder
             'ar_name' => 'رول',
             'en_name' => 'Roll',
         ]);
-        Unit::create([
-            'ar_name' => 'كيلو',
-            'en_name' => 'KG',
-        ]);
+
         Unit::create([
             'ar_name' => 'طن',
             'en_name' => 'KG',
         ]);
-        Unit::create([
-            'ar_name' => 'كيس',
-            'en_name' => 'Sac',
-        ]);
+
         Unit::create([
             'ar_name' => 'ياردة',
             'en_name' => 'Yard',
@@ -104,18 +153,12 @@ class UnitSeeder extends Seeder
             'ar_name' => 'متر مكعب',
             'en_name' => 'Cubic Meter',
         ]);
-        Unit::create([
-            'ar_name' => 'شوال',
-            'en_name' => 'Bag',
-        ]);
+
         Unit::create([
             'ar_name' => 'عبوة',
             'en_name' => 'Pack',
         ]);
-        Unit::create([
-            'ar_name' => 'ليتر',
-            'en_name' => 'Liter',
-        ]);
+
         Unit::create([
             'ar_name' => 'ليبرة',
             'en_name' => 'Pound',
@@ -132,10 +175,7 @@ class UnitSeeder extends Seeder
             'ar_name' => 'بوري',
             'en_name' => 'Bori',
         ]);
-        Unit::create([
-            'ar_name' => 'باكيت',
-            'en_name' => 'Packet',
-        ]);
+
         Unit::create([
             'ar_name' => 'حبة',
             'en_name' => 'Piece',
@@ -156,10 +196,7 @@ class UnitSeeder extends Seeder
             'ar_name' => 'سيخ',
             'en_name' => 'Stick',
         ]);
-        Unit::create([
-            'ar_name' => 'سطل',
-            'en_name' => 'Pot',
-        ]);
+
         Unit::create([
             'ar_name' => 'بوصة',
             'en_name' => 'Inch',

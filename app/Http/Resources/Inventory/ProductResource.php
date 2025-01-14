@@ -7,6 +7,17 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class ProductResource extends JsonResource
 {
+    private $fields;
+
+    public function __construct($resource, $fields = null)
+    {
+        // Call the parent constructor
+        parent::__construct($resource);
+
+        // Store the additional parameter
+        $this->fields = $fields;
+    }
+
     /**
      * Transform the resource into an array.
      *
@@ -14,7 +25,7 @@ class ProductResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return [
+        $data = [
             'id' => $this->id,
             'ar_name' => $this->ar_name,
             'en_name' => $this->en_name,
@@ -24,7 +35,8 @@ class ProductResource extends JsonResource
             'type' => $this->type,
             'category' => CategoryResource::make($this->category),
             'file' => $this->file,
-            'units' => ProductUnitResource::collection($this->productUnits),
+            'units' =>  ProductUnitResource::collection($this->productUnits),
         ];
+        return $this->fields ? array_intersect_key($data, array_flip($this->fields)) : $data;
     }
 }

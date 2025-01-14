@@ -20,7 +20,8 @@ class ProductController extends Controller
     {
         $products = Product::all();
 
-        return $this->success(ProductResource::collection($products));
+        return $this->success($products->map(fn($product) =>
+        ProductResource::make($product, ['id', 'ar_name', 'en_name', 'code'])));
     }
 
 
