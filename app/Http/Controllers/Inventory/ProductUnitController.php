@@ -51,6 +51,7 @@ class ProductUnitController extends Controller
     public function update(ProductUnitRequest $request, ProductUnit $productUnit)
     {
         $productUnit->update($request->validated());
+        $productUnit->load('subUnit');
 
         return $this->success(ProductResource::make($productUnit->product));
     }
