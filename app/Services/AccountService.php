@@ -7,9 +7,7 @@ use App\Enum\Account\AccountType;
 use App\Enum\Status;
 use App\Http\Traits\ApiResponser;
 use App\Http\Traits\SharedFunctions;
-use App\Models\Account;
-
-
+use App\Models\Account\Account;
 
 class AccountService
 {

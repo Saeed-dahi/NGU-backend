@@ -4,7 +4,7 @@ namespace App\Services;
 
 use App\Enum\Account\AccountType;
 use App\Http\Resources\ClosingAccount\ClosingAccountsStatementResource;
-use App\Models\Account;
+use App\Models\Account\Account;
 use App\Models\ClosingAccount;
 use Exception;
 

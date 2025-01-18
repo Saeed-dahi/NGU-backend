@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Account;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\AccountInformation\AccountInformationRequest;
 use App\Http\Resources\Account\AccountInformationResource;
 use App\Http\Traits\ApiResponser;
-use App\Models\Account;
-use App\Models\AccountInformation;
+use App\Models\Account\Account;
+use App\Models\Account\AccountInformation;
 
 class AccountInformationController extends Controller
 {

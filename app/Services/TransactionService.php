@@ -6,7 +6,7 @@ use App\Enum\Account\AccountNature;
 use App\Enum\Account\AccountType;
 use App\Http\Traits\ApiResponser;
 use App\Http\Traits\SharedFunctions;
-use App\Models\Account;
+use App\Models\Account\Account;
 
 class TransactionService
 {

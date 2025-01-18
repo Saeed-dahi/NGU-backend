@@ -1,9 +1,8 @@
 <?php
 
-use App\Http\Controllers\AccountController;
-use App\Http\Controllers\AccountInformationController;
-
-use App\Http\Controllers\ClosingAccountController;
+use App\Http\Controllers\Account\AccountController;
+use App\Http\Controllers\Account\AccountInformationController;
+use App\Http\Controllers\ClosingAccount\ClosingAccountController;
 use App\Http\Controllers\Inventory\CategoryController;
 use App\Http\Controllers\Inventory\ProductController;
 use App\Http\Controllers\Inventory\ProductUnitController;

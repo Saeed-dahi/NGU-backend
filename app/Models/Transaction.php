@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enum\Status;
+use App\Models\Account\Account;
 use App\Services\AccountService;
 use App\Services\TransactionService;
 use Illuminate\Database\Eloquent\Factories\HasFactory;

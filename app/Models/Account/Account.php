@@ -1,8 +1,10 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Account;
 
 use App\Enum\Account\AccountNature;
+use App\Models\ClosingAccount;
+use App\Models\Transaction;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 

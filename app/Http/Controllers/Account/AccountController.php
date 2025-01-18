@@ -1,14 +1,15 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Account;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\Account\StoreAccountRequest;
 use App\Http\Requests\Account\UpdateAccountRequest;
 use App\Http\Resources\Account\AccountResource;
 use App\Http\Resources\Account\AccountStatementResource;
 use App\Http\Traits\ApiResponser;
 use App\Http\Traits\SharedFunctions;
-use App\Models\Account;
+use App\Models\Account\Account;
 use App\Services\AccountService;
 use Illuminate\Http\Request;
 

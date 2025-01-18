@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\ClosingAccount;
 
+use App\Http\Controllers\Controller;
 use App\Http\Resources\ClosingAccount\ClosingAccountResource;
 use App\Http\Traits\ApiResponser;
 use App\Http\Traits\SharedFunctions;
