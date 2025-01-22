@@ -16,19 +16,19 @@ return new class extends Migration
     {
         Schema::create('invoices', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('invoice_number', true)->unique();
+            $table->bigInteger('invoice_number')->unique();
             $table->enum('type', [
-                InvoiceType::PURCHASE,
-                InvoiceType::SALES,
+                InvoiceType::PURCHASE->value,
+                InvoiceType::SALES->value,
             ]);
             $table->datetime('date');
             $table->datetime('due_date')->nullable();
-            $table->enum('status', [Status::DRAFT, Status::SAVED]);
-            $table->enum('invoice_nature', [AccountNature::CREDIT, AccountNature::DEBIT]);
+            $table->enum('status', [Status::DRAFT->value, Status::SAVED->value]);
+            $table->enum('invoice_nature', [AccountNature::CREDIT->value, AccountNature::DEBIT->value]);
             $table->string('currency')->default('AED');
-            $table->double('sub_total');
-            $table->double('total');
-            $table->text('notes');
+            $table->double('sub_total')->default(0);
+            $table->double('total')->default(0);
+            $table->text('notes')->nullable();
             $table->softDeletes();
 
             $table->unsignedBigInteger('account_id'); // Customer, Supplier

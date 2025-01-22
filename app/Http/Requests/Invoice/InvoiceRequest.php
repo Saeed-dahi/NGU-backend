@@ -2,7 +2,11 @@
 
 namespace App\Http\Requests\Invoice;
 
+use App\Enum\Account\AccountNature;
+use App\Enum\Invoice\InvoiceType;
+use App\Enum\Status;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class InvoiceRequest extends FormRequest
 {
@@ -11,7 +15,7 @@ class InvoiceRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -21,9 +25,22 @@ class InvoiceRequest extends FormRequest
      */
     public function rules(): array
     {
+        $invoiceId = $this->route('invoice');
         return [
-            'invoice_number' => 'numeric|unique',
-            'type'=>
+            'invoice_number' => [
+                'numeric',
+                Rule::unique('invoices', 'invoice_number')->ignore($invoiceId)
+            ],
+            'type' => ['required', Rule::enum(InvoiceType::class)],
+            'date' => 'required|date',
+            'due_date' => 'date',
+            'status' => [Rule::enum(Status::class)],
+            'invoice_nature' => [Rule::enum(AccountNature::class)],
+            'currency' => 'string',
+            'notes' => 'string',
+            'account_id' => 'numeric|exists:accounts,id|required',
+            'total_tax_account' => 'numeric|exists:accounts,id|required',
+            'total_discount_account' => 'numeric|exists:accounts,id|required',
         ];
     }
 }

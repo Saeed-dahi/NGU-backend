@@ -8,6 +8,7 @@ use App\Http\Controllers\Inventory\ProductController;
 use App\Http\Controllers\Inventory\ProductUnitController;
 use App\Http\Controllers\Inventory\StoreController;
 use App\Http\Controllers\Inventory\UnitController;
+use App\Http\Controllers\invoice\InvoiceController;
 use App\Http\Controllers\JournalController;
 use App\Http\Controllers\LoginController;
 
@@ -46,6 +47,9 @@ Route::prefix('v1')->group(function () {
             Route::apiResource('product', ProductController::class)->only(['index', 'show', 'store']);
             Route::post('product/{product}', [ProductController::class, 'update']);
             Route::apiResource('product-unit', ProductUnitController::class)->only(['store', 'update']);
+
+
+            Route::apiResource('invoice', InvoiceController::class)->only(['store', 'update', 'show']);
         });
 
         Route::apiResource('journal', JournalController::class);

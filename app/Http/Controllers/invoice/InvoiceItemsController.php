@@ -1,21 +1,28 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\invoice;
 
-use App\Models\Invoice\Invoice;
+use App\Http\Controllers\Controller;
+use App\Models\Invoice\InvoiceItems;
 use Illuminate\Http\Request;
 
-class InvoiceController extends Controller
+class InvoiceItemsController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index() {}
+    public function index()
+    {
+        //
+    }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create() {}
+    public function create()
+    {
+        //
+    }
 
     /**
      * Store a newly created resource in storage.
@@ -28,7 +35,7 @@ class InvoiceController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Invoice $invoice)
+    public function show(InvoiceItems $invoiceItems)
     {
         //
     }
@@ -36,7 +43,7 @@ class InvoiceController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Invoice $invoice)
+    public function edit(InvoiceItems $invoiceItems)
     {
         //
     }
@@ -44,7 +51,7 @@ class InvoiceController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Invoice $invoice)
+    public function update(Request $request, InvoiceItems $invoiceItems)
     {
         //
     }
@@ -52,7 +59,7 @@ class InvoiceController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Invoice $invoice)
+    public function destroy(InvoiceItems $invoiceItems)
     {
         //
     }
