@@ -206,7 +206,7 @@ return [
         'voucher_number' => 'Voucher Number',
         'document' => 'المستند',
         'status' => 'الحالة',
-        'entries' => 'التحويلات'
+        'transactions' => 'التحويلات'
 
     ],
 

@@ -38,7 +38,7 @@ class JournalController extends Controller
 
         $journal = Journal::create($journalRequest->validated());
 
-        $this->transactionService->createTransactions($journal, $validatedData['entries']);
+        $this->transactionService->createTransactions($journal, $validatedData['transactions']);
 
         return $this->success(JournalResource::make($journal));
     }
@@ -64,7 +64,7 @@ class JournalController extends Controller
 
         $this->transactionService->deleteTransactions($journal);
 
-        $this->transactionService->createTransactions($journal, $validatedData['entries']);
+        $this->transactionService->createTransactions($journal, $validatedData['transactions']);
         // update $journal->transaction
         $journal->load('transactions');
 

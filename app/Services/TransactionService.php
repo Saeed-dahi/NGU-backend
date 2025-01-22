@@ -20,8 +20,8 @@ class TransactionService
     function validateTransactionRequest()
     {
         $validatedData = request()->validate([
-            'entries' => 'array|required',
-            'entries.*.account_id' => [
+            'transactions' => 'array|required',
+            'transactions.*.account_id' => [
                 'required',
                 'exists:accounts,code',
                 function ($attribute, $value, $fail) {
@@ -31,10 +31,10 @@ class TransactionService
                     }
                 },
             ],
-            'entries.*.type' => 'required|in:credit,debit',
-            'entries.*.amount' => 'required|numeric',
-            'entries.*.description' => '',
-            'entries.*.document_number' => '',
+            'transactions.*.type' => 'required|in:credit,debit',
+            'transactions.*.amount' => 'required|numeric',
+            'transactions.*.description' => '',
+            'transactions.*.document_number' => '',
         ]);
 
         return $validatedData;
