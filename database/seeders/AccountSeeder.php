@@ -9,6 +9,7 @@ class AccountSeeder extends Seeder
 {
     /**
      * Run the database seeds.
+     * TODO: remove id from creation
      */
     public function run(): void
     {
@@ -51,6 +52,12 @@ class AccountSeeder extends Seeder
             ['id' => 27, 'code' => '223', 'en_name' => 'Credit Accounts', 'ar_name' => 'الحسابات الدائنة', 'account_type' => 'main', 'balance' => '0.00', 'closing_account_id' => 1, 'parent_code' => '22'],
             ['id' => 28, 'code' => '2231', 'en_name' => 'Suppliers', 'ar_name' => 'المورودون', 'account_type' => 'main', 'balance' => '0.00', 'closing_account_id' => 1, 'parent_code' => '223'],
             ['id' => 29, 'code' => '2231001', 'en_name' => 'Supplier 1', 'ar_name' => 'مورد 1', 'account_type' => 'sub', 'balance' => '0.00', 'closing_account_id' => 1, 'parent_code' => '2231'],
+
+            ['id' => 30, 'code' => '27', 'en_name' => 'Other Credit Accounts', 'ar_name' => 'حسابات دائنة مختلفة', 'account_type' => 'main', 'balance' => '0.00', 'closing_account_id' => 1, 'parent_code' => '2'],
+            ['id' => 31, 'code' => '271', 'en_name' => 'Taxes', 'ar_name' => 'الضرائب', 'account_type' => 'main', 'balance' => '0.00', 'closing_account_id' => 1, 'parent_code' => '27'],
+            ['id' => 32, 'code' => '2711', 'en_name' => 'Vat', 'ar_name' => 'ضريبة القيمة المضافة', 'account_type' => 'sub', 'balance' => '0.00', 'closing_account_id' => 1, 'parent_code' => '271'],
+
+            ['id' => 33, 'code' => '432', 'en_name' => 'Sales Discount', 'ar_name' => 'مسموحات المبيعات', 'account_type' => 'main', 'balance' => '0.00', 'closing_account_id' => 3, 'parent_code' => '43'],
         ];
 
         // Create accounts without parent IDs

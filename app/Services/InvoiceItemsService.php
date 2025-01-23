@@ -39,16 +39,15 @@ class InvoiceItemsService
     function createInvoiceItems(Invoice $invoice, $validatedData)
     {
         $invoiceSubTotal = 0;
-        $invoiceTotal = 0;
         foreach ($validatedData as $key => $entry) {
             $entry['total'] = $entry['price'] * $entry['quantity'];
-            $invoiceSubTotal += $entry['price'];
-            $invoiceTotal += $entry['total'];
-
             $invoice->items()->create($entry);
+
+            $invoiceSubTotal += $entry['total'];
         }
         $invoice->sub_total = $invoiceSubTotal;
-        $invoice->total = $invoiceTotal;
+
+        $invoice->total = $this->calculateTax($invoiceSubTotal, $invoice->total_tax);
         $invoice->save();
     }
 

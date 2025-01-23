@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\invoice;
 
+use App\Enum\Invoice\InvoiceType;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Invoice\InvoiceRequest;
 use App\Http\Resources\Invoice\InvoiceResource;
@@ -9,6 +10,8 @@ use App\Http\Traits\ApiResponser;
 use App\Http\Traits\SharedFunctions;
 use App\Models\Invoice\Invoice;
 use App\Services\InvoiceItemsService;
+use App\Services\InvoiceService;
+use App\Services\TransactionService;
 use Illuminate\Http\Request;
 
 class InvoiceController extends Controller
@@ -16,11 +19,16 @@ class InvoiceController extends Controller
     use ApiResponser, SharedFunctions;
 
 
-    protected $invoiceItemsService;
+    protected $invoiceItemsService, $invoiceService, $transactionService;
 
-    public function __construct(InvoiceItemsService $invoiceItemsService)
-    {
+    public function __construct(
+        InvoiceItemsService $invoiceItemsService,
+        InvoiceService $invoiceService,
+        TransactionService $transactionService
+    ) {
         $this->invoiceItemsService = $invoiceItemsService;
+        $this->invoiceService = $invoiceService;
+        $this->transactionService = $transactionService;
     }
 
     /**
@@ -42,11 +50,12 @@ class InvoiceController extends Controller
 
         $validatedData = $invoiceRequest->validated();
 
-        $validatedData['total_tax'] = 0;
+        $validatedData['total_tax'] = 5;
         $validatedData['total_discount'] = 0;
         $invoice = Invoice::create($validatedData);
 
         $this->invoiceItemsService->createInvoiceItems($invoice, $validatedItems['items']);
+        $this->invoiceService->createInvoiceTransaction($invoice);
 
         return $this->success(InvoiceResource::make($invoice));
     }
@@ -79,10 +88,14 @@ class InvoiceController extends Controller
         $invoice->update($invoiceRequest->validated());
 
         $this->invoiceItemsService->deleteInvoiceItems($invoice);
-
         $this->invoiceItemsService->createInvoiceItems($invoice, $validatedData['items']);
-
         $invoice->load('items');
+
+        $this->transactionService->deleteTransactions($invoice);
+
+        $this->invoiceService->createInvoiceTransaction($invoice);
+        // update $journal->transaction
+        $invoice->load('transactions');
 
         return $this->success(InvoiceResource::make($invoice));
     }

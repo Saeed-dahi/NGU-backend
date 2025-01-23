@@ -23,9 +23,9 @@ class TransactionService
             'transactions' => 'array|required',
             'transactions.*.account_id' => [
                 'required',
-                'exists:accounts,code',
+                'exists:accounts,id',
                 function ($attribute, $value, $fail) {
-                    $account = Account::where('code', $value)->first();
+                    $account = Account::where('id', $value)->first();
                     if ($account->account_type == AccountType::MAIN->value) {
                         $fail(__('lang.error_account_type') . ' ' . $account->ar_name . '-' . $account->en_name);
                     }
@@ -48,7 +48,7 @@ class TransactionService
     function createTransactions($transactable, $validatedData)
     {
         foreach ($validatedData as $key => $entry) {
-            $account = Account::where('code', $entry['account_id'])->first();
+            $account = Account::where('id', $entry['account_id'])->first();
             $entry['account_id'] = $account->id;
             $entry['date'] = $this->addNowTimeToDate($transactable->date);
             $transactable->transactions()->create($entry);

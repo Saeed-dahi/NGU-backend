@@ -34,7 +34,7 @@ class InvoiceRequest extends FormRequest
             'type' => ['required', Rule::enum(InvoiceType::class)],
             'date' => 'required|date',
             'due_date' => 'date',
-            'status' => [Rule::enum(Status::class)],
+            'status' => ['required', Rule::enum(Status::class)],
             'invoice_nature' => [Rule::enum(AccountNature::class)],
             'currency' => 'string',
             'notes' => 'string',

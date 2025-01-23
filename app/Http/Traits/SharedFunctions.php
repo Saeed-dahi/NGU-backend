@@ -37,6 +37,12 @@ trait SharedFunctions
         return $record;
     }
 
+    function calculateTax($baseAmount,  $taxRate)
+    {
+        $multiplier = 1 + ($taxRate / 100);
+        return $baseAmount * $multiplier;
+    }
+
     /**
      * Custom date format
      */

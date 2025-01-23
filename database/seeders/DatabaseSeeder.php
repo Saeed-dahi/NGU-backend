@@ -16,10 +16,10 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // $this->call(ClosingAccountSeeder::class);
+        $this->call(ClosingAccountSeeder::class);
         // $this->call(UserSeeder::class);
-        // $this->call(AccountSeeder::class);
-        // $this->call(StoreSeeder::class);
+        $this->call(AccountSeeder::class);
+        $this->call(StoreSeeder::class);
         $this->call(CategorySeeder::class);
         $this->call(UnitSeeder::class);
     }
