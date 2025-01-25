@@ -23,14 +23,6 @@ class Journal extends Model
     {
         parent::boot();
 
-        static::updating(function ($journal) {
-            // $oldTransactableStatus = $journal->getOriginal('status');
-            // $newTransactableStatus = $journal->status;
-
-            // foreach ($journal->transactions as $key => $transaction) {
-            //     $accountService = new AccountService();
-            //     $accountService->updateAccountBalance($transaction, true);
-            // }
-        });
+        static::updating(function ($journal) {});
     }
 }

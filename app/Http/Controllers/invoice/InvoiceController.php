@@ -81,8 +81,9 @@ class InvoiceController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(InvoiceRequest $invoiceRequest, Invoice $invoice)
+    public function update(InvoiceRequest $invoiceRequest,  $id)
     {
+        $invoice = Invoice::where('type', $invoiceRequest->type)->findOrFail($id);
         $validatedData = $this->invoiceItemsService->validateInvoiceItemsRequest();
 
         $invoice->update($invoiceRequest->validated());

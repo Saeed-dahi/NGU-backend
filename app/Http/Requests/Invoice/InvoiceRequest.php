@@ -29,7 +29,8 @@ class InvoiceRequest extends FormRequest
         return [
             'invoice_number' => [
                 'numeric',
-                Rule::unique('invoices', 'invoice_number')->ignore($invoiceId)
+                Rule::unique('invoices')->where(fn($query) => $query->where('type', $this->input('type')))
+                    ->ignore($invoiceId),
             ],
             'type' => ['required', Rule::enum(InvoiceType::class)],
             'date' => 'required|date',
@@ -39,6 +40,7 @@ class InvoiceRequest extends FormRequest
             'currency' => 'string',
             'notes' => 'string',
             'account_id' => 'numeric|exists:accounts,id|required',
+            'goods_account_id' => 'numeric|exists:accounts,id|required',
             'total_tax_account' => 'numeric|exists:accounts,id|required',
             'total_discount_account' => 'numeric|exists:accounts,id|required',
         ];

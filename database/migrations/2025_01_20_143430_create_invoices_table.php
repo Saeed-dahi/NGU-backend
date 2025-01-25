@@ -16,11 +16,9 @@ return new class extends Migration
     {
         Schema::create('invoices', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('invoice_number')->unique();
-            $table->enum('type', [
-                InvoiceType::PURCHASE->value,
-                InvoiceType::SALES->value,
-            ]);
+            $table->bigInteger('invoice_number');
+            $table->unique(['type', 'invoice_number']);
+            $table->enum('type', [InvoiceType::PURCHASE->value, InvoiceType::SALES->value]);
             $table->datetime('date');
             $table->datetime('due_date')->nullable();
             $table->enum('status', [Status::DRAFT->value, Status::SAVED->value]);
@@ -31,12 +29,14 @@ return new class extends Migration
             $table->text('notes')->nullable();
             $table->softDeletes();
 
+            $table->unsignedBigInteger('goods_account_id');
             $table->unsignedBigInteger('account_id'); // Customer, Supplier
             $table->unsignedBigInteger('total_tax_account');
             $table->double('total_tax');
             $table->unsignedBigInteger('total_discount_account');
             $table->double('total_discount');
 
+            $table->foreign('goods_account_id')->references('id')->on('accounts');
             $table->foreign('account_id')->references('id')->on('accounts');
             $table->foreign('total_tax_account')->references('id')->on('accounts');
             $table->foreign('total_discount_account')->references('id')->on('accounts');

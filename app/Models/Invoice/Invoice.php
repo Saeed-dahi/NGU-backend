@@ -22,11 +22,23 @@ class Invoice extends Model
         'total',
         'notes',
         'account_id',
+        'goods_account_id',
         'total_tax_account',
         'total_tax',
         'total_discount_account',
         'total_discount',
     ];
+
+
+    protected static function boot()
+    {
+        parent::boot();
+        static::creating(function ($invoice) {
+            $lastInvoice = Invoice::latest()->firstWhere('type', $invoice->type);
+            $newNumber = $invoice->invoice_number ?? ($lastInvoice ? $lastInvoice->invoice_number + 1 : 1);
+            $invoice->invoice_number = $newNumber;
+        });
+    }
 
     public function items()
     {
