@@ -41,6 +41,15 @@ class InvoiceService
             'document_number' => $invoice->number,
         ];
 
+        // Goods Account
+        $transactions[] = [
+            'account_id' => $invoice->goods_account_id,
+            'type' => AccountNature::CREDIT,
+            'amount' => $invoice->total,
+            'description' => 'Sales Revenue',
+            'document_number' => $invoice->number,
+        ];
+
         // Add tax and discount transactions
         $taxAndDiscountTransactions = $this->prepareTaxAndDiscountTransactions($invoice);
         $transactions = array_merge($transactions, $taxAndDiscountTransactions);
@@ -58,6 +67,15 @@ class InvoiceService
             'type' => AccountNature::DEBIT,
             'amount' => $invoice->total,
             'description' => 'Purchases',
+            'document_number' => $invoice->number,
+        ];
+
+        // Goods Account
+        $transactions[] = [
+            'account_id' => $invoice->goods_account_id,
+            'type' => AccountNature::DEBIT,
+            'amount' => $invoice->total,
+            'description' => 'Sales Revenue',
             'document_number' => $invoice->number,
         ];
 
