@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Invoice;
 
+use App\Http\Resources\Account\AccountResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -14,6 +15,7 @@ class InvoiceResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        $customAccountFields = ['id', 'code', 'ar_name', 'en_name'];
         return [
             'id' => $this->id,
             'invoice_number' => $this->invoice_number,
@@ -26,10 +28,11 @@ class InvoiceResource extends JsonResource
             'sub_total' => $this->sub_total,
             'total' => $this->total,
             'notes' => $this->notes,
-            'account_id' => $this->account_id,
-            'total_tax_account' => $this->total_tax_account,
+            'account' => new AccountResource($this->account, $customAccountFields),
+            'goods_account' => new AccountResource($this->goodsAccount, $customAccountFields),
+            'tax_account' => new AccountResource($this->taxAccount, $customAccountFields),
             'total_tax' => $this->total_tax,
-            'total_discount_account' => $this->total_discount_account,
+            'discount_account' => new AccountResource($this->discountAccount, $customAccountFields),
             'total_discount' => $this->total_discount,
             'items' => InvoiceItemsResource::collection($this->items),
         ];

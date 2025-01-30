@@ -9,6 +9,13 @@ use Illuminate\Http\Resources\Json\JsonResource;
 class AccountResource extends JsonResource
 {
     use SharedFunctions;
+    private $fields;
+
+    public function __construct($resource, $fields = null)
+    {
+        parent::__construct($resource);
+        $this->fields = $fields;
+    }
     /**
      * Transform the resource into an array.
      *
@@ -16,9 +23,7 @@ class AccountResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-
-
-        return [
+        $data = [
             'id' => $this->id,
             'code' => $this->code,
             'ar_name' => $this->ar_name,
@@ -35,5 +40,7 @@ class AccountResource extends JsonResource
             'created_at' => $this->customDateFormat($this->created_at),
             'updated_at' => $this->customDateFormat($this->updated_at),
         ];
+
+        return $this->fields ? array_intersect_key($data, array_flip($this->fields)) : $data;
     }
 }

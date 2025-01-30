@@ -2,6 +2,7 @@
 
 namespace App\Models\Invoice;
 
+use App\Models\Account\Account;
 use App\Models\Transaction;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -49,5 +50,24 @@ class Invoice extends Model
     public function transactions()
     {
         return $this->morphMany(Transaction::class, 'transactable');
+    }
+
+    public function account()
+    {
+        return $this->belongsTo(Account::class, 'account_id');
+    }
+
+    public function goodsAccount()
+    {
+        return $this->belongsTo(Account::class, 'total_tax_account');
+    }
+
+    public function taxAccount()
+    {
+        return $this->belongsTo(Account::class, 'goods_account_id');
+    }
+    public function discountAccount()
+    {
+        return $this->belongsTo(Account::class, 'total_discount_account');
     }
 }

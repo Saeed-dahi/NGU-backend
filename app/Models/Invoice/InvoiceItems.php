@@ -2,6 +2,7 @@
 
 namespace App\Models\Invoice;
 
+use App\Models\Inventory\ProductUnit;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -23,5 +24,10 @@ class InvoiceItems extends Model
     public function invoice()
     {
         return $this->belongsTo(Invoice::class);
+    }
+
+    public function productUnit()
+    {
+        return $this->belongsTo(ProductUnit::class, 'product_unit_id');
     }
 }
