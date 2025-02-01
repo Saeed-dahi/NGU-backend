@@ -30,8 +30,7 @@ class AccountController extends Controller
     public function index()
     {
         $accounts = Account::whereNull('parent_id')->get();
-
-        return $this->success(AccountResource::collection($accounts));
+        return $this->success($accounts->map(fn($account) => AccountResource::make($account)));
     }
 
     /**
@@ -54,6 +53,7 @@ class AccountController extends Controller
      */
     public function show($id, Request $request)
     {
+
         $account = $id == 1 ? Account::first() : Account::find($id);
         $account = $this->navigateRecord($account, $request, 'code');
 

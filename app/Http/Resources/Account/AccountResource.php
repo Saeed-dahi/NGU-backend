@@ -34,13 +34,13 @@ class AccountResource extends JsonResource
             'balance' => $this->calculateBalance(),
             'closing_account_id' => $this->ClosingAccount->id,
             // 'account_information' => AccountInformationResource::make($this->AccountInformation),
-            'sub_accounts' => AccountResource::collection($this->subAccounts),
+            'sub_accounts' => $this->subAccounts->map(fn($account) => AccountResource::make($account)),
             // 'parent' => AccountResource::make($this->parentAccount),
             'parent_id' => $this->parentAccount->id ?? null,
             'created_at' => $this->customDateFormat($this->created_at),
             'updated_at' => $this->customDateFormat($this->updated_at),
         ];
-
-        return $this->fields ? array_intersect_key($data, array_flip($this->fields)) : $data;
+        return $data;
+        // return $this->fields ? array_intersect_key($data, array_flip($this->fields)) : $data;
     }
 }
