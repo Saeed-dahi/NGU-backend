@@ -40,7 +40,7 @@ class AccountResource extends JsonResource
             'created_at' => $this->customDateFormat($this->created_at),
             'updated_at' => $this->customDateFormat($this->updated_at),
         ];
-        return $data;
-        // return $this->fields ? array_intersect_key($data, array_flip($this->fields)) : $data;
+
+        return $this->fields ? array_intersect_key($data, array_flip($this->fields)) : $data;
     }
 }

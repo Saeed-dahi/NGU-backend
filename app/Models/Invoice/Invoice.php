@@ -59,12 +59,12 @@ class Invoice extends Model
 
     public function goodsAccount()
     {
-        return $this->belongsTo(Account::class, 'total_tax_account');
+        return $this->belongsTo(Account::class, 'goods_account_id');
     }
 
     public function taxAccount()
     {
-        return $this->belongsTo(Account::class, 'goods_account_id');
+        return $this->belongsTo(Account::class, 'total_tax_account');
     }
     public function discountAccount()
     {
