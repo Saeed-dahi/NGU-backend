@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\invoice;
 
-use App\Enum\Invoice\InvoiceType;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Invoice\InvoiceRequest;
 use App\Http\Resources\Invoice\InvoiceResource;
@@ -65,8 +64,14 @@ class InvoiceController extends Controller
      */
     public function show($id, Request $request)
     {
-        $invoice = $id == 1 ? Invoice::first() : Invoice::find($id);
-        $invoice = $this->navigateRecord($invoice, $request);
+        $request->validate(['type' => 'required']);
+
+        $invoicesQuery = Invoice::where('type', $request->type);
+        $invoices = $invoicesQuery->get();
+
+        $invoice = $id == 1 ? $invoices->first() : $invoices->where('id', $id)->first() ?? abort(404);
+        $invoice = $this->invoiceService->customInvoiceNavigateRecord($invoicesQuery, $invoice, $request);
+
         return $this->success(InvoiceResource::make($invoice));
     }
 

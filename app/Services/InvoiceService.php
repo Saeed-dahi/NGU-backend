@@ -4,6 +4,8 @@ namespace App\Services;
 
 use App\Enum\Account\AccountNature;
 use App\Enum\Invoice\InvoiceType;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Request;
 
 class InvoiceService
 {
@@ -113,5 +115,29 @@ class InvoiceService
         }
 
         return $transactions;
+    }
+
+
+    public function customInvoiceNavigateRecord($invoices, Model $model, Request $request, $column = 'id')
+    {
+        $direction = $request->input('direction');
+
+        switch ($direction) {
+            case 'next':
+                $record = $invoices->where($column, '>', $model->$column)->first() ?? $invoices->first();
+                break;
+            case 'previous':
+                $record = $invoices->where($column, '<', $model->$column)->latest($column)->first() ?? $invoices->latest($column)->first();
+                break;
+            case 'first':
+                $record = $invoices->first();
+                break;
+            case 'last':
+                $record = $invoices->latest($column)->first();
+                break;
+        }
+
+
+        return $record ?? $model;
     }
 }
