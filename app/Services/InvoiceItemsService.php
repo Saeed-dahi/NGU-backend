@@ -27,7 +27,6 @@ class InvoiceItemsService
             'items.*.tax_amount' => '',
             'items.*.discount_amount' => '',
         ]);
-
         return $validatedData;
     }
 

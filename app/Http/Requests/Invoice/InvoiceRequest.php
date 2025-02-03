@@ -18,6 +18,13 @@ class InvoiceRequest extends FormRequest
         return true;
     }
 
+    protected function prepareForValidation()
+    {
+        if ($this->has('invoice')) {
+            $this->merge($this->input('invoice'));
+        }
+    }
+
     /**
      * Get the validation rules that apply to the request.
      *
@@ -34,11 +41,11 @@ class InvoiceRequest extends FormRequest
             ],
             'type' => ['required', Rule::enum(InvoiceType::class)],
             'date' => 'required|date',
-            'due_date' => 'date',
+            'due_date' => 'date|nullable',
             'status' => ['required', Rule::enum(Status::class)],
             'invoice_nature' => [Rule::enum(AccountNature::class)],
-            'currency' => 'string',
-            'notes' => 'string',
+            'currency' => 'string|nullable',
+            'notes' => 'string|nullable',
             'account_id' => 'numeric|exists:accounts,id|required',
             'goods_account_id' => 'numeric|exists:accounts,id|required',
             'total_tax_account' => 'numeric|exists:accounts,id|required',
