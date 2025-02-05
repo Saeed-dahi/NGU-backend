@@ -35,7 +35,7 @@ class InvoiceController extends Controller
      */
     public function index(Request $request)
     {
-        $invoices = Invoice::where('type', 'sales')->get();
+        $invoices = Invoice::where('type', $request->type)->get();
 
         return $this->success($invoices->map(fn($invoice) =>
         InvoiceResource::make($invoice, [
@@ -50,7 +50,7 @@ class InvoiceController extends Controller
             'sub_total',
             'total',
             'notes',
-            'account_id',
+            'account',
         ])));
     }
 

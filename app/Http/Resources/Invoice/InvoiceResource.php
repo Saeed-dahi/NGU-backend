@@ -3,11 +3,13 @@
 namespace App\Http\Resources\Invoice;
 
 use App\Http\Resources\Account\AccountResource;
+use App\Http\Traits\SharedFunctions;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class InvoiceResource extends JsonResource
 {
+    use SharedFunctions;
     private $fields;
 
     public function __construct($resource, $fields = null)
@@ -30,8 +32,8 @@ class InvoiceResource extends JsonResource
             'id' => $this->id,
             'invoice_number' => $this->invoice_number,
             'type' => $this->type,
-            'date' => $this->date,
-            'due_date' => $this->due_date,
+            'date' => $this->customDateFormat($this->date, 'Y-m-d'),
+            'due_date' => $this->customDateFormat($this->due_date, 'Y-m-d'),
             'status' => $this->status,
             'invoice_nature' => $this->invoice_nature,
             'currency' => $this->currency,

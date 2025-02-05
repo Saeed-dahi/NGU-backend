@@ -48,7 +48,7 @@ trait SharedFunctions
      */
     public function customDateFormat($date, $format = 'Y-m-d h:m')
     {
-        return $date->format($format);
+        return Carbon::parse($date)->format($format);
     }
 
     public function addNowTimeToDate($date)
