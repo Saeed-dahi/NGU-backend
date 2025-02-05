@@ -49,7 +49,7 @@ Route::prefix('v1')->group(function () {
             Route::apiResource('product-unit', ProductUnitController::class)->only(['store', 'update']);
 
 
-            Route::apiResource('invoice', InvoiceController::class)->only(['store', 'update', 'show']);
+            Route::apiResource('invoice', InvoiceController::class)->only(['store', 'update', 'show', 'index']);
         });
 
         Route::apiResource('journal', JournalController::class);

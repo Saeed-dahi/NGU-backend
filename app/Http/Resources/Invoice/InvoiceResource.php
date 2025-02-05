@@ -8,6 +8,16 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class InvoiceResource extends JsonResource
 {
+    private $fields;
+
+    public function __construct($resource, $fields = null)
+    {
+        // Call the parent constructor
+        parent::__construct($resource);
+
+        // Store the additional parameter
+        $this->fields = $fields;
+    }
     /**
      * Transform the resource into an array.
      *
@@ -16,7 +26,7 @@ class InvoiceResource extends JsonResource
     public function toArray(Request $request): array
     {
         $customAccountFields = ['id', 'code', 'ar_name', 'en_name'];
-        return [
+        $data = [
             'id' => $this->id,
             'invoice_number' => $this->invoice_number,
             'type' => $this->type,
@@ -36,5 +46,7 @@ class InvoiceResource extends JsonResource
             'total_discount' => $this->total_discount,
             'items' => InvoiceItemsResource::collection($this->items),
         ];
+
+        return $this->fields ? array_intersect_key($data, array_flip($this->fields)) : $data;
     }
 }

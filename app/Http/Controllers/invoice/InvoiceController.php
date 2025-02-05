@@ -33,7 +33,26 @@ class InvoiceController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index() {}
+    public function index(Request $request)
+    {
+        $invoices = Invoice::where('type', 'sales')->get();
+
+        return $this->success($invoices->map(fn($invoice) =>
+        InvoiceResource::make($invoice, [
+            'id',
+            'invoice_number',
+            'type',
+            'date',
+            'due_date',
+            'status',
+            'invoice_nature',
+            'currency',
+            'sub_total',
+            'total',
+            'notes',
+            'account_id',
+        ])));
+    }
 
     /**
      * Show the form for creating a new resource.
