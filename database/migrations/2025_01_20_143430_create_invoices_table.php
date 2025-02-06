@@ -22,7 +22,7 @@ return new class extends Migration
             $table->datetime('date');
             $table->datetime('due_date')->nullable();
             $table->enum('status', [Status::DRAFT->value, Status::SAVED->value]);
-            $table->enum('invoice_nature', [AccountNature::CREDIT->value, AccountNature::DEBIT->value]);
+            $table->enum('invoice_nature', [AccountNature::CREDIT->value, AccountNature::DEBIT->value])->nullable();
             $table->string('currency')->default('AED');
             $table->double('sub_total')->default(0);
             $table->double('total')->default(0);

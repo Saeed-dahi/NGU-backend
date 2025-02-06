@@ -43,7 +43,7 @@ class InvoiceRequest extends FormRequest
             'date' => 'required|date',
             'due_date' => 'date|nullable',
             'status' => ['required', Rule::enum(Status::class)],
-            'invoice_nature' => [Rule::enum(AccountNature::class)],
+            'invoice_nature' => [Rule::enum(AccountNature::class), 'nullable'],
             'currency' => 'string|nullable',
             'notes' => 'string|nullable',
             'account_id' => 'numeric|exists:accounts,id|required',
