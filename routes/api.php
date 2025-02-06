@@ -48,7 +48,7 @@ Route::prefix('v1')->group(function () {
             Route::post('product/{product}', [ProductController::class, 'update']);
             Route::apiResource('product-unit', ProductUnitController::class)->only(['store', 'update']);
 
-
+            Route::get('invoice/create', [InvoiceController::class, 'create']);
             Route::apiResource('invoice', InvoiceController::class)->only(['store', 'update', 'show', 'index']);
         });
 

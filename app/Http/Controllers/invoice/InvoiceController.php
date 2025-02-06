@@ -57,7 +57,17 @@ class InvoiceController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create() {}
+    public function create(Request $request)
+    {
+        $lastInvoice = Invoice::where('type', $request->type)->latest('id')->first();
+        if ($lastInvoice) {
+            return $this->success(InvoiceResource::make(
+                $lastInvoice,
+                ['invoice_number', 'type', 'account', 'goods_account', 'tax_account', 'total_tax', 'discount_account', 'total_discount']
+            ));
+        }
+        return $this->success([]);
+    }
 
     /**
      * Store a newly created resource in storage.
