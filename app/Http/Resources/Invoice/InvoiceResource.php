@@ -51,6 +51,7 @@ class InvoiceResource extends JsonResource
             'due_date' => $this->customDateFormat($this->due_date, 'Y-m-d'),
             'status' => $this->status,
             'invoice_nature' => $this->invoice_nature,
+            'address' => $this->address,
             'currency' => $this->currency,
             'sub_total' => $this->sub_total,
             'total' => $this->total,

@@ -18,6 +18,7 @@ class Invoice extends Model
         'due_date',
         'status',
         'invoice_nature',
+        'address',
         'currency',
         'sub_total',
         'total',
