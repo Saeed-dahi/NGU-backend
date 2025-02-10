@@ -20,6 +20,21 @@ class InvoiceResource extends JsonResource
         // Store the additional parameter
         $this->fields = $fields;
     }
+
+    function getCustomAccountResource($account)
+    {
+        $customAccountFields = ['id', 'code', 'ar_name', 'en_name'];
+        $customAccountResource = new AccountResource($account, $customAccountFields);
+
+        $transaction = $account->transactions()->where('transactable_id', $this->id)->first();
+        if ($transaction) {
+            $additionalResource = [
+                'description' => $transaction->description,
+            ];
+            return array_merge($customAccountResource->toArray(request()), $additionalResource);
+        }
+        return $customAccountResource;
+    }
     /**
      * Transform the resource into an array.
      *
@@ -27,7 +42,7 @@ class InvoiceResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        $customAccountFields = ['id', 'code', 'ar_name', 'en_name'];
+
         $data = [
             'id' => $this->id,
             'invoice_number' => $this->invoice_number,
@@ -40,11 +55,11 @@ class InvoiceResource extends JsonResource
             'sub_total' => $this->sub_total,
             'total' => $this->total,
             'notes' => $this->notes,
-            'account' => new AccountResource($this->account, $customAccountFields),
-            'goods_account' => new AccountResource($this->goodsAccount, $customAccountFields),
-            'tax_account' => new AccountResource($this->taxAccount, $customAccountFields),
+            'account' => $this->getCustomAccountResource($this->account),
+            'goods_account' => $this->getCustomAccountResource($this->goodsAccount),
+            'tax_account' => $this->getCustomAccountResource($this->taxAccount),
             'total_tax' => $this->total_tax,
-            'discount_account' => new AccountResource($this->discountAccount, $customAccountFields),
+            'discount_account' => $this->getCustomAccountResource($this->discountAccount),
             'total_discount' => $this->total_discount,
             'items' => InvoiceItemsResource::collection($this->items),
         ];

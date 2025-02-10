@@ -39,8 +39,8 @@ class InvoiceService
             'account_id' => $invoice->account_id,
             'type' => AccountNature::CREDIT,
             'amount' => $invoice->total,
-            'description' => 'Sales Revenue',
-            'document_number' => $invoice->number,
+            'description' => 'sales',
+            'document_number' => $invoice->invoice_number,
         ];
 
         // Goods Account
@@ -48,8 +48,8 @@ class InvoiceService
             'account_id' => $invoice->goods_account_id,
             'type' => AccountNature::CREDIT,
             'amount' => $invoice->total,
-            'description' => 'Sales Revenue',
-            'document_number' => $invoice->number,
+            'description' => request()->goods_account_description ?? 'sales',
+            'document_number' => $invoice->invoice_number,
         ];
 
         // Add tax and discount transactions
@@ -68,8 +68,8 @@ class InvoiceService
             'account_id' => $invoice->account_id,
             'type' => AccountNature::DEBIT,
             'amount' => $invoice->total,
-            'description' => 'Purchases',
-            'document_number' => $invoice->number,
+            'description' => 'purchase',
+            'document_number' => $invoice->invoice_number,
         ];
 
         // Goods Account
@@ -77,8 +77,8 @@ class InvoiceService
             'account_id' => $invoice->goods_account_id,
             'type' => AccountNature::DEBIT,
             'amount' => $invoice->total,
-            'description' => 'Sales Revenue',
-            'document_number' => $invoice->number,
+            'description' => request()->goods_account_description  ?? 'purchase',
+            'document_number' => $invoice->invoice_number,
         ];
 
         // Add tax and discount transactions
@@ -98,8 +98,8 @@ class InvoiceService
                 'account_id' => $invoice->total_tax_account,
                 'type' => AccountNature::DEBIT,
                 'amount' => $invoice->sub_total * ($invoice->total_tax / 100), // Assuming tax is a percentage
-                'description' => 'Sales Tax',
-                'document_number' => $invoice->number,
+                'description' => request()->tax_account_description ?? $invoice->type,
+                'document_number' => $invoice->invoice_number,
             ];
         }
 
@@ -109,8 +109,8 @@ class InvoiceService
                 'account_id' => $invoice->total_discount_account,
                 'type' => AccountNature::CREDIT,
                 'amount' => $invoice->sub_total * ($invoice->total_discount / 100), // Assuming discount is a percentage
-                'description' => 'Sales Discount',
-                'document_number' => $invoice->number,
+                'description' => request()->discount_account_description ?? $invoice->type,
+                'document_number' => $invoice->invoice_number,
             ];
         }
 
