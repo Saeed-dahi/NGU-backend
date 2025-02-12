@@ -40,6 +40,7 @@ class InvoiceItemsService
         $invoiceSubTotal = 0;
         foreach ($validatedData as $key => $entry) {
             $entry['total'] = $entry['price'] * $entry['quantity'];
+            $entry['tax_amount'] = ($entry['total'] * $invoice->total_tax) / 100;
             $invoice->items()->create($entry);
 
             $invoiceSubTotal += $entry['total'];
