@@ -60,14 +60,18 @@ class InvoiceController extends Controller
     public function create(Request $request)
     {
         $lastInvoice = Invoice::where('type', $request->type)->latest('id')->first();
-        $lastInvoice->invoice_number++;
+
         if ($lastInvoice) {
+            $lastInvoice->invoice_number++;
             return $this->success(InvoiceResource::make(
                 $lastInvoice,
                 ['invoice_number', 'type', 'account', 'goods_account', 'tax_account', 'total_tax', 'discount_account', 'total_discount']
             ));
         }
-        return $this->success([]);
+        return $this->success(new Invoice([
+            'invoice_number' => 1,
+            'type' => $request->type
+        ]));
     }
 
     /**
