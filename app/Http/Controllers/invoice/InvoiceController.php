@@ -103,7 +103,8 @@ class InvoiceController extends Controller
         $invoicesQuery = Invoice::where('type', $request->type);
         $invoices = $invoicesQuery->get();
 
-        $invoice = $id == 1 ? $invoices->first() : $invoices->where('id', $id)->first() ?? abort(404);
+        $invoice = $id == 1 ? $invoices->first() : $invoices->where('id', $id)->first();
+        if (!$invoice) abort(404);
         $invoice = $this->invoiceService->customInvoiceNavigateRecord($invoicesQuery, $invoice, $request);
 
         return $this->success(InvoiceResource::make($invoice));

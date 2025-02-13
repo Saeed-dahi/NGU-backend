@@ -18,13 +18,19 @@ class UnitController extends Controller
      */
     public function index(Request $request)
     {
+        info($request);
         $productId = $request->product_id;
+        $showProductUnits = $request->show_product_units;
         $units = Unit::all();
         // to get only specific units depend on product Ids
         if ($productId) {
             $product = Product::find($productId);
             $productUnitsIds = $product->productUnits()->pluck('unit_id');
-            $units = $units->whereNotIn('id', $productUnitsIds);
+            if ($showProductUnits == 'true') {
+                $units = $units->whereIn('id', $productUnitsIds);
+            } else {
+                $units = $units->whereNotIn('id', $productUnitsIds);
+            }
         }
 
         return $this->success(UnitResource::collection($units));

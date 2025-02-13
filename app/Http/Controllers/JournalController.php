@@ -48,7 +48,7 @@ class JournalController extends Controller
      */
     public function show($id, Request $request)
     {
-        $journal = $id == 1 ? Journal::first() : Journal::find($id);
+        $journal = $id == 1 ? Journal::firstOrFail() : Journal::findOrFail($id);
         $journal = $this->navigateRecord($journal, $request);
         return $this->success(JournalResource::make($journal));
     }
