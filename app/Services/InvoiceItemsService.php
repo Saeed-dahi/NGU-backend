@@ -71,12 +71,13 @@ class InvoiceItemsService
      * @param Query,ProductUnitId,AccountId
      * @return InvoiceItem
      */
-    function invoiceItemPreview(string $query, int $productUnitId, int $accountId)
+    function invoiceItemPreview(string $query,  $productUnitId,  $accountId)
     {
         $product = Product::where('code', $query)->orWhere('ar_name', $query)->orWhere('en_name', $query)->firstOrFail();
 
-        $productUnit = $productUnitId ? $product->productUnits()->find($productUnitId) : $product->productUnits()->first();
+        $productUnit = $productUnitId ? $product->productUnits()->where('unit_id', $productUnitId)->first() : $product->productUnits()->first();
         $price =  $this->getInvoiceItemPricePerAccount($accountId, $productUnit);
+
 
         $data = [
             'id' => $product->id,
@@ -84,10 +85,11 @@ class InvoiceItemsService
             'en_name' => $product->en_name,
             'code' => $product->code,
             'unit' => [
-                'id' => $productUnit->unit->id,
+                'id' => $productUnit->id,
                 'ar_name' => $productUnit->unit->ar_name,
                 'en_name' => $productUnit->unit->en_name,
-                'price' => $price
+                'unit_id' => $productUnit->unit->id,
+                'price' => $price,
             ]
         ];
         return $data;
@@ -97,7 +99,7 @@ class InvoiceItemsService
      * @param AccountId,ProductUnit
      * @return Price
      */
-    function getInvoiceItemPricePerAccount(int $accountId, ProductUnit $productUnit)
+    function getInvoiceItemPricePerAccount($accountId, ProductUnit $productUnit)
     {
         return InvoiceItems::whereHas('invoice', function ($query) use ($accountId) {
             $query->where('account_id', $accountId);

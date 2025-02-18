@@ -3,11 +3,7 @@
 namespace App\Http\Controllers\invoice;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\Inventory\ProductResource;
 use App\Http\Traits\ApiResponser;
-use App\Models\Inventory\Product;
-use App\Models\Invoice\Invoice;
-use App\Models\Invoice\InvoiceItems;
 use App\Services\InvoiceItemsService;
 use Illuminate\Http\Request;
 
@@ -25,10 +21,11 @@ class InvoiceItemsController extends Controller
     {
         $request->validate([
             'query' => 'required|string',
-            'account_id' => 'required|integer|exists:accounts,id',
+            'account_id' => 'nullable|exists:accounts,id',
             'product_unit_id' => 'nullable|integer|exists:product_units,id'
         ]);
 
+        info($request);
         $query = $request->input('query');
         $accountId = $request->input('account_id');
         $productUnitId = $request->input('product_unit_id');
