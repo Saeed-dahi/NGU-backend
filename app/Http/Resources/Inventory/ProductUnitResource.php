@@ -19,8 +19,8 @@ class ProductUnitResource extends JsonResource
         return [
             'id' => $this->id,
             'product_id' => $this->product_id,
-            'name' => $this->unit->{app()->getLocale() . '_name'},
             'unit_id' => $this->unit_id,
+            'name' => $this->unit->{app()->getLocale() . '_name'},
             'sub_unit' => ProductUnitResource::make($this->subUnit),
             'conversion_factor' => $this->conversion_factor,
             'export_price' => $this->export_price,

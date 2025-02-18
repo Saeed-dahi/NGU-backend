@@ -3,64 +3,38 @@
 namespace App\Http\Controllers\invoice;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\Inventory\ProductResource;
+use App\Http\Traits\ApiResponser;
+use App\Models\Inventory\Product;
+use App\Models\Invoice\Invoice;
 use App\Models\Invoice\InvoiceItems;
+use App\Services\InvoiceItemsService;
 use Illuminate\Http\Request;
 
 class InvoiceItemsController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    use ApiResponser;
+    private $invoiceItemService;
+
+    public function __construct(InvoiceItemsService $invoiceItemService)
     {
-        //
+        $this->invoiceItemService = $invoiceItemService;
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function invoiceItemPreview(Request $request)
     {
-        //
-    }
+        $request->validate([
+            'query' => 'required|string',
+            'account_id' => 'required|integer|exists:accounts,id',
+            'product_unit_id' => 'nullable|integer|exists:product_units,id'
+        ]);
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+        $query = $request->input('query');
+        $accountId = $request->input('account_id');
+        $productUnitId = $request->input('product_unit_id');
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(InvoiceItems $invoiceItems)
-    {
-        //
-    }
+        $data = $this->invoiceItemService->invoiceItemPreview($query, $productUnitId, $accountId);
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(InvoiceItems $invoiceItems)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, InvoiceItems $invoiceItems)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(InvoiceItems $invoiceItems)
-    {
-        //
+        return $this->success($data);
     }
 }

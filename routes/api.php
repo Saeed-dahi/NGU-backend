@@ -9,6 +9,7 @@ use App\Http\Controllers\Inventory\ProductUnitController;
 use App\Http\Controllers\Inventory\StoreController;
 use App\Http\Controllers\Inventory\UnitController;
 use App\Http\Controllers\invoice\InvoiceController;
+use App\Http\Controllers\invoice\InvoiceItemsController;
 use App\Http\Controllers\JournalController;
 use App\Http\Controllers\LoginController;
 
@@ -50,6 +51,7 @@ Route::prefix('v1')->group(function () {
 
             Route::get('invoice/create', [InvoiceController::class, 'create']);
             Route::apiResource('invoice', InvoiceController::class)->only(['store', 'update', 'show', 'index']);
+            Route::get('get-invoice-item-data', [InvoiceItemsController::class, 'invoiceItemPreview']);
         });
 
         Route::apiResource('journal', JournalController::class);

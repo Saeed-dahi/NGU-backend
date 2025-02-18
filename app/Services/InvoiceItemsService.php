@@ -4,6 +4,8 @@ namespace App\Services;
 
 use App\Http\Traits\ApiResponser;
 use App\Http\Traits\SharedFunctions;
+use App\Models\Inventory\Product;
+use App\Models\Inventory\ProductUnit;
 use App\Models\Invoice\Invoice;
 use App\Models\Invoice\InvoiceItems;
 
@@ -61,5 +63,45 @@ class InvoiceItemsService
         foreach ($invoice->items as $key => $item) {
             $item->delete();
         }
+    }
+
+
+    /**
+     * Get Invoice Item Data when add new on to the invoice
+     * @param Query,ProductUnitId,AccountId
+     * @return InvoiceItem
+     */
+    function invoiceItemPreview(string $query, int $productUnitId, int $accountId)
+    {
+        $product = Product::where('code', $query)->orWhere('ar_name', $query)->orWhere('en_name', $query)->firstOrFail();
+
+        $productUnit = $productUnitId ? $product->productUnits()->find($productUnitId) : $product->productUnits()->first();
+        $price =  $this->getInvoiceItemPricePerAccount($accountId, $productUnit);
+
+        $data = [
+            'id' => $product->id,
+            'ar_name' => $product->ar_name,
+            'en_name' => $product->en_name,
+            'code' => $product->code,
+            'unit' => [
+                'id' => $productUnit->unit->id,
+                'ar_name' => $productUnit->unit->ar_name,
+                'en_name' => $productUnit->unit->en_name,
+                'price' => $price
+            ]
+        ];
+        return $data;
+    }
+
+    /**
+     * @param AccountId,ProductUnit
+     * @return Price
+     */
+    function getInvoiceItemPricePerAccount(int $accountId, ProductUnit $productUnit)
+    {
+        return InvoiceItems::whereHas('invoice', function ($query) use ($accountId) {
+            $query->where('account_id', $accountId);
+        })->where('product_unit_id', $productUnit->id)->latest('id')
+            ->value('price') ?? $productUnit->end_price;
     }
 }
