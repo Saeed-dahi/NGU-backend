@@ -84,7 +84,7 @@ class InvoiceItemsService
             'ar_name' => $product->ar_name,
             'en_name' => $product->en_name,
             'code' => $product->code,
-            'unit' => [
+            'product_unit' => [
                 'id' => $productUnit->id,
                 'ar_name' => $productUnit->unit->ar_name,
                 'en_name' => $productUnit->unit->en_name,

@@ -18,7 +18,6 @@ class UnitController extends Controller
      */
     public function index(Request $request)
     {
-        info($request);
         $productId = $request->product_id;
         $showProductUnits = $request->show_product_units;
         $units = Unit::all();
