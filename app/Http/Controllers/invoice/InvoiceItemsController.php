@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\invoice;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Invoice\PreviewInvoiceItemRequest;
+use App\Http\Resources\Invoice\PreviewInvoiceItemResource;
 use App\Http\Traits\ApiResponser;
 use App\Services\InvoiceItemsService;
 use Illuminate\Http\Request;
@@ -17,19 +19,10 @@ class InvoiceItemsController extends Controller
         $this->invoiceItemService = $invoiceItemService;
     }
 
-    public function invoiceItemPreview(Request $request)
+    public function invoiceItemPreview(PreviewInvoiceItemRequest $previewInvoiceItemRequest)
     {
-        $request->validate([
-            'query' => 'required|string',
-            'account_id' => 'nullable|exists:accounts,id',
-            'product_unit_id' => 'nullable|integer|exists:product_units,id'
-        ]);
-
-        $query = $request->input('query');
-        $accountId = $request->input('account_id');
-        $productUnitId = $request->input('product_unit_id');
-
-        $data = $this->invoiceItemService->invoiceItemPreview($query, $productUnitId, $accountId);
+        info($previewInvoiceItemRequest);
+        $data = $this->invoiceItemService->invoiceItemPreview($previewInvoiceItemRequest);
 
         return $this->success($data);
     }

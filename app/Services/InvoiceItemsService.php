@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Http\Requests\Invoice\PreviewInvoiceItemRequest;
 use App\Http\Traits\ApiResponser;
 use App\Http\Traits\SharedFunctions;
 use App\Models\Inventory\Product;
@@ -71,12 +72,15 @@ class InvoiceItemsService
      * @param Query,ProductUnitId,AccountId
      * @return InvoiceItem
      */
-    function invoiceItemPreview(string $query,  $productUnitId,  $accountId)
+    function invoiceItemPreview(PreviewInvoiceItemRequest $request)
     {
+        $query = $request['query'];
+        $productUnitId = $request['product_unit_id'];
+
         $product = Product::where('code', $query)->orWhere('ar_name', $query)->orWhere('en_name', $query)->firstOrFail();
 
         $productUnit = $productUnitId ? $product->productUnits()->where('unit_id', $productUnitId)->first() : $product->productUnits()->first();
-        $price =  $this->getInvoiceItemPricePerAccount($accountId, $productUnit);
+        $price = $request['price'] ?? $this->getInvoiceItemPricePerAccount($request['account_id'], $productUnit);
 
 
         $data = [
@@ -90,6 +94,9 @@ class InvoiceItemsService
                 'en_name' => $productUnit->unit->en_name,
                 'unit_id' => $productUnit->unit->id,
                 'price' => $price,
+                'tax_amount' => ($price * 5) / 100,
+                'sub_total' => $price * $request['quantity'],
+                'total' => $this->calculateTax($price * $request['quantity'], 5),
             ]
         ];
         return $data;
