@@ -21,7 +21,6 @@ class InvoiceItemsController extends Controller
 
     public function invoiceItemPreview(PreviewInvoiceItemRequest $previewInvoiceItemRequest)
     {
-        info($previewInvoiceItemRequest);
         $data = $this->invoiceItemService->invoiceItemPreview($previewInvoiceItemRequest);
 
         return $this->success($data);

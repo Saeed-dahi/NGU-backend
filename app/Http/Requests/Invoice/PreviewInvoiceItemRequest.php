@@ -26,7 +26,8 @@ class PreviewInvoiceItemRequest extends FormRequest
             'account_id' => 'nullable|exists:accounts,id',
             'product_unit_id' => 'nullable|integer|exists:product_units,id',
             'price' => 'nullable|numeric',
-            'quantity' => 'nullable|numeric'
+            'quantity' => 'nullable|numeric',
+            'change_unit' => 'nullable'
         ];
     }
 }

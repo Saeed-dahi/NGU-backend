@@ -76,12 +76,13 @@ class InvoiceItemsService
     {
         $query = $request['query'];
         $productUnitId = $request['product_unit_id'];
+        $quantity = $request['quantity'] ?? 1;
 
         $product = Product::where('code', $query)->orWhere('ar_name', $query)->orWhere('en_name', $query)->firstOrFail();
 
-        $productUnit = $productUnitId ? $product->productUnits()->where('unit_id', $productUnitId)->first() : $product->productUnits()->first();
-        $price = $request['price'] ?? $this->getInvoiceItemPricePerAccount($request['account_id'], $productUnit);
-
+        $productUnit = $this->selectProductUnit($productUnitId, $product, $request['change_unit']);
+        $lastPrice = $this->getInvoiceItemPricePerAccount($request['account_id'], $productUnit);
+        $price = $request['change_unit'] ? $lastPrice : $request['price'] ?? $lastPrice;
 
         $data = [
             'id' => $product->id,
@@ -95,10 +96,11 @@ class InvoiceItemsService
                 'unit_id' => $productUnit->unit->id,
                 'price' => $price,
                 'tax_amount' => ($price * 5) / 100,
-                'sub_total' => $price * $request['quantity'],
-                'total' => $this->calculateTax($price * $request['quantity'], 5),
+                'sub_total' => $price * $quantity,
+                'total' => $this->calculateTax($price * $quantity, 5),
             ]
         ];
+
         return $data;
     }
 
@@ -112,5 +114,17 @@ class InvoiceItemsService
             $query->where('account_id', $accountId);
         })->where('product_unit_id', $productUnit->id)->latest('id')
             ->value('price') ?? $productUnit->end_price;
+    }
+
+    function selectProductUnit($productUnitId, $product, $changeUnit)
+    {
+        $productUnit = $productUnitId ? $product->productUnits()->where('unit_id', $productUnitId)->first() : $product->productUnits()->first();
+
+        if ($changeUnit) {
+            $productUnit = $product->productUnits()->where('id', '>', $productUnit->id)->first() ??
+                $product->productUnits()->where('id', '<', $productUnit->id)->latest('id')->first();
+        }
+
+        return $productUnit;
     }
 }
