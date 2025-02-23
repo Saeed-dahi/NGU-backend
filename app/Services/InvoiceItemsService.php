@@ -118,7 +118,7 @@ class InvoiceItemsService
 
     function selectProductUnit($productUnitId, $product, $changeUnit)
     {
-        $productUnit = $productUnitId ? $product->productUnits()->where('unit_id', $productUnitId)->first() : $product->productUnits()->first();
+        $productUnit = $productUnitId ? $product->productUnits()->find($productUnitId) : $product->productUnits()->first();
 
         if ($changeUnit) {
             $productUnit = $product->productUnits()->where('id', '>', $productUnit->id)->first() ??
