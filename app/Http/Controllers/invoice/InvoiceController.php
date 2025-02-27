@@ -96,16 +96,17 @@ class InvoiceController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show($id, Request $request)
+    public function show($query, Request $request)
     {
         $request->validate(['type' => 'required']);
 
         $invoicesQuery = Invoice::where('type', $request->type);
         $invoices = $invoicesQuery->get();
 
-        $invoice = $id == 1 ? $invoices->first() : $invoices->where('id', $id)->first();
+        $invoice = $query == 1 ? $invoices->first() : $invoices->where($request->get_by, $query)->first();
         if (!$invoice) abort(404);
         $invoice = $this->invoiceService->customInvoiceNavigateRecord($invoicesQuery, $invoice, $request);
+
 
         return $this->success(InvoiceResource::make($invoice));
     }
