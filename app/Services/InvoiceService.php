@@ -47,10 +47,21 @@ class InvoiceService
         $transactions[] = [
             'account_id' => $invoice->goods_account_id,
             'type' => AccountNature::CREDIT,
-            'amount' => $invoice->total,
+            'amount' => $invoice->sub_total,
             'description' => request()->goods_account_description ?? 'sales',
             'document_number' => $invoice->invoice_number,
         ];
+
+        // Tax Account
+        if ($invoice->total_tax_account && $invoice->total_tax > 0) {
+            $transactions[] = [
+                'account_id' => $invoice->total_tax_account,
+                'type' => AccountNature::CREDIT,
+                'amount' => $invoice->sub_total * ($invoice->total_tax / 100), // Assuming tax is a percentage
+                'description' => request()->tax_account_description ?? $invoice->type,
+                'document_number' => $invoice->invoice_number,
+            ];
+        }
 
         // Add tax and discount transactions
         $taxAndDiscountTransactions = $this->prepareTaxAndDiscountTransactions($invoice);
@@ -76,21 +87,10 @@ class InvoiceService
         $transactions[] = [
             'account_id' => $invoice->goods_account_id,
             'type' => AccountNature::DEBIT,
-            'amount' => $invoice->total,
+            'amount' => $invoice->sub_total,
             'description' => request()->goods_account_description  ?? 'purchase',
             'document_number' => $invoice->invoice_number,
         ];
-
-        // Add tax and discount transactions
-        $taxAndDiscountTransactions = $this->prepareTaxAndDiscountTransactions($invoice);
-        $transactions = array_merge($transactions, $taxAndDiscountTransactions);
-
-        return $transactions;
-    }
-
-    function prepareTaxAndDiscountTransactions($invoice)
-    {
-        $transactions = [];
 
         // Tax Account
         if ($invoice->total_tax_account && $invoice->total_tax > 0) {
@@ -102,6 +102,18 @@ class InvoiceService
                 'document_number' => $invoice->invoice_number,
             ];
         }
+        // Add tax and discount transactions
+        $taxAndDiscountTransactions = $this->prepareTaxAndDiscountTransactions($invoice);
+        $transactions = array_merge($transactions, $taxAndDiscountTransactions);
+
+        return $transactions;
+    }
+
+    function prepareTaxAndDiscountTransactions($invoice)
+    {
+        $transactions = [];
+
+
 
         // Discount Account
         if ($invoice->total_discount_account && $invoice->total_discount > 0) {
