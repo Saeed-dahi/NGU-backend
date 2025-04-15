@@ -3,7 +3,9 @@
 namespace App\Models\Account;
 
 use App\Enum\Account\AccountNature;
+use App\Models\Cheque;
 use App\Models\ClosingAccount;
+use App\Models\Invoice\Invoice;
 use App\Models\Transaction;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -106,5 +108,20 @@ class Account extends Model
     public function transactions()
     {
         return $this->hasMany(Transaction::class);
+    }
+
+    public function invoices()
+    {
+        return $this->hasMany(Invoice::class, 'account_id')
+            ->orWhere('goods_account_id', $this->id)
+            ->orWhere('total_tax_account', $this->id)
+            ->orWhere('total_discount_account', $this->id);
+    }
+
+    public function cheques()
+    {
+        return $this->hasMany(Cheque::class, 'issued_from_account_id')
+            ->orWhere('issued_to_account_id', $this->id)
+            ->orWhere('target_bank_account_id', $this->id);
     }
 }
