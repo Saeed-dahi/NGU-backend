@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Account\AccountController;
 use App\Http\Controllers\Account\AccountInformationController;
+use App\Http\Controllers\ChequeController;
 use App\Http\Controllers\ClosingAccount\ClosingAccountController;
 use App\Http\Controllers\Inventory\CategoryController;
 use App\Http\Controllers\Inventory\ProductController;
@@ -12,7 +13,7 @@ use App\Http\Controllers\invoice\InvoiceController;
 use App\Http\Controllers\invoice\InvoiceItemsController;
 use App\Http\Controllers\JournalController;
 use App\Http\Controllers\LoginController;
-
+use App\Models\Cheque;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -55,5 +56,7 @@ Route::prefix('v1')->group(function () {
         });
 
         Route::apiResource('journal', JournalController::class);
+
+        Route::apiResource('cheque', ChequeController::class);
     });
 });

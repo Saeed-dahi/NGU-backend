@@ -2,26 +2,24 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ChequeResource;
+use App\Http\Traits\ApiResponser;
+use App\Http\Traits\SharedFunctions;
 use App\Models\Cheque;
 use Illuminate\Http\Request;
 
 class ChequeController extends Controller
 {
+    use ApiResponser, SharedFunctions;
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+        $cheques = Cheque::all();
+        return $this->success(ChequeResource::collection($cheques));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -34,18 +32,14 @@ class ChequeController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Cheque $cheque)
+    public function show($id, Request $request)
     {
-        //
+        $account = $id == 1 ? Cheque::firstOrFail() : Cheque::findOrFail($id);
+        $account = $this->navigateRecord($account, $request);
+
+        return $this->success(ChequeResource::make($account));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Cheque $cheque)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.

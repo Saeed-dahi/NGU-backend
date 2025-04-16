@@ -1,5 +1,7 @@
 <?php
 
+use App\Enum\Cheque\ChequeNature;
+use App\Enum\Cheque\ChequeStatus;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;

@@ -1,5 +1,7 @@
 <?php
 
+namespace App\Enum\Cheque;
+
 enum ChequeStatus: string
 {
     case RECEIVED = 'received';
