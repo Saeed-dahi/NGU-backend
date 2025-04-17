@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enum\Cheque\ChequeStatus;
 use App\Enum\Status;
 use App\Models\Account\Account;
 use App\Services\AccountService;
@@ -33,7 +34,14 @@ class Transaction extends Model
     public function scopeSavedTransactable($query)
     {
         return $query->whereHas('transactable', function ($query) {
-            $query->where('status', Status::SAVED->value);
+
+            $query->whereIn(
+                'status',
+                array_merge(
+                    [Status::SAVED->value],
+                    array_column(ChequeStatus::cases(), 'value')
+                )
+            );
         });
     }
 
@@ -42,6 +50,7 @@ class Transaction extends Model
         parent::boot();
 
         static::created(function ($transaction) {
+
             $accountTransactionsQuery = $transaction->account->transactions()->savedTransactable();
             $accountTransactions = $accountTransactionsQuery->orderBy('date', 'desc')->orderBy('id', 'desc')->get();
 

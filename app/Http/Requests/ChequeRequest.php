@@ -2,8 +2,8 @@
 
 namespace App\Http\Requests;
 
-use ChequeNature;
-use ChequeStatus;
+use App\Enum\Cheque\ChequeNature;
+use App\Enum\Cheque\ChequeStatus;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -24,8 +24,13 @@ class ChequeRequest extends FormRequest
      */
     public function rules(): array
     {
+        $chequeId = $this->route('cheque');
         return [
-            'cheque_number' => 'required|string|max:255',
+            'cheque_number' => [
+                'required',
+                'numeric',
+                Rule::unique('cheques')->ignore($chequeId)
+            ],
             'amount' => 'required|numeric|min:0',
             'date' => 'date',
             'due_date' => 'required|date',

@@ -3,12 +3,13 @@
 namespace App\Http\Resources;
 
 use App\Http\Resources\Account\AccountResource;
+use App\Http\Traits\SharedFunctions;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class ChequeResource extends JsonResource
 {
-
+    use SharedFunctions;
 
     function getCustomAccountResource($account)
     {

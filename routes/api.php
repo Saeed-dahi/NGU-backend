@@ -58,5 +58,6 @@ Route::prefix('v1')->group(function () {
         Route::apiResource('journal', JournalController::class);
 
         Route::apiResource('cheque', ChequeController::class);
+        Route::put('deposit-cheque/{id}', [ChequeController::class, 'depositCheque']);
     });
 });
