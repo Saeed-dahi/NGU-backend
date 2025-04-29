@@ -7,6 +7,7 @@ use App\Http\Requests\Account\StoreAccountRequest;
 use App\Http\Requests\Account\UpdateAccountRequest;
 use App\Http\Resources\Account\AccountResource;
 use App\Http\Resources\Account\AccountStatementResource;
+use App\Http\Resources\ChequeResource;
 use App\Http\Traits\ApiResponser;
 use App\Http\Traits\SharedFunctions;
 use App\Models\Account\Account;

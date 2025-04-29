@@ -6,6 +6,7 @@ use App\Http\Requests\ChequeRequest;
 use App\Http\Resources\ChequeResource;
 use App\Http\Traits\ApiResponser;
 use App\Http\Traits\SharedFunctions;
+use App\Models\Account\Account;
 use App\Models\Cheque;
 use App\Services\ChequeServices;
 use App\Services\TransactionService;
@@ -28,7 +29,7 @@ class ChequeController extends Controller
      */
     public function index()
     {
-        $cheques = Cheque::all();
+        $cheques = Cheque::orderBy('date', 'DESC')->get();
         return $this->success(ChequeResource::collection($cheques));
     }
 
@@ -78,5 +79,17 @@ class ChequeController extends Controller
         $this->chequeServices->depositCheque($cheque);
 
         return $this->success(ChequeResource::make($cheque));
+    }
+
+    /**
+     * Get Accounts Name With code
+     * @param Id
+     * @return JsonResponse
+     */
+    function getChequesPerAccount(Account $account)
+    {
+        $cheques = $account->cheques()->orderBy('date', 'DESC')->get();
+
+        return $this->success(ChequeResource::collection($cheques));
     }
 }

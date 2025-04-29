@@ -3,6 +3,8 @@
 namespace App\Models\Account;
 
 use App\Enum\Account\AccountNature;
+use App\Enum\Cheque\ChequeNature;
+use App\Enum\Cheque\ChequeStatus;
 use App\Models\Cheque;
 use App\Models\ClosingAccount;
 use App\Models\Invoice\Invoice;
@@ -122,6 +124,6 @@ class Account extends Model
     {
         return $this->hasMany(Cheque::class, 'issued_from_account_id')
             ->orWhere('issued_to_account_id', $this->id)
-            ->orWhere('target_bank_account_id', $this->id);
+            ->orWhere('target_bank_account_id', $this->id)->whereNot('status', ChequeStatus::DEPOSITED->value);
     }
 }
