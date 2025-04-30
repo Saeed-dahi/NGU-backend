@@ -41,7 +41,9 @@ class ChequeController extends Controller
      */
     public function store(ChequeRequest $request)
     {
-        $cheque = Cheque::create($request->validated());
+
+        $requestData = array_merge($request->all(), ['image' => []]);
+        $cheque = Cheque::create($requestData);
 
         $this->chequeServices->createChequeTransactions($cheque);
 

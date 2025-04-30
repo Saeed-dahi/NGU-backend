@@ -29,12 +29,12 @@ class ChequeRequest extends FormRequest
             'cheque_number' => [
                 'required',
                 'numeric',
-                Rule::unique('cheques')->ignore($chequeId)
             ],
             'amount' => 'required|numeric|min:0',
             'date' => 'date',
             'due_date' => 'required|date',
-            'image' => 'file',
+            'image' => 'array', // Validate that it's an array of files
+            'image.*' => 'file|mimes:jpeg,png,jpg,pdf|max:2048',
             'status' => [Rule::enum(ChequeStatus::class), 'required'],
             'nature' => [Rule::enum(ChequeNature::class), 'required'],
             'notes' => 'nullable|string|max:255',
