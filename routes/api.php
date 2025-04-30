@@ -59,6 +59,6 @@ Route::prefix('v1')->group(function () {
 
         Route::apiResource('cheque', ChequeController::class);
         Route::put('deposit-cheque/{id}', [ChequeController::class, 'depositCheque']);
-        Route::get('account-cheques/{account}', [ChequeController::class, 'getAccountCheques']);
+        Route::get('account-cheques/{account}', [ChequeController::class, 'getChequesPerAccount']);
     });
 });

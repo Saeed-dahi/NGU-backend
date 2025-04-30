@@ -8,6 +8,7 @@ use App\Http\Traits\ApiResponser;
 use App\Http\Traits\SharedFunctions;
 use App\Models\Account\Account;
 use App\Models\Cheque;
+use App\Services\AccountService;
 use App\Services\ChequeServices;
 use App\Services\TransactionService;
 use Illuminate\Http\Request;
@@ -16,12 +17,13 @@ class ChequeController extends Controller
 {
     use ApiResponser, SharedFunctions;
 
-    protected $chequeServices, $transactionService;
+    protected $chequeServices, $transactionService, $accountService;
 
-    public function __construct(ChequeServices $chequeServices, TransactionService $transactionService)
+    public function __construct(ChequeServices $chequeServices, TransactionService $transactionService, AccountService $accountService)
     {
         $this->chequeServices = $chequeServices;
         $this->transactionService = $transactionService;
+        $this->accountService = $accountService;
     }
 
     /**
@@ -66,6 +68,12 @@ class ChequeController extends Controller
         $cheque->update($request->validated());
 
         $this->transactionService->deleteTransactions($cheque);
+
+        // when remove all transactions we should re calculate the bank account balance (because we will not create a new one now)
+        $targetBankAccount = $cheque->targetBankAccount;
+        $targetBankAccountTransactions = $targetBankAccount->transactions()->savedTransactable()->orderBy('date', 'desc')->orderBy('id', 'desc')->get();
+        $this->accountService->updateAccountBalanceAutomatically($targetBankAccount, $targetBankAccountTransactions);
+
         $this->chequeServices->createChequeTransactions($cheque);
         $cheque->load('transactions');
 
