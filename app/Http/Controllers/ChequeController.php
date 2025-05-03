@@ -41,7 +41,6 @@ class ChequeController extends Controller
      */
     public function store(ChequeRequest $request)
     {
-
         $requestData = array_merge($request->all(), ['image' => []]);
         $cheque = Cheque::create($requestData);
 
@@ -65,9 +64,12 @@ class ChequeController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(ChequeRequest $request, Cheque $cheque)
+    public function update($id, ChequeRequest $request)
     {
-        $cheque->update($request->validated());
+        $cheque = Cheque::findOrFail($id);
+        $request = array_merge($request->all(), ['image' => []]);
+
+        $cheque->update($request);
 
         $this->transactionService->deleteTransactions($cheque);
 

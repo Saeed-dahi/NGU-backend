@@ -3,7 +3,6 @@
 namespace App\Models\Account;
 
 use App\Enum\Account\AccountNature;
-use App\Enum\Cheque\ChequeNature;
 use App\Enum\Cheque\ChequeStatus;
 use App\Models\Cheque;
 use App\Models\ClosingAccount;
@@ -122,8 +121,16 @@ class Account extends Model
 
     public function cheques()
     {
-        return $this->hasMany(Cheque::class, 'issued_from_account_id')
-            ->orWhere('issued_to_account_id', $this->id)
-            ->orWhere('target_bank_account_id', $this->id)->whereNot('status', ChequeStatus::DEPOSITED->value);
+        // return $this->hasMany(Cheque::class, 'issued_from_account_id')
+        //     ->orWhere('issued_to_account_id', $this->id)
+        //     ->orWhere('target_bank_account_id', $this->id)
+        //     ->where('status', '!=', ChequeStatus::DEPOSITED->value);
+
+
+        return Cheque::where(function ($query) {
+            $query->where('issued_from_account_id', $this->id)
+                ->orWhere('issued_to_account_id', $this->id)
+                ->orWhere('target_bank_account_id', $this->id);
+        })->where('status', '!=', ChequeStatus::DEPOSITED->value);
     }
 }
