@@ -4,10 +4,12 @@ namespace App\Services;
 
 use App\Enum\Account\AccountNature;
 use App\Enum\Cheque\ChequeNature;
+use App\Enum\Cheque\ChequePaymentCases;
 use App\Enum\Cheque\ChequeStatus;
 use App\Http\Traits\SharedFunctions;
 use App\Models\Account\Account;
 use App\Models\Cheque;
+use Carbon\Carbon;
 
 class ChequeServices
 {
@@ -34,6 +36,91 @@ class ChequeServices
         }
     }
 
+    function validateMultipleChequeRequest($request)
+    {
+        $request->validate([
+            'multiple_cheques_params.cheques_count' => 'required',
+            'multiple_cheques_params.each_payment' => 'required',
+            'multiple_cheques_params.first_payment' => 'required',
+            'multiple_cheques_params.last_payment' => 'required',
+            'multiple_cheques_params.payment_way' => 'required',
+            'multiple_cheques_params.payment_way_count' => 'required',
+        ]);
+    }
+
+    function createMultipleCheques($request)
+    {
+        $multipleChequeParams = $request->multiple_cheques_params;
+        $dueDate = $request->due_date;
+        $chequeNumber = $request->cheque_number;
+
+
+        for ($i = 1; $i <= $request->cheques_count; $i++) {
+            $amount = $this->getAmountByPaymentType($i, $request->cheques_count, $multipleChequeParams);
+
+            $preparedChequeData = $this->buildChequeData($amount, $chequeNumber, $dueDate, $request);
+
+            $cheque =  Cheque::create($preparedChequeData);
+            $this->createChequeTransactions($cheque);
+
+            $chequeNumber++;
+            $dueDate = $this->getCustomDueDateByPaymentWay(Carbon::parse($dueDate), $multipleChequeParams['payment_way'], $multipleChequeParams['payment_way_count']);
+        }
+    }
+
+    function getAmountByPaymentType($i, $n, $multipleChequeParams)
+    {
+        $amount = $multipleChequeParams['each_payment'];
+        if ($i == 1 && $multipleChequeParams['first_payment'] != 0) {
+            $amount = $multipleChequeParams['first_payment'];
+        }
+        if ($i == $n && $multipleChequeParams['last_payment'] != 0) {
+            $amount = $multipleChequeParams['last_payment'];
+        }
+
+        return $amount;
+    }
+
+    function getCustomDueDateByPaymentWay(Carbon $currentDate, $paymentWay, $paymentWayCount)
+    {
+        $newDate = '';
+        switch ($paymentWay) {
+            case ChequePaymentCases::MONTHLY->name:
+                $newDate =   $currentDate->addMonth()->format('Y-m-d');
+                break;
+            case ChequePaymentCases::EACH_WEEK->name:
+                $newDate = $currentDate->addWeek()->format('Y-m-d');
+                break;
+            case ChequePaymentCases::EACH_FOUR_WEEKS->name:
+                $newDate = $currentDate->addWeeks(4)->format('Y-m-d');
+                break;
+            case ChequePaymentCases::SPECIFIC_DAYS->name:
+                $newDate = $currentDate->addDays($paymentWayCount)->format('Y-m-d');
+                break;
+            case ChequePaymentCases::SPECIFIC_MONTHS->name:
+                $newDate = $currentDate->addMonths($paymentWayCount)->format('Y-m-d');
+                break;
+        }
+        return $newDate;
+    }
+
+    private function buildChequeData($amount, $chequeNumber, $dueDate, $request)
+    {
+        return [
+            'amount' => $amount,
+            'cheque_number' => $chequeNumber,
+            'status' => $request->status,
+            'date' => $request->date,
+            'due_date' => $dueDate,
+            'nature' => $request->nature,
+            'notes' => $request->notes,
+            'issued_from_account_id' => $request->issued_from_account_id,
+            'issued_to_account_id' => $request->issued_to_account_id,
+            'target_bank_account_id' => $request->target_bank_account_id,
+        ];
+    }
+
+
     function prepareIncomingChequeTransactions(Cheque $cheque)
     {
         $transactions = [];
@@ -57,6 +144,9 @@ class ChequeServices
 
         return $transactions;
     }
+
+
+
 
     function prepareOutgoingChequeTransactions(Cheque $cheque)
     {

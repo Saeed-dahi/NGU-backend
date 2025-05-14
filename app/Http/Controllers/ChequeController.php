@@ -11,6 +11,7 @@ use App\Models\Cheque;
 use App\Services\AccountService;
 use App\Services\ChequeServices;
 use App\Services\TransactionService;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class ChequeController extends Controller
@@ -103,5 +104,17 @@ class ChequeController extends Controller
         $cheques = $account->cheques()->orderBy('date', 'DESC')->get();
 
         return $this->success(ChequeResource::collection($cheques));
+    }
+
+    /**
+     * Get Accounts Name With code
+     * @param Id
+     * @return JsonResponse
+     */
+    function createMultipleCHeques(ChequeRequest $request)
+    {
+        $this->chequeServices->createMultipleCHeques($request);
+
+        return true;
     }
 }

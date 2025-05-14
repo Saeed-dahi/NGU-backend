@@ -61,5 +61,6 @@ Route::prefix('v1')->group(function () {
         Route::post('cheque/{id}', [ChequeController::class, 'update']);
         Route::put('deposit-cheque/{id}', [ChequeController::class, 'depositCheque']);
         Route::get('account-cheques/{account}', [ChequeController::class, 'getChequesPerAccount']);
+        Route::post('create-multiple-cheques', [ChequeController::class, 'createMultipleCHeques']);
     });
 });
