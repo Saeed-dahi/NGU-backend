@@ -55,8 +55,9 @@ class ChequeServices
         $chequeNumber = $request->cheque_number;
 
 
-        for ($i = 1; $i <= $request->cheques_count; $i++) {
-            $amount = $this->getAmountByPaymentType($i, $request->cheques_count, $multipleChequeParams);
+        for ($i = 1; $i <= $multipleChequeParams['cheques_count']; $i++) {
+
+            $amount = $this->getAmountByPaymentType($i, $multipleChequeParams);
 
             $preparedChequeData = $this->buildChequeData($amount, $chequeNumber, $dueDate, $request);
 
@@ -68,13 +69,13 @@ class ChequeServices
         }
     }
 
-    function getAmountByPaymentType($i, $n, $multipleChequeParams)
+    function getAmountByPaymentType($i, $multipleChequeParams)
     {
         $amount = $multipleChequeParams['each_payment'];
         if ($i == 1 && $multipleChequeParams['first_payment'] != 0) {
             $amount = $multipleChequeParams['first_payment'];
         }
-        if ($i == $n && $multipleChequeParams['last_payment'] != 0) {
+        if ($i == $multipleChequeParams['cheques_count'] && $multipleChequeParams['last_payment'] != 0) {
             $amount = $multipleChequeParams['last_payment'];
         }
 
@@ -85,19 +86,19 @@ class ChequeServices
     {
         $newDate = '';
         switch ($paymentWay) {
-            case ChequePaymentCases::MONTHLY->name:
+            case ChequePaymentCases::MONTHLY->value:
                 $newDate =   $currentDate->addMonth()->format('Y-m-d');
                 break;
-            case ChequePaymentCases::EACH_WEEK->name:
+            case ChequePaymentCases::EACH_WEEK->value:
                 $newDate = $currentDate->addWeek()->format('Y-m-d');
                 break;
-            case ChequePaymentCases::EACH_FOUR_WEEKS->name:
+            case ChequePaymentCases::EACH_FOUR_WEEKS->value:
                 $newDate = $currentDate->addWeeks(4)->format('Y-m-d');
                 break;
-            case ChequePaymentCases::SPECIFIC_DAYS->name:
+            case ChequePaymentCases::SPECIFIC_DAYS->value:
                 $newDate = $currentDate->addDays($paymentWayCount)->format('Y-m-d');
                 break;
-            case ChequePaymentCases::SPECIFIC_MONTHS->name:
+            case ChequePaymentCases::SPECIFIC_MONTHS->value:
                 $newDate = $currentDate->addMonths($paymentWayCount)->format('Y-m-d');
                 break;
         }
