@@ -11,7 +11,7 @@ class InvoiceService
 {
     protected $transactionService;
 
-    public function __construct(TransactionService $transactionService = null)
+    public function __construct(TransactionService $transactionService)
     {
         $this->transactionService = $transactionService;
     }
@@ -20,17 +20,25 @@ class InvoiceService
     {
         switch ($invoice->type) {
             case InvoiceType::SALES->value:
-                $salesTransactions = $this->prepareSalesInvoiceTransactions($invoice);
+                $salesTransactions = $this->prepareSalesOrPurchaseReturnInvoiceTransactions($invoice);
                 $this->transactionService->createTransactions($invoice, $salesTransactions);
                 break;
             case InvoiceType::PURCHASE->value:
-                $purchaseTransactions = $this->preparePurchaseInvoiceTransactions($invoice);
+                $purchaseTransactions = $this->preparePurchaseOrSalesInvoiceTransactions($invoice);
+                $this->transactionService->createTransactions($invoice, $purchaseTransactions);
+                break;
+            case InvoiceType::SALES_Return->value:
+                $purchaseTransactions = $this->preparePurchaseOrSalesInvoiceTransactions($invoice);
+                $this->transactionService->createTransactions($invoice, $purchaseTransactions);
+                break;
+            case InvoiceType::PURCHASE_RETURN->value:
+                $purchaseTransactions = $this->prepareSalesOrPurchaseReturnInvoiceTransactions($invoice);
                 $this->transactionService->createTransactions($invoice, $purchaseTransactions);
                 break;
         }
     }
 
-    function prepareSalesInvoiceTransactions($invoice)
+    function prepareSalesOrPurchaseReturnInvoiceTransactions($invoice)
     {
         $transactions = [];
 
@@ -70,7 +78,7 @@ class InvoiceService
         return $transactions;
     }
 
-    function preparePurchaseInvoiceTransactions($invoice)
+    function preparePurchaseOrSalesInvoiceTransactions($invoice)
     {
         $transactions = [];
 

@@ -18,7 +18,12 @@ return new class extends Migration
             $table->id();
             $table->bigInteger('invoice_number');
             $table->unique(['type', 'invoice_number']);
-            $table->enum('type', [InvoiceType::PURCHASE->value, InvoiceType::SALES->value]);
+            $table->enum('type', [
+                InvoiceType::PURCHASE->value,
+                InvoiceType::SALES->value,
+                InvoiceType::SALES_Return->value,
+                InvoiceType::PURCHASE_RETURN->value
+            ]);
             $table->datetime('date');
             $table->datetime('due_date')->nullable();
             $table->enum('status', [Status::DRAFT->value, Status::SAVED->value]);
