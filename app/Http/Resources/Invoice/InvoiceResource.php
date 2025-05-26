@@ -46,6 +46,7 @@ class InvoiceResource extends JsonResource
         $data = [
             'id' => $this->id,
             'invoice_number' => $this->invoice_number,
+            'document_number' => $this->document_number,
             'type' => $this->type,
             'date' => $this->customDateFormat($this->date, 'Y-m-d'),
             'due_date' => $this->customDateFormat($this->due_date, 'Y-m-d'),

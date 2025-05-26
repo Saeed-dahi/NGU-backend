@@ -26,7 +26,8 @@ class AccountInformationResource extends JsonResource
             'description' => $this->description,
             'info_in_invoice' => $this->info_in_invoice,
             'barcode' => $this->barcode,
-            'file' => $this->file
+            'file' => $this->file,
+            'tax_number' => $this->tax_number,
         ];
     }
 }

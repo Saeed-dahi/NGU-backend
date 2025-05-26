@@ -22,6 +22,7 @@ class AccountInformation extends Model
         'description',
         'info_in_invoice',
         'file',
+        'tax_number'
     ];
 
     protected $casts = [

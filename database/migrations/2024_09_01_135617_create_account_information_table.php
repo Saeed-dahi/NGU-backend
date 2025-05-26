@@ -24,6 +24,7 @@ return new class extends Migration
             $table->text('info_in_invoice')->nullable();
             $table->text('description')->nullable();
             $table->text('file')->nullable();
+            $table->text('tax_number')->nullable();
             $table->timestamps();
 
             // foreign

@@ -23,6 +23,7 @@ class AccountResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        // TODO: Add account information to get the tax number in invoice
         $data = [
             'id' => $this->id,
             'code' => $this->code,

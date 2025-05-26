@@ -32,6 +32,7 @@ class AccountInformationRequest extends FormRequest
             'description' => 'string|nullable',
             'info_in_invoice' => 'string|nullable',
             'barcode' => 'string|nullable',
+            'tax_number' => 'string|nullable',
             'file' => 'array', // Validate that it's an array of files
             'file.*' => 'file|mimes:jpeg,png,jpg,pdf|max:2048',
         ];

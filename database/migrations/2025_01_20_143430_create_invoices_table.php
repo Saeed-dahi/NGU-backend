@@ -17,6 +17,7 @@ return new class extends Migration
         Schema::create('invoices', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('invoice_number');
+            $table->string('document_number')->nullable();
             $table->unique(['type', 'invoice_number']);
             $table->enum('type', [
                 InvoiceType::PURCHASE->value,
