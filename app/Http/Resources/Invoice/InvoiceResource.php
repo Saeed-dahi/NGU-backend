@@ -42,7 +42,6 @@ class InvoiceResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-
         $data = [
             'id' => $this->id,
             'invoice_number' => $this->invoice_number,
@@ -57,6 +56,7 @@ class InvoiceResource extends JsonResource
             'sub_total' => $this->sub_total,
             'total' => $this->total,
             'notes' => $this->notes,
+            'description' => $this->transactions[0]->description,
             'account' => $this->getCustomAccountResource($this->account),
             'goods_account' => $this->getCustomAccountResource($this->goodsAccount),
             'tax_account' => $this->getCustomAccountResource($this->taxAccount),

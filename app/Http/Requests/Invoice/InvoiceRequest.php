@@ -49,11 +49,9 @@ class InvoiceRequest extends FormRequest
             'notes' => 'string|nullable',
             'account_id' => 'numeric|exists:accounts,id|required',
             'goods_account_id' => 'numeric|exists:accounts,id|required',
-            'goods_account_description' => 'string|nullable',
             'total_tax_account' => 'numeric|exists:accounts,id|required',
-            'tax_account_description' => 'string|nullable',
             'total_discount_account' => 'numeric|exists:accounts,id|required',
-            'discount_account_description' => 'string|nullable',
+            'description' => 'string|nullable',
         ];
     }
 }
