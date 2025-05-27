@@ -20,25 +20,25 @@ class InvoiceService
     {
         switch ($invoice->type) {
             case InvoiceType::SALES->value:
-                $salesTransactions = $this->prepareSalesOrPurchaseReturnInvoiceTransactions($invoice);
+                $salesTransactions = $this->prepareSalesOrPurchaseReturnInvoiceTransactions($invoice, $invoice->type);
                 $this->transactionService->createTransactions($invoice, $salesTransactions);
                 break;
             case InvoiceType::PURCHASE->value:
-                $purchaseTransactions = $this->preparePurchaseOrSalesInvoiceTransactions($invoice);
+                $purchaseTransactions = $this->preparePurchaseOrSalesReturnInvoiceTransactions($invoice, $invoice->type);
                 $this->transactionService->createTransactions($invoice, $purchaseTransactions);
                 break;
             case InvoiceType::SALES_Return->value:
-                $purchaseTransactions = $this->preparePurchaseOrSalesInvoiceTransactions($invoice);
+                $purchaseTransactions = $this->preparePurchaseOrSalesReturnInvoiceTransactions($invoice, $invoice->type);
                 $this->transactionService->createTransactions($invoice, $purchaseTransactions);
                 break;
             case InvoiceType::PURCHASE_RETURN->value:
-                $purchaseTransactions = $this->prepareSalesOrPurchaseReturnInvoiceTransactions($invoice);
+                $purchaseTransactions = $this->prepareSalesOrPurchaseReturnInvoiceTransactions($invoice, $invoice->type);
                 $this->transactionService->createTransactions($invoice, $purchaseTransactions);
                 break;
         }
     }
 
-    function prepareSalesOrPurchaseReturnInvoiceTransactions($invoice)
+    function prepareSalesOrPurchaseReturnInvoiceTransactions($invoice, $invoiceType)
     {
         $transactions = [];
 
@@ -47,7 +47,7 @@ class InvoiceService
             'account_id' => $invoice->account_id,
             'type' => AccountNature::CREDIT,
             'amount' => $invoice->total,
-            'description' => request()->description ?? 'sales',
+            'description' => request()->description ?? $invoiceType,
             'document_number' => $invoice->invoice_number,
         ];
 
@@ -56,7 +56,7 @@ class InvoiceService
             'account_id' => $invoice->goods_account_id,
             'type' => AccountNature::CREDIT,
             'amount' => $invoice->sub_total,
-            'description' => request()->description ?? 'sales',
+            'description' => request()->description ?? $invoiceType,
             'document_number' => $invoice->invoice_number,
         ];
 
@@ -66,19 +66,19 @@ class InvoiceService
                 'account_id' => $invoice->total_tax_account,
                 'type' => AccountNature::CREDIT,
                 'amount' => $invoice->sub_total * ($invoice->total_tax / 100), // Assuming tax is a percentage
-                'description' => request()->description ?? $invoice->type,
+                'description' => request()->description ?? $invoiceType,
                 'document_number' => $invoice->invoice_number,
             ];
         }
 
         // Add tax and discount transactions
-        $taxAndDiscountTransactions = $this->prepareTaxAndDiscountTransactions($invoice);
+        $taxAndDiscountTransactions = $this->prepareDiscountTransactions($invoice, $invoiceType);
         $transactions = array_merge($transactions, $taxAndDiscountTransactions);
 
         return $transactions;
     }
 
-    function preparePurchaseOrSalesInvoiceTransactions($invoice)
+    function preparePurchaseOrSalesReturnInvoiceTransactions($invoice, $invoiceType)
     {
         $transactions = [];
 
@@ -87,7 +87,7 @@ class InvoiceService
             'account_id' => $invoice->account_id,
             'type' => AccountNature::DEBIT,
             'amount' => $invoice->total,
-            'description' => request()->description ?? 'purchase',
+            'description' => request()->description ?? $invoiceType,
             'document_number' => $invoice->invoice_number,
         ];
 
@@ -96,7 +96,7 @@ class InvoiceService
             'account_id' => $invoice->goods_account_id,
             'type' => AccountNature::DEBIT,
             'amount' => $invoice->sub_total,
-            'description' => request()->description  ?? 'purchase',
+            'description' => request()->description  ?? $invoiceType,
             'document_number' => $invoice->invoice_number,
         ];
 
@@ -106,18 +106,18 @@ class InvoiceService
                 'account_id' => $invoice->total_tax_account,
                 'type' => AccountNature::DEBIT,
                 'amount' => $invoice->sub_total * ($invoice->total_tax / 100), // Assuming tax is a percentage
-                'description' => request()->description ?? $invoice->type,
+                'description' => request()->description ?? $invoiceType,
                 'document_number' => $invoice->invoice_number,
             ];
         }
         // Add tax and discount transactions
-        $taxAndDiscountTransactions = $this->prepareTaxAndDiscountTransactions($invoice);
+        $taxAndDiscountTransactions = $this->prepareDiscountTransactions($invoice, $invoiceType);
         $transactions = array_merge($transactions, $taxAndDiscountTransactions);
 
         return $transactions;
     }
 
-    function prepareTaxAndDiscountTransactions($invoice)
+    function prepareDiscountTransactions($invoice, $invoiceType)
     {
         $transactions = [];
 
@@ -127,7 +127,7 @@ class InvoiceService
                 'account_id' => $invoice->total_discount_account,
                 'type' => AccountNature::CREDIT,
                 'amount' => $invoice->sub_total * ($invoice->total_discount / 100), // Assuming discount is a percentage
-                'description' => request()->description ?? $invoice->type,
+                'description' => request()->description ?? $invoiceType,
                 'document_number' => $invoice->invoice_number,
             ];
         }
