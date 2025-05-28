@@ -39,6 +39,7 @@ class InvoiceRequest extends FormRequest
                 Rule::unique('invoices')->where(fn($query) => $query->where('type', $this->input('type')))
                     ->ignore($invoiceId),
             ],
+            'document_number' => 'string|nullable',
             'type' => ['required', Rule::enum(InvoiceType::class)],
             'date' => 'required|date',
             'due_date' => 'date|nullable',
