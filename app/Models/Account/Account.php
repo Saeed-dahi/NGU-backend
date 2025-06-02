@@ -115,8 +115,8 @@ class Account extends Model
     {
         return $this->hasMany(Invoice::class, 'account_id')
             ->orWhere('goods_account_id', $this->id)
-            ->orWhere('total_tax_account', $this->id)
-            ->orWhere('total_discount_account', $this->id);
+            ->orWhere('tax_account_id', $this->id)
+            ->orWhere('discount_account_id', $this->id);
     }
 
     public function cheques()

@@ -40,19 +40,19 @@ return new class extends Migration
 
             $table->unsignedBigInteger('goods_account_id');
             $table->unsignedBigInteger('account_id'); // Customer, Supplier
-            $table->unsignedBigInteger('total_tax_account');
+            $table->unsignedBigInteger('tax_account_id');
             $table->double('total_tax');
 
 
 
-            $table->unsignedBigInteger('total_discount_account');
-            $table->double('total_discount')->default(0);
+            $table->unsignedBigInteger('discount_account_id');
+            $table->double('discount_amount')->default(0);
             $table->enum('discount_type', [DiscountType::PERCENTAGE->value, DiscountType::AMOUNT->value])->nullable();
 
             $table->foreign('goods_account_id')->references('id')->on('accounts');
             $table->foreign('account_id')->references('id')->on('accounts');
-            $table->foreign('total_tax_account')->references('id')->on('accounts');
-            $table->foreign('total_discount_account')->references('id')->on('accounts');
+            $table->foreign('tax_account_id')->references('id')->on('accounts');
+            $table->foreign('discount_account_id')->references('id')->on('accounts');
             $table->timestamps();
         });
     }

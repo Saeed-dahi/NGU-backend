@@ -51,10 +51,10 @@ class InvoiceRequest extends FormRequest
             'notes' => 'string|nullable',
             'account_id' => 'numeric|exists:accounts,id|required',
             'goods_account_id' => 'numeric|exists:accounts,id|required',
-            'total_tax_account' => 'numeric|exists:accounts,id|required',
-            'total_discount_account' => 'numeric|exists:accounts,id|required',
+            'tax_account_id' => 'numeric|exists:accounts,id|required',
+            'discount_account_id' => 'numeric|exists:accounts,id|required',
             'discount_type' => [Rule::enum(DiscountType::class), 'nullable'],
-            'total_discount' => 'numeric',
+            'discount_amount' => 'numeric',
             'description' => 'string|nullable',
         ];
     }

@@ -26,10 +26,10 @@ class Invoice extends Model
         'notes',
         'account_id',
         'goods_account_id',
-        'total_tax_account',
+        'tax_account_id',
         'total_tax',
-        'total_discount_account',
-        'total_discount',
+        'discount_account_id',
+        'discount_amount',
         'discount_type'
     ];
 
@@ -67,10 +67,10 @@ class Invoice extends Model
 
     public function taxAccount()
     {
-        return $this->belongsTo(Account::class, 'total_tax_account');
+        return $this->belongsTo(Account::class, 'tax_account_id');
     }
     public function discountAccount()
     {
-        return $this->belongsTo(Account::class, 'total_discount_account');
+        return $this->belongsTo(Account::class, 'discount_account_id');
     }
 }

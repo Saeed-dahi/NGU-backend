@@ -65,7 +65,7 @@ class InvoiceController extends Controller
             $lastInvoice->invoice_number++;
             return $this->success(InvoiceResource::make(
                 $lastInvoice,
-                ['invoice_number', 'type', 'account', 'goods_account', 'tax_account', 'total_tax', 'discount_account', 'total_discount']
+                ['invoice_number', 'type', 'account', 'goods_account', 'tax_account', 'total_tax', 'discount_account_id', 'discount_amount']
             ));
         }
         return $this->success(new Invoice([

@@ -65,9 +65,9 @@ class InvoiceService
         ];
 
         // Tax Account
-        if ($invoice->total_tax_account && $invoice->total_tax > 0) {
+        if ($invoice->tax_account_id && $invoice->total_tax > 0) {
             $transactions[] = [
-                'account_id' => $invoice->total_tax_account,
+                'account_id' => $invoice->tax_account_id,
                 'type' => AccountNature::CREDIT,
                 'amount' => $invoice->sub_total * ($invoice->total_tax / 100), // Assuming tax is a percentage
                 'description' => request()->description ?? $invoiceType,
@@ -105,9 +105,9 @@ class InvoiceService
         ];
 
         // Tax Account
-        if ($invoice->total_tax_account && $invoice->total_tax > 0) {
+        if ($invoice->tax_account_id && $invoice->total_tax > 0) {
             $transactions[] = [
-                'account_id' => $invoice->total_tax_account,
+                'account_id' => $invoice->tax_account_id,
                 'type' => AccountNature::DEBIT,
                 'amount' => $invoice->sub_total * ($invoice->total_tax / 100), // Assuming tax is a percentage
                 'description' => request()->description ?? $invoiceType,
@@ -126,11 +126,11 @@ class InvoiceService
         $transactions = [];
 
         // Discount Account
-        if ($invoice->total_discount_account && $invoice->total_discount > 0) {
+        if ($invoice->discount_account_id && $invoice->discount_amount > 0) {
             $transactions[] = [
-                'account_id' => $invoice->total_discount_account,
+                'account_id' => $invoice->discount_account_id,
                 'type' => AccountNature::CREDIT,
-                'amount' => $invoice->sub_total * ($invoice->total_discount / 100), // Assuming discount is a percentage
+                'amount' => $invoice->sub_total * ($invoice->discount_amount / 100), // Assuming discount is a percentage
                 'description' => request()->description ?? $invoiceType,
                 'document_number' => $invoice->invoice_number,
             ];
@@ -170,10 +170,10 @@ class InvoiceService
         switch ($invoice->discount_type) {
 
             case DiscountType::AMOUNT->value:
-                $discountAmount = $invoice->total_discount;
+                $discountAmount = $invoice->discount_amount;
                 break;
             case DiscountType::PERCENTAGE->value:
-                $discountAmount = $this->getDiscountMultiplier($invoice->total_discount);
+                $discountAmount = $this->getDiscountMultiplier($invoice->discount_amount);
                 break;
         }
         return $discountAmount;
