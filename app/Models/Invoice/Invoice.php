@@ -27,7 +27,7 @@ class Invoice extends Model
         'account_id',
         'goods_account_id',
         'tax_account_id',
-        'total_tax',
+        'tax_amount',
         'discount_account_id',
         'discount_amount',
         'discount_type'

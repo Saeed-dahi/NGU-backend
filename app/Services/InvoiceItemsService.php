@@ -50,14 +50,14 @@ class InvoiceItemsService
         $invoiceSubTotal = 0;
         foreach ($validatedData as $key => $entry) {
             $entry['total'] = $entry['price'] * $entry['quantity'];
-            $entry['tax_amount'] = ($entry['total'] * $invoice->total_tax) / 100;
+            $entry['tax_amount'] = ($entry['total'] * $invoice->tax_amount) / 100;
             $invoice->items()->create($entry);
 
             $invoiceSubTotal += $entry['total'];
         }
         $invoice->sub_total = $this->invoiceServices->calculateInvoiceSubTotalAfterDiscount($invoice, $invoiceSubTotal);
 
-        $invoice->total = $this->calculateTax($invoice->sub_total, $invoice->total_tax);
+        $invoice->total = $this->calculateTax($invoice->sub_total, $invoice->tax_amount);
         $invoice->save();
     }
 

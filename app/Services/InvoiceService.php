@@ -49,7 +49,7 @@ class InvoiceService
         // Customer Account
         $transactions[] = [
             'account_id' => $invoice->account_id,
-            'type' => AccountNature::CREDIT,
+            'type' => AccountNature::DEBIT,
             'amount' => $invoice->total,
             'description' => request()->description ?? $invoiceType,
             'document_number' => $invoice->invoice_number,
@@ -65,19 +65,26 @@ class InvoiceService
         ];
 
         // Tax Account
-        if ($invoice->tax_account_id && $invoice->total_tax > 0) {
+        if ($invoice->tax_account_id && $invoice->tax_amount > 0) {
             $transactions[] = [
                 'account_id' => $invoice->tax_account_id,
                 'type' => AccountNature::CREDIT,
-                'amount' => $invoice->sub_total * ($invoice->total_tax / 100), // Assuming tax is a percentage
+                'amount' => $invoice->sub_total * ($invoice->tax_amount / 100), // Assuming tax is a percentage
                 'description' => request()->description ?? $invoiceType,
                 'document_number' => $invoice->invoice_number,
             ];
         }
 
-        // Add tax and discount transactions
-        $taxAndDiscountTransactions = $this->prepareDiscountTransactions($invoice, $invoiceType);
-        $transactions = array_merge($transactions, $taxAndDiscountTransactions);
+        // Discount Account
+        if ($invoice->discount_account_id && $invoice->discount_amount > 0) {
+            $transactions[] = [
+                'account_id' => $invoice->discount_account_id,
+                'type' => AccountNature::DEBIT,
+                'amount' => $invoice->sub_total * ($invoice->discount_amount / 100), // Assuming discount is a percentage
+                'description' => request()->description ?? $invoiceType,
+                'document_number' => $invoice->invoice_number,
+            ];
+        }
 
         return $transactions;
     }
@@ -89,7 +96,7 @@ class InvoiceService
         // Supplier Account
         $transactions[] = [
             'account_id' => $invoice->account_id,
-            'type' => AccountNature::DEBIT,
+            'type' => AccountNature::CREDIT,
             'amount' => $invoice->total,
             'description' => request()->description ?? $invoiceType,
             'document_number' => $invoice->invoice_number,
@@ -105,25 +112,15 @@ class InvoiceService
         ];
 
         // Tax Account
-        if ($invoice->tax_account_id && $invoice->total_tax > 0) {
+        if ($invoice->tax_account_id && $invoice->tax_amount > 0) {
             $transactions[] = [
                 'account_id' => $invoice->tax_account_id,
                 'type' => AccountNature::DEBIT,
-                'amount' => $invoice->sub_total * ($invoice->total_tax / 100), // Assuming tax is a percentage
+                'amount' => $invoice->sub_total * ($invoice->tax_amount / 100), // Assuming tax is a percentage
                 'description' => request()->description ?? $invoiceType,
                 'document_number' => $invoice->invoice_number,
             ];
         }
-        // Add tax and discount transactions
-        $taxAndDiscountTransactions = $this->prepareDiscountTransactions($invoice, $invoiceType);
-        $transactions = array_merge($transactions, $taxAndDiscountTransactions);
-
-        return $transactions;
-    }
-
-    function prepareDiscountTransactions($invoice, $invoiceType)
-    {
-        $transactions = [];
 
         // Discount Account
         if ($invoice->discount_account_id && $invoice->discount_amount > 0) {
@@ -138,7 +135,6 @@ class InvoiceService
 
         return $transactions;
     }
-
 
     public function customInvoiceNavigateRecord($invoices, Model $model, Request $request, $column = 'id')
     {

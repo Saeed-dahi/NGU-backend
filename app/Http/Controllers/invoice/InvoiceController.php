@@ -65,7 +65,7 @@ class InvoiceController extends Controller
             $lastInvoice->invoice_number++;
             return $this->success(InvoiceResource::make(
                 $lastInvoice,
-                ['invoice_number', 'type', 'account', 'goods_account', 'tax_account', 'total_tax', 'discount_account_id', 'discount_amount']
+                ['invoice_number', 'type', 'account', 'goods_account', 'tax_account', 'tax_amount', 'discount_account']
             ));
         }
         return $this->success(new Invoice([
@@ -83,7 +83,7 @@ class InvoiceController extends Controller
 
         $validatedData = $invoiceRequest->validated();
 
-        $validatedData['total_tax'] = 5;
+        $validatedData['tax_amount'] = 5;
 
         $invoice = Invoice::create($validatedData);
 
