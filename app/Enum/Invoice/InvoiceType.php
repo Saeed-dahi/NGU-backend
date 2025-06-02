@@ -2,7 +2,6 @@
 
 namespace App\Enum\Invoice;
 
-use Illuminate\Validation\Rules\Enum;
 
 enum InvoiceType: String
 {

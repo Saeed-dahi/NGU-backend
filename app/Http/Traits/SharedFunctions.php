@@ -51,6 +51,11 @@ trait SharedFunctions
         return Carbon::parse($date)->format($format);
     }
 
+    public function getDiscountMultiplier($value)
+    {
+        return (100 - $value) / 100;
+    }
+
     public function addNowTimeToDate($date)
     {
         $currentDateTime = Carbon::createFromFormat('Y-m-d', $date);

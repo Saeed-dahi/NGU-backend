@@ -3,12 +3,16 @@
 namespace App\Services;
 
 use App\Enum\Account\AccountNature;
+use App\Enum\Invoice\DiscountType;
 use App\Enum\Invoice\InvoiceType;
+use App\Http\Traits\SharedFunctions;
+use App\Models\Invoice\Invoice;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 
 class InvoiceService
 {
+    use SharedFunctions;
     protected $transactionService;
 
     public function __construct(TransactionService $transactionService)
@@ -157,5 +161,38 @@ class InvoiceService
 
 
         return $record ?? $model;
+    }
+
+    function calculateInvoiceDiscount(Invoice $invoice)
+    {
+        $discountAmount = 0;
+
+        switch ($invoice->discount_type) {
+
+            case DiscountType::AMOUNT->value:
+                $discountAmount = $invoice->total_discount;
+                break;
+            case DiscountType::PERCENTAGE->value:
+                $discountAmount = $this->getDiscountMultiplier($invoice->total_discount);
+                break;
+        }
+        return $discountAmount;
+    }
+
+    function calculateInvoiceSubTotalAfterDiscount(Invoice $invoice, $subTotal)
+    {
+        $discountAmount = $this->calculateInvoiceDiscount($invoice);
+
+        switch ($invoice->discount_type) {
+
+            case DiscountType::AMOUNT->value:
+                $subTotal -= $discountAmount;
+                break;
+            case DiscountType::PERCENTAGE->value:
+                $subTotal *= $discountAmount;
+                break;
+        }
+
+        return $subTotal;
     }
 }

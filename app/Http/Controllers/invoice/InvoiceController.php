@@ -84,7 +84,7 @@ class InvoiceController extends Controller
         $validatedData = $invoiceRequest->validated();
 
         $validatedData['total_tax'] = 5;
-        $validatedData['total_discount'] = 0;
+
         $invoice = Invoice::create($validatedData);
 
         $this->invoiceItemsService->createInvoiceItems($invoice, $validatedItems['items']);
@@ -98,6 +98,7 @@ class InvoiceController extends Controller
      */
     public function show($query, Request $request)
     {
+
         $request->validate(['type' => 'required']);
 
         $invoicesQuery = Invoice::where('type', $request->type);

@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Invoice;
 
 use App\Enum\Account\AccountNature;
+use App\Enum\Invoice\DiscountType;
 use App\Enum\Invoice\InvoiceType;
 use App\Enum\Status;
 use Illuminate\Foundation\Http\FormRequest;
@@ -52,6 +53,8 @@ class InvoiceRequest extends FormRequest
             'goods_account_id' => 'numeric|exists:accounts,id|required',
             'total_tax_account' => 'numeric|exists:accounts,id|required',
             'total_discount_account' => 'numeric|exists:accounts,id|required',
+            'discount_type' => [Rule::enum(DiscountType::class), 'nullable'],
+            'total_discount' => 'numeric',
             'description' => 'string|nullable',
         ];
     }

@@ -14,6 +14,13 @@ class InvoiceItemsService
 {
     use ApiResponser, SharedFunctions;
 
+    protected $invoiceServices;
+
+    public function __construct(InvoiceService $invoiceServices)
+    {
+        $this->invoiceServices = $invoiceServices;
+    }
+
     /**
      * Validate InvoiceItems Request
      * @param
@@ -48,9 +55,9 @@ class InvoiceItemsService
 
             $invoiceSubTotal += $entry['total'];
         }
-        $invoice->sub_total = $invoiceSubTotal;
+        $invoice->sub_total = $this->invoiceServices->calculateInvoiceSubTotalAfterDiscount($invoice, $invoiceSubTotal);
 
-        $invoice->total = $this->calculateTax($invoiceSubTotal, $invoice->total_tax);
+        $invoice->total = $this->calculateTax($invoice->sub_total, $invoice->total_tax);
         $invoice->save();
     }
 
@@ -65,7 +72,6 @@ class InvoiceItemsService
             $item->delete();
         }
     }
-
 
     /**
      * Get Invoice Item Data when add new on to the invoice

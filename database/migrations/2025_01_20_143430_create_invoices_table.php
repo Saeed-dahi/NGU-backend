@@ -1,6 +1,7 @@
 <?php
 
 use App\Enum\Account\AccountNature;
+use App\Enum\Invoice\DiscountType;
 use App\Enum\Invoice\InvoiceType;
 use App\Enum\Status;
 use Illuminate\Database\Migrations\Migration;
@@ -36,12 +37,17 @@ return new class extends Migration
             $table->text('notes')->nullable();
             $table->softDeletes();
 
+
             $table->unsignedBigInteger('goods_account_id');
             $table->unsignedBigInteger('account_id'); // Customer, Supplier
             $table->unsignedBigInteger('total_tax_account');
             $table->double('total_tax');
+
+
+
             $table->unsignedBigInteger('total_discount_account');
-            $table->double('total_discount');
+            $table->double('total_discount')->default(0);
+            $table->enum('discount_type', [DiscountType::PERCENTAGE->value, DiscountType::AMOUNT->value])->nullable();
 
             $table->foreign('goods_account_id')->references('id')->on('accounts');
             $table->foreign('account_id')->references('id')->on('accounts');

@@ -63,6 +63,7 @@ class InvoiceResource extends JsonResource
             'total_tax' => $this->total_tax,
             'discount_account' => $this->getCustomAccountResource($this->discountAccount),
             'total_discount' => $this->total_discount,
+            'discount_type' => $this->discount_type,
             'items' => InvoiceItemsResource::collection($this->items),
         ];
 

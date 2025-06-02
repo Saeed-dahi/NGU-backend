@@ -30,6 +30,7 @@ class Invoice extends Model
         'total_tax',
         'total_discount_account',
         'total_discount',
+        'discount_type'
     ];
 
 
