@@ -101,7 +101,7 @@ class InvoiceItemsService
                 'en_name' => $productUnit->unit->en_name,
                 'unit_id' => $productUnit->unit->id,
                 'price' => $price,
-                'tax_amount' => ($price * 5) / 100,
+                'tax_amount' => ($price * $quantity) * 0.05,
                 'sub_total' => $price * $quantity,
                 'total' => $this->calculateTax($price * $quantity, 5),
             ]

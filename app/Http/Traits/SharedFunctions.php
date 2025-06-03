@@ -39,8 +39,14 @@ trait SharedFunctions
 
     function calculateTax($baseAmount,  $taxRate)
     {
-        $multiplier = 1 + ($taxRate / 100);
+        $multiplier = $this->calculateTaxMultiplier($taxRate);
         return $baseAmount * $multiplier;
+    }
+
+    function calculateTaxMultiplier($taxRate)
+    {
+        $multiplier = 1 + ($taxRate / 100);
+        return  $multiplier;
     }
 
     /**
