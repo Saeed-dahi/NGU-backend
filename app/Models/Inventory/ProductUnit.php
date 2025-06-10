@@ -2,6 +2,8 @@
 
 namespace App\Models\Inventory;
 
+use App\Models\AdjustmentNote\AdjustmentNoteItem;
+use App\Models\Invoice\InvoiceItems;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -57,5 +59,15 @@ class ProductUnit extends Model
     function parentUnit()
     {
         return $this->belongsTo(ProductUnit::class, 'base_product_unit_id');
+    }
+
+    public function invoiceItems()
+    {
+        return $this->hasOne(InvoiceItems::class);
+    }
+
+    public function adjustmentNoteItems()
+    {
+        return $this->hasMany(AdjustmentNoteItem::class);
     }
 }

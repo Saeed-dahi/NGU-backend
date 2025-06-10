@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\AdjustmentNote;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class CreditDebitNoteRequest extends FormRequest
+class AdjustmentNoteRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,9 +22,9 @@ class CreditDebitNoteRequest extends FormRequest
      */
     public function rules(): array
     {
-        $creditDebitNote = $this->route('credit_debit_note');
+        $adjustmentNote = $this->route('adjustment_note');
         return [
-            'number' => Rule::unique('credit_debit_notes')->ignore($creditDebitNote),
+            'number' => Rule::unique('adjustment_notes')->ignore($adjustmentNote),
             'document_number' => 'nullable|string|max:255',
             'type' => 'required|in:debit,credit',
             'status' => 'required|in:draft,saved',

@@ -14,7 +14,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('credit_debit_notes', function (Blueprint $table) {
+        Schema::create('adjustment_notes', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('number')->unique();
             $table->string('document_number')->nullable();
@@ -48,6 +48,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('credit_debit_notes');
+        Schema::dropIfExists('adjustment_notes');
     }
 };

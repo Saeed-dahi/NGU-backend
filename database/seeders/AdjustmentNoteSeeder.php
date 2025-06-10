@@ -2,10 +2,10 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
 use Illuminate\Database\Seeder;
 
-class CreditDebitNoteSeeder extends Seeder
+class AdjustmentNoteSeeder extends Seeder
 {
     /**
      * Run the database seeds.

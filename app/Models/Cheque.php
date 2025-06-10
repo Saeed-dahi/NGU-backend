@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Http\Traits\SharedFunctions;
 use App\Models\Account\Account;
+use App\Models\AdjustmentNote\AdjustmentNote;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -57,5 +58,10 @@ class Cheque extends Model
     public function transactions()
     {
         return $this->morphMany(Transaction::class, 'transactable');
+    }
+
+    function adjustmentNote()
+    {
+        return $this->hasOne(AdjustmentNote::class, 'cheque_id');
     }
 }
