@@ -4,10 +4,8 @@ namespace App\Http\Controllers\invoice;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Invoice\PreviewInvoiceItemRequest;
-use App\Http\Resources\Invoice\PreviewInvoiceItemResource;
 use App\Http\Traits\ApiResponser;
-use App\Services\InvoiceItemsService;
-use Illuminate\Http\Request;
+use App\Services\Invoice\InvoiceItemsService;
 
 class InvoiceItemsController extends Controller
 {

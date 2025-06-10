@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\Invoice;
 
 use App\Enum\Account\AccountNature;
 use App\Enum\Invoice\DiscountType;
 use App\Enum\Invoice\InvoiceType;
 use App\Http\Traits\SharedFunctions;
 use App\Models\Invoice\Invoice;
+use App\Services\TransactionService;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 

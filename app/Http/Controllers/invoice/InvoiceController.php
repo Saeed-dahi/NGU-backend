@@ -8,8 +8,8 @@ use App\Http\Resources\Invoice\InvoiceResource;
 use App\Http\Traits\ApiResponser;
 use App\Http\Traits\SharedFunctions;
 use App\Models\Invoice\Invoice;
-use App\Services\InvoiceItemsService;
-use App\Services\InvoiceService;
+use App\Services\Invoice\InvoiceItemsService;
+use App\Services\Invoice\InvoiceService;
 use App\Services\TransactionService;
 use Illuminate\Http\Request;
 

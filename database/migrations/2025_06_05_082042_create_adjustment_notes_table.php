@@ -18,8 +18,8 @@ return new class extends Migration
             $table->id();
             $table->bigInteger('number')->unique();
             $table->string('document_number')->nullable();
-            $table->enum('type', [AccountNature::DEBIT, AccountNature::CREDIT]);
-            $table->enum('status', [Status::DRAFT, Status::SAVED]);
+            $table->enum('type', [AccountNature::DEBIT->value, AccountNature::CREDIT->value]);
+            $table->enum('status', [Status::DRAFT->value, Status::SAVED->value]);
             $table->dateTime('date');
             $table->dateTime('due_date');
             $table->string('description');
