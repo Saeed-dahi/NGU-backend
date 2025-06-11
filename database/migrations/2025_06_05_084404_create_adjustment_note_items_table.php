@@ -14,16 +14,18 @@ return new class extends Migration
         Schema::create('adjustment_note_items', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('adjustment_note_id');
-            $table->unsignedBigInteger('product_units_id');
+            $table->unsignedBigInteger('product_unit_id');
+            $table->text('description')->nullable();
             $table->integer('quantity');
             $table->double('price');
             $table->double('tax_amount')->default(0);
-            $table->double('discount_amount')->default(0);
             $table->double('total');
             $table->timestamps();
+            $table->softDeletes();
 
 
             $table->foreign('adjustment_note_id')->references('id')->on('adjustment_notes');
+            $table->foreign('product_unit_id')->references('id')->on('product_units');
         });
     }
 
