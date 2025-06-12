@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\Account\AccountController;
 use App\Http\Controllers\Account\AccountInformationController;
+use App\Http\Controllers\AdjustmentNote\AdjustmentNoteController;
+use App\Http\Controllers\AdjustmentNote\AdjustmentNoteItemController;
 use App\Http\Controllers\ChequeController;
 use App\Http\Controllers\ClosingAccount\ClosingAccountController;
 use App\Http\Controllers\Inventory\CategoryController;
@@ -53,6 +55,11 @@ Route::prefix('v1')->group(function () {
             Route::get('invoice/create', [InvoiceController::class, 'create']);
             Route::apiResource('invoice', InvoiceController::class)->only(['store', 'update', 'show', 'index']);
             Route::get('get-invoice-item-data', [InvoiceItemsController::class, 'invoiceItemPreview']);
+
+
+            Route::get('adjustment-note/create', [AdjustmentNoteController::class, 'create']);
+            Route::apiResource('adjustment-note', AdjustmentNoteController::class)->only(['store', 'update', 'show', 'index']);
+            Route::get('get-adjustment-note-item-data', [AdjustmentNoteItemController::class, 'previewAdjustmentNoteItem']);
         });
 
         Route::apiResource('journal', JournalController::class);

@@ -24,6 +24,7 @@ class AdjustmentNoteItemsService
     function createAdjustmentNoteItems($adjustmentNote, $validatedData)
     {
         foreach ($validatedData as $key => $entry) {
+            info($entry);
             $entry['total'] = $entry['price'] * $entry['quantity'];
             $entry['tax_amount'] = ($entry['total'] * $adjustmentNote->tax_amount) / 100;
             $adjustmentNote->items()->create($entry);

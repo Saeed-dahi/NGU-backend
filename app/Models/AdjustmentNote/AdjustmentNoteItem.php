@@ -12,7 +12,7 @@ class AdjustmentNoteItem extends Model
 
     protected $fillable = [
         'adjustment_note_id',
-        'product_units_id',
+        'product_unit_id',
         'quantity',
         'price',
         'tax_amount',
@@ -26,6 +26,6 @@ class AdjustmentNoteItem extends Model
     }
     function productUnit()
     {
-        return $this->belongsTo(ProductUnit::class, 'product_units_id');
+        return $this->belongsTo(ProductUnit::class, 'product_unit_id');
     }
 }

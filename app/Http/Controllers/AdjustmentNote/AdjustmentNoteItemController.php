@@ -9,5 +9,5 @@ use App\Http\Controllers\Controller;
 class AdjustmentNoteItemController extends Controller
 {
 
-    function previewAdjustmentNoteItems() {}
+    function previewAdjustmentNoteItem() {}
 }

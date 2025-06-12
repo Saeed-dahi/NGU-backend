@@ -12,7 +12,7 @@ class AdjustmentNoteRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -29,8 +29,8 @@ class AdjustmentNoteRequest extends FormRequest
             'type' => 'required|in:debit,credit',
             'status' => 'required|in:draft,saved',
             'date' => 'required|date',
-            'due_date' => 'required|date|after_or_equal:date',
-            'description' => 'required|string|max:1000',
+            'due_date' => 'date|after_or_equal:date',
+            'description' => 'string|max:1000',
             'sub_total' => 'required|numeric|min:0',
             'total' => 'required|numeric|min:0',
             'primary_account_id' => 'required|exists:accounts,id',

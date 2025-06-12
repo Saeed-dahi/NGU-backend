@@ -54,7 +54,7 @@ class AdjustmentNote extends Model
         return $this->morphMany(Transaction::class, 'transactable');
     }
 
-    function adjustmentNoteItems()
+    function items()
     {
         return $this->hasMany(AdjustmentNoteItem::class);
     }

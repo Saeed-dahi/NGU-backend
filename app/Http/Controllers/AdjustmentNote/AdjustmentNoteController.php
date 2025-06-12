@@ -48,7 +48,7 @@ class AdjustmentNoteController extends Controller
      */
     public function create(Request $request)
     {
-        $lastAdjustmentNote = AdjustmentNote::where('type', $request->type)->latest('id')->first();
+        $lastAdjustmentNote = AdjustmentNote::latest('id')->first();
 
         if ($lastAdjustmentNote) {
             $lastAdjustmentNote->invoice_number++;
@@ -64,7 +64,7 @@ class AdjustmentNoteController extends Controller
      */
     public function store(AdjustmentNoteRequest $adjustmentNoteRequest)
     {
-        $validatedData = $this->adjustmentNoteItemsService->validateAdjustmentNoteItemsRequest();
+        $validatedItems = $this->adjustmentNoteItemsService->validateAdjustmentNoteItemsRequest();
 
         $validatedData = $adjustmentNoteRequest->validated();
 
@@ -72,7 +72,7 @@ class AdjustmentNoteController extends Controller
 
         $adjustmentNote = AdjustmentNote::create($validatedData);
 
-        $this->adjustmentNoteItemsService->createAdjustmentNoteItems($adjustmentNote, $validatedData['items']);
+        $this->adjustmentNoteItemsService->createAdjustmentNoteItems($adjustmentNote, $validatedItems['items']);
         $this->adjustmentNoteService->createAdjustmentTransaction($adjustmentNote);
 
         return $this->success(AdjustmentNoteResource::make($adjustmentNote));
@@ -81,9 +81,9 @@ class AdjustmentNoteController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show($id, $request)
+    public function show($id, Request $request)
     {
-        $adjustmentNote = $id == 1 ? AdjustmentNote::first() : AdjustmentNote::find($id);
+        $adjustmentNote = $id == 1 ? AdjustmentNote::firstOrFail() : AdjustmentNote::findOrFail($id);
         $adjustmentNote = $this->navigateRecord($adjustmentNote, $request);
 
         return $this->success(AdjustmentNote::make($adjustmentNote));
@@ -95,13 +95,12 @@ class AdjustmentNoteController extends Controller
      */
     public function update(AdjustmentNoteRequest $adjustmentNoteRequest, AdjustmentNote $adjustmentNote)
     {
-        $validatedData = $this->adjustmentNoteItemsService->validateAdjustmentNoteItemsRequest();
-        $validatedData = $adjustmentNoteRequest->validated();
+        $validatedItems = $this->adjustmentNoteItemsService->validateAdjustmentNoteItemsRequest();
 
         $adjustmentNote->update($adjustmentNoteRequest->validated());
 
         $this->adjustmentNoteItemsService->deleteAdjustmentNoteItems($adjustmentNote);
-        $this->adjustmentNoteItemsService->createAdjustmentNoteItems($adjustmentNote, $validatedData['items']);
+        $this->adjustmentNoteItemsService->createAdjustmentNoteItems($adjustmentNote, $validatedItems['items']);
         $adjustmentNote->load('items');
 
         $this->transactionService->deleteTransactions($adjustmentNote);
