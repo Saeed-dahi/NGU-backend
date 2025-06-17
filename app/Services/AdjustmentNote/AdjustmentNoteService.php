@@ -29,7 +29,7 @@ class AdjustmentNoteService
                 break;
         }
     }
-
+// TODO: Fix adjustmentNoteType
 
     function prepareCreditAdjustmentNoteTransactions($adjustmentNote, $adjustmentNoteType)
     {
