@@ -21,7 +21,7 @@ return new class extends Migration
             $table->enum('type', [AccountNature::DEBIT->value, AccountNature::CREDIT->value]);
             $table->enum('status', [Status::DRAFT->value, Status::SAVED->value]);
             $table->dateTime('date');
-            $table->dateTime('due_date');
+
             $table->string('description');
             $table->double('sub_total');
             $table->double('total');
@@ -36,6 +36,7 @@ return new class extends Migration
 
             $table->foreign('primary_account_id')->references('id')->on('accounts');
             $table->foreign('secondary_account_id')->references('id')->on('accounts');
+            $table->foreign('tax_account_id')->references('id')->on('accounts');
             $table->foreign('cheque_id')->references('id')->on('cheques');
 
 

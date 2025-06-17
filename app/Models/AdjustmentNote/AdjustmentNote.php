@@ -18,7 +18,6 @@ class AdjustmentNote extends Model
         'type',
         'status',
         'date',
-        'due_date',
         'description',
         'sub_total',
         'total',

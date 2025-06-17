@@ -15,6 +15,14 @@ class AdjustmentNoteRequest extends FormRequest
         return true;
     }
 
+
+    protected function prepareForValidation()
+    {
+        if ($this->has('adjustment_note')) {
+            $this->merge($this->input('adjustment_note'));
+        }
+    }
+
     /**
      * Get the validation rules that apply to the request.
      *
@@ -29,8 +37,8 @@ class AdjustmentNoteRequest extends FormRequest
             'type' => 'required|in:debit,credit',
             'status' => 'required|in:draft,saved',
             'date' => 'required|date',
-            'due_date' => 'date|after_or_equal:date',
-            'description' => 'string|max:1000',
+            // 'due_date' => 'date|after_or_equal:date',
+            'description' => '',
             'sub_total' => 'required|numeric|min:0',
             'total' => 'required|numeric|min:0',
             'primary_account_id' => 'required|exists:accounts,id',

@@ -86,7 +86,7 @@ class AdjustmentNoteController extends Controller
         $adjustmentNote = $id == 1 ? AdjustmentNote::firstOrFail() : AdjustmentNote::findOrFail($id);
         $adjustmentNote = $this->navigateRecord($adjustmentNote, $request);
 
-        return $this->success(AdjustmentNote::make($adjustmentNote));
+        return $this->success(AdjustmentNoteResource::make($adjustmentNote));
     }
 
 
