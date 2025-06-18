@@ -41,7 +41,7 @@ return new class extends Migration
             $table->unsignedBigInteger('goods_account_id');
             $table->unsignedBigInteger('account_id'); // Customer, Supplier
             $table->unsignedBigInteger('tax_account_id');
-            $table->double('tax_amount');
+            $table->double('tax_amount')->default(0);
 
 
 

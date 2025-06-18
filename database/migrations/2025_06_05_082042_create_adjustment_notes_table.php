@@ -23,7 +23,7 @@ return new class extends Migration
             $table->enum('status', [Status::DRAFT->value, Status::SAVED->value]);
             $table->dateTime('date');
 
-            $table->string('description');
+            $table->string('description')->nullable();
             $table->double('sub_total');
             $table->double('total');
 
@@ -31,7 +31,7 @@ return new class extends Migration
             $table->unsignedBigInteger('secondary_account_id');
 
             $table->unsignedBigInteger('tax_account_id');
-            $table->double('tax_amount');
+            $table->double('tax_amount')->default(0);
 
             $table->unsignedBigInteger('cheque_id')->nullable();
 

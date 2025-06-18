@@ -15,7 +15,7 @@ class AdjustmentNoteItemsService
     function validateAdjustmentNoteItemsRequest()
     {
         $validatedData = request()->validate([
-            'items' => 'array|required',
+            // 'items' => 'array|required',
             'items.*.product_unit_id' => ['required', 'exists:product_units,id'],
             'items.*.description' => '',
             'items.*.quantity' => '',
@@ -32,7 +32,7 @@ class AdjustmentNoteItemsService
             $entry['tax_amount'] = $this->calculateTaxAmount($subTotal);
             $adjustmentNote->items()->create($entry);
         }
-
+        $adjustmentNote->tax_amount = $this->calculateTaxAmount($adjustmentNote->sub_total);
         $adjustmentNote->total = $this->calculateTotalWithTax($adjustmentNote->sub_total);
         $adjustmentNote->save();
     }
@@ -49,7 +49,7 @@ class AdjustmentNoteItemsService
         }
     }
 
-
+    // TODO: Improve this function return
     /**
      * Get Invoice Item Data when add new on to the invoice
      * @param Query,ProductUnitId,AccountId
@@ -61,30 +61,32 @@ class AdjustmentNoteItemsService
         $productUnitId = $request['product_unit_id'];
         $quantity = $request['quantity'] ?? 1;
 
+
         $product = Product::where('code', $query)->orWhere('ar_name', $query)->orWhere('en_name', $query)->firstOrFail();
 
         $productUnit = $this->selectProductUnit($productUnitId, $product, $request['change_unit']);
-        $lastPrice = $this->getInvoiceItemPricePerAccount($request['account_id'], $productUnit);
-        $price = $request['change_unit'] ? $lastPrice : $request['price'] ?? $lastPrice;
+        if ($productUnit) {
+            $lastPrice = $this->getInvoiceItemPricePerAccount($request['account_id'], $productUnit);
+            $price = $request['change_unit'] ? $lastPrice : $request['price'] ?? $lastPrice;
+            $data = [
+                'id' => $product->id,
+                'ar_name' => $product->ar_name,
+                'en_name' => $product->en_name,
+                'code' => $product->code,
+                'product_unit' => [
+                    'id' => $productUnit->id,
+                    'ar_name' => $productUnit->unit->ar_name,
+                    'en_name' => $productUnit->unit->en_name,
+                    'unit_id' => $productUnit->unit->id,
+                    'price' => $price,
+                    'tax_amount' => $this->calculateTaxAmount($price * $quantity),
+                    'sub_total' => $price * $quantity,
+                    'total' => $this->calculateTotalWithTax($price * $quantity),
+                ]
+            ];
 
-        $data = [
-            'id' => $product->id,
-            'ar_name' => $product->ar_name,
-            'en_name' => $product->en_name,
-            'code' => $product->code,
-            'product_unit' => [
-                'id' => $productUnit->id,
-                'ar_name' => $productUnit->unit->ar_name,
-                'en_name' => $productUnit->unit->en_name,
-                'unit_id' => $productUnit->unit->id,
-                'price' => $price,
-                'tax_amount' => $this->calculateTaxAmount($price * $quantity),
-                'sub_total' => $price * $quantity,
-                'total' => $this->calculateTotalWithTax($price * $quantity),
-            ]
-        ];
-
-        return $data;
+            return $data;
+        }
     }
 
     /**

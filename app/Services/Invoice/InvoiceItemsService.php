@@ -56,7 +56,7 @@ class InvoiceItemsService
             $invoiceSubTotal += $invoiceItemSubTotal;
         }
         $invoice->sub_total = $this->invoiceServices->calculateInvoiceSubTotalAfterDiscount($invoice, $invoiceSubTotal);
-
+        $invoice->tax_amount = $this->calculateTaxAmount($invoiceSubTotal);
         $invoice->total = $this->calculateTotalWithTax($invoice->sub_total);
         $invoice->save();
     }

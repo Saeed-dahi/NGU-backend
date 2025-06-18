@@ -60,6 +60,7 @@ class InvoiceResource extends JsonResource
             'account' => $this->getCustomAccountResource($this->account),
             'goods_account' => $this->getCustomAccountResource($this->goodsAccount),
             'tax_account' => $this->getCustomAccountResource($this->taxAccount),
+            'tax_amount' => $this->tax_amount,
             'discount_account' => $this->getCustomAccountResource($this->discountAccount),
             'discount_amount' => $this->discount_amount,
             'discount_type' => $this->discount_type,

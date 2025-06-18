@@ -68,11 +68,12 @@ class AdjustmentNoteController extends Controller
 
         $validatedData = $adjustmentNoteRequest->validated();
 
-
-
         $adjustmentNote = AdjustmentNote::create($validatedData);
 
-        $this->adjustmentNoteItemsService->createAdjustmentNoteItems($adjustmentNote, $validatedItems['items']);
+        if (isset($validatedItems['items'])) {
+            $this->adjustmentNoteItemsService->createAdjustmentNoteItems($adjustmentNote, $validatedItems['items']);
+        }
+
         $this->adjustmentNoteService->createAdjustmentTransaction($adjustmentNote);
 
         return $this->success(AdjustmentNoteResource::make($adjustmentNote));
@@ -99,9 +100,11 @@ class AdjustmentNoteController extends Controller
 
         $adjustmentNote->update($adjustmentNoteRequest->validated());
 
-        $this->adjustmentNoteItemsService->deleteAdjustmentNoteItems($adjustmentNote);
-        $this->adjustmentNoteItemsService->createAdjustmentNoteItems($adjustmentNote, $validatedItems['items']);
-        $adjustmentNote->load('items');
+        if (isset($validatedItems['items'])) {
+            $this->adjustmentNoteItemsService->deleteAdjustmentNoteItems($adjustmentNote);
+            $this->adjustmentNoteItemsService->createAdjustmentNoteItems($adjustmentNote, $validatedItems['items']);
+            $adjustmentNote->load('items');
+        }
 
         $this->transactionService->deleteTransactions($adjustmentNote);
         $this->adjustmentNoteService->createAdjustmentTransaction($adjustmentNote);

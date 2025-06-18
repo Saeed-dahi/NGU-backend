@@ -45,6 +45,7 @@ class AdjustmentNoteResource extends JsonResource
                 'primary_account' => $this->getCustomAccountResource($this->primaryAccount),
                 'secondary_account' => $this->getCustomAccountResource($this->secondaryAccount),
                 'tax_account' => $this->getCustomAccountResource($this->taxAccount),
+                'tax_amount' => $this->tax_amount,
                 'cheque_id' => $this->cheque_id,
                 'items' => AdjustmentNoteItemsResource::collection($this->items),
             ];
