@@ -34,7 +34,6 @@ class InvoiceItemsService
             'items.*.description' => '',
             'items.*.quantity' => '',
             'items.*.price' => '',
-            'items.*.tax_amount' => '',
             'items.*.discount_amount' => '',
         ]);
         return $validatedData;
@@ -49,15 +48,16 @@ class InvoiceItemsService
     {
         $invoiceSubTotal = 0;
         foreach ($validatedData as $key => $entry) {
-            $entry['total'] = $entry['price'] * $entry['quantity'];
-            $entry['tax_amount'] = ($entry['total'] * $invoice->tax_amount) / 100;
+            $invoiceItemSubTotal = $entry['price'] * $entry['quantity'];
+            $entry['total'] = $this->calculateTotalWithTax($invoiceItemSubTotal);
+            $entry['tax_amount'] = $this->calculateTaxAmount($invoiceItemSubTotal);
             $invoice->items()->create($entry);
 
-            $invoiceSubTotal += $entry['total'];
+            $invoiceSubTotal += $invoiceItemSubTotal;
         }
         $invoice->sub_total = $this->invoiceServices->calculateInvoiceSubTotalAfterDiscount($invoice, $invoiceSubTotal);
 
-        $invoice->total = $this->calculateTax($invoice->sub_total, $invoice->tax_amount);
+        $invoice->total = $this->calculateTotalWithTax($invoice->sub_total);
         $invoice->save();
     }
 
@@ -101,9 +101,9 @@ class InvoiceItemsService
                 'en_name' => $productUnit->unit->en_name,
                 'unit_id' => $productUnit->unit->id,
                 'price' => $price,
-                'tax_amount' => ($price * $quantity) * 0.05,
+                'tax_amount' => $this->calculateTaxAmount($price * $quantity),
                 'sub_total' => $price * $quantity,
-                'total' => $this->calculateTax($price * $quantity, 5),
+                'total' => $this->calculateTotalWithTax($price * $quantity),
             ]
         ];
 

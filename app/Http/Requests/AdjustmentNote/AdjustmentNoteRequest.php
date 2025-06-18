@@ -32,7 +32,11 @@ class AdjustmentNoteRequest extends FormRequest
     {
         $adjustmentNote = $this->route('adjustment_note');
         return [
-            'number' => Rule::unique('adjustment_notes')->ignore($adjustmentNote),
+            'number' => [
+                'numeric',
+                Rule::unique('adjustment_notes')->where(fn($query) => $query->where('type', $this->input('type')))
+                    ->ignore($adjustmentNote),
+            ],
             'document_number' => 'nullable|string|max:255',
             'type' => 'required|in:debit,credit',
             'status' => 'required|in:draft,saved',
@@ -44,7 +48,6 @@ class AdjustmentNoteRequest extends FormRequest
             'primary_account_id' => 'required|exists:accounts,id',
             'secondary_account_id' => 'required|exists:accounts,id',
             'tax_account_id' => 'required|exists:accounts,id',
-            'tax_amount' => 'required|numeric|min:0',
             'cheque_id' => 'nullable|exists:cheques,id'
         ];
     }

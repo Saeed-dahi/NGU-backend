@@ -20,7 +20,6 @@ class AdjustmentNoteItemsService
             'items.*.description' => '',
             'items.*.quantity' => '',
             'items.*.price' => '',
-            'items.*.tax_amount' => '',
         ]);
         return $validatedData;
     }
@@ -28,12 +27,13 @@ class AdjustmentNoteItemsService
     function createAdjustmentNoteItems($adjustmentNote, $validatedData)
     {
         foreach ($validatedData as $key => $entry) {
-            $entry['total'] = $entry['price'] * $entry['quantity'];
-            $entry['tax_amount'] = ($entry['total'] * $adjustmentNote->tax_amount) / 100;
+            $subTotal = $entry['price'] * $entry['quantity'];
+            $entry['total'] = $this->calculateTotalWithTax($subTotal);
+            $entry['tax_amount'] = $this->calculateTaxAmount($subTotal);
             $adjustmentNote->items()->create($entry);
         }
 
-        $adjustmentNote->total = $this->calculateTax($adjustmentNote->sub_total, $adjustmentNote->tax_amount);
+        $adjustmentNote->total = $this->calculateTotalWithTax($adjustmentNote->sub_total);
         $adjustmentNote->save();
     }
 
@@ -78,9 +78,9 @@ class AdjustmentNoteItemsService
                 'en_name' => $productUnit->unit->en_name,
                 'unit_id' => $productUnit->unit->id,
                 'price' => $price,
-                'tax_amount' => ($price * $quantity) * 0.05,
+                'tax_amount' => $this->calculateTaxAmount($price * $quantity),
                 'sub_total' => $price * $quantity,
-                'total' => $this->calculateTax($price * $quantity, 5),
+                'total' => $this->calculateTotalWithTax($price * $quantity),
             ]
         ];
 

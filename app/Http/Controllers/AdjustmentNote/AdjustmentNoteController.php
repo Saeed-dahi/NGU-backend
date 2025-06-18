@@ -55,7 +55,7 @@ class AdjustmentNoteController extends Controller
             return $this->success(AdjustmentNoteResource::make($lastAdjustmentNote));
         }
         return $this->success(
-            new AdjustmentNote(['invoice_number' => 1, 'type' => $request->type])
+            new AdjustmentNote(['number' => 1, 'type' => $request->type])
         );
     }
 
@@ -68,7 +68,7 @@ class AdjustmentNoteController extends Controller
 
         $validatedData = $adjustmentNoteRequest->validated();
 
-        $validatedData['tax_amount'] = 5;
+
 
         $adjustmentNote = AdjustmentNote::create($validatedData);
 

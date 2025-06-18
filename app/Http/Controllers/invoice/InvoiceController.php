@@ -83,8 +83,6 @@ class InvoiceController extends Controller
 
         $validatedData = $invoiceRequest->validated();
 
-        $validatedData['tax_amount'] = 5;
-
         $invoice = Invoice::create($validatedData);
 
         $this->invoiceItemsService->createInvoiceItems($invoice, $validatedItems['items']);

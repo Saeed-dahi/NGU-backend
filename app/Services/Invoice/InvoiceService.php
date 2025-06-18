@@ -70,7 +70,7 @@ class InvoiceService
             $transactions[] = [
                 'account_id' => $invoice->tax_account_id,
                 'type' => AccountNature::CREDIT,
-                'amount' => $invoice->sub_total * ($invoice->tax_amount / 100), // Assuming tax is a percentage
+                'amount' => $invoice->tax_amount,
                 'description' => request()->description ?? $invoiceType,
                 'document_number' => $invoice->invoice_number,
             ];
@@ -117,7 +117,7 @@ class InvoiceService
             $transactions[] = [
                 'account_id' => $invoice->tax_account_id,
                 'type' => AccountNature::DEBIT,
-                'amount' => $invoice->sub_total * ($invoice->tax_amount / 100), // Assuming tax is a percentage
+                'amount' => $invoice->tax_amount,
                 'description' => request()->description ?? $invoiceType,
                 'document_number' => $invoice->invoice_number,
             ];

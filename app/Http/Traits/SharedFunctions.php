@@ -2,6 +2,7 @@
 
 namespace App\Http\Traits;
 
+use App\Enum\Constants;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
@@ -37,15 +38,19 @@ trait SharedFunctions
         return $record;
     }
 
-    function calculateTax($baseAmount,  $taxRate)
+    function calculateTaxAmount($amount)
     {
-        $multiplier = $this->calculateTaxMultiplier($taxRate);
-        return $baseAmount * $multiplier;
+        return $amount * (Constants::TAX_RATE->value / 100);
+    }
+    function calculateTotalWithTax($amount)
+    {
+        $multiplier = $this->calculateTaxMultiplier(Constants::TAX_RATE->value);
+        return $amount * $multiplier;
     }
 
-    function calculateTaxMultiplier($taxRate)
+    function calculateTaxMultiplier()
     {
-        $multiplier = 1 + ($taxRate / 100);
+        $multiplier = 1 + (Constants::TAX_RATE->value / 100);
         return  $multiplier;
     }
 

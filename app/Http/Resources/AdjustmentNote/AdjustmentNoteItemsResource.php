@@ -22,7 +22,6 @@ class AdjustmentNoteItemsResource extends JsonResource
             'description' => $this->description,
             'quantity' => $this->quantity,
             'price' => $this->price,
-            'tax_amount' => $this->tax_amount,
             'discount_amount' => $this->discount_amount,
             'total' => $this->total,
         ];

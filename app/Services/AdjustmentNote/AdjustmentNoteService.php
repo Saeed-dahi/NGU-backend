@@ -29,7 +29,7 @@ class AdjustmentNoteService
                 break;
         }
     }
-// TODO: Fix adjustmentNoteType
+    // TODO: Fix adjustmentNoteType
 
     function prepareCreditAdjustmentNoteTransactions($adjustmentNote, $adjustmentNoteType)
     {
@@ -57,7 +57,7 @@ class AdjustmentNoteService
             $transactions[] = [
                 'account_id' => $adjustmentNote->tax_account_id,
                 'type' => AccountNature::DEBIT,
-                'amount' => $adjustmentNote->sub_total * ($adjustmentNote->tax_amount / 100), // Assuming tax is a percentage
+                'amount' => $adjustmentNote->tax_amount,
                 'description' => request()->description ?? $adjustmentNoteType,
                 'document_number' => $adjustmentNote->adjustmentNote_number,
             ];
@@ -93,7 +93,7 @@ class AdjustmentNoteService
             $transactions[] = [
                 'account_id' => $adjustmentNote->tax_account_id,
                 'type' => AccountNature::CREDIT,
-                'amount' => $adjustmentNote->sub_total * ($adjustmentNote->tax_amount / 100), // Assuming tax is a percentage
+                'amount' => $adjustmentNote->tax_amount,
                 'description' => request()->description ?? $adjustmentNoteType,
                 'document_number' => $adjustmentNote->adjustmentNote_number,
             ];
