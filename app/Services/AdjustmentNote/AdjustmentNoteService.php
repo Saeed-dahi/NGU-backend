@@ -37,7 +37,7 @@ class AdjustmentNoteService
 
         // Customer Account
         $transactions[] = [
-            'account_id' => $adjustmentNote->primary_account_id,
+            'account_id' => $adjustmentNote->secondary_account_id,
             'type' => AccountNature::CREDIT,
             'amount' => $adjustmentNote->total,
             'description' => request()->description ?? $adjustmentNoteType,
@@ -45,7 +45,7 @@ class AdjustmentNoteService
         ];
 
         $transactions[] = [
-            'account_id' => $adjustmentNote->secondary_account_id,
+            'account_id' => $adjustmentNote->primary_account_id,
             'type' => AccountNature::DEBIT,
             'amount' => $adjustmentNote->sub_total,
             'description' => request()->description ?? $adjustmentNoteType,
@@ -73,7 +73,7 @@ class AdjustmentNoteService
 
         // Customer Account
         $transactions[] = [
-            'account_id' => $adjustmentNote->account_id,
+            'account_id' => $adjustmentNote->secondary_account_id,
             'type' => AccountNature::DEBIT,
             'amount' => $adjustmentNote->total,
             'description' => request()->description ?? $adjustmentNoteType,
@@ -81,7 +81,7 @@ class AdjustmentNoteService
         ];
 
         $transactions[] = [
-            'account_id' => $adjustmentNote->secondary_account_id,
+            'account_id' => $adjustmentNote->primary_account_id,
             'type' => AccountNature::CREDIT,
             'amount' => $adjustmentNote->sub_total,
             'description' => request()->description ?? $adjustmentNoteType,

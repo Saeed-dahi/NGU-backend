@@ -70,6 +70,10 @@ class AdjustmentNoteController extends Controller
 
         $adjustmentNote = AdjustmentNote::create($validatedData);
 
+        $adjustmentNote->tax_amount = $this->calculateTaxAmount($adjustmentNote->sub_total);
+        $adjustmentNote->total = $this->calculateTotalWithTax($adjustmentNote->sub_total);
+        $adjustmentNote->save();
+
         if (isset($validatedItems['items'])) {
             $this->adjustmentNoteItemsService->createAdjustmentNoteItems($adjustmentNote, $validatedItems['items']);
         }
@@ -82,12 +86,25 @@ class AdjustmentNoteController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show($id, Request $request)
+    public function show($query, Request $request)
     {
-        $adjustmentNote = $id == 1 ? AdjustmentNote::firstOrFail() : AdjustmentNote::findOrFail($id);
-        $adjustmentNote = $this->navigateRecord($adjustmentNote, $request);
+        // $adjustmentNote = $id == 1 ? AdjustmentNote::firstOrFail() : AdjustmentNote::findOrFail($id);
+        // $adjustmentNote = $this->navigateRecord($adjustmentNote, $request);
 
-        return $this->success(AdjustmentNoteResource::make($adjustmentNote));
+        // return $this->success(AdjustmentNoteResource::make($adjustmentNote));
+
+
+        $request->validate(['type' => 'required']);
+
+        $invoicesQuery = AdjustmentNote::where('type', $request->type);
+        $invoices = $invoicesQuery->get();
+
+        $invoice = $query == 1 ? $invoices->first() : $invoices->where($request->get_by, $query)->first();
+        if (!$invoice) abort(404);
+        // $invoice = $this->invoiceService->customInvoiceNavigateRecord($invoicesQuery, $invoice, $request);
+
+
+        return $this->success(AdjustmentNoteResource::make($invoice));
     }
 
 
@@ -99,6 +116,10 @@ class AdjustmentNoteController extends Controller
         $validatedItems = $this->adjustmentNoteItemsService->validateAdjustmentNoteItemsRequest();
 
         $adjustmentNote->update($adjustmentNoteRequest->validated());
+
+        $adjustmentNote->tax_amount = $this->calculateTaxAmount($adjustmentNote->sub_total);
+        $adjustmentNote->total = $this->calculateTotalWithTax($adjustmentNote->sub_total);
+        $adjustmentNote->save();
 
         if (isset($validatedItems['items'])) {
             $this->adjustmentNoteItemsService->deleteAdjustmentNoteItems($adjustmentNote);

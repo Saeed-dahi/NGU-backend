@@ -32,9 +32,6 @@ class AdjustmentNoteItemsService
             $entry['tax_amount'] = $this->calculateTaxAmount($subTotal);
             $adjustmentNote->items()->create($entry);
         }
-        $adjustmentNote->tax_amount = $this->calculateTaxAmount($adjustmentNote->sub_total);
-        $adjustmentNote->total = $this->calculateTotalWithTax($adjustmentNote->sub_total);
-        $adjustmentNote->save();
     }
 
     /**
