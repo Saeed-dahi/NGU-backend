@@ -2,6 +2,7 @@
 
 namespace App\Services\Invoice;
 
+use App\Enum\Invoice\InvoiceType;
 use App\Http\Requests\Invoice\PreviewInvoiceItemRequest;
 use App\Http\Traits\ApiResponser;
 use App\Http\Traits\SharedFunctions;
@@ -16,7 +17,7 @@ class InvoiceItemsService
 
     protected $invoiceServices;
 
-    public function __construct(InvoiceService $invoiceServices)
+    public function __construct(?InvoiceService $invoiceServices = null)
     {
         $this->invoiceServices = $invoiceServices;
     }
@@ -51,6 +52,7 @@ class InvoiceItemsService
             $invoiceItemSubTotal = $entry['price'] * $entry['quantity'];
             $entry['total'] = $this->calculateTotalWithTax($invoiceItemSubTotal);
             $entry['tax_amount'] = $this->calculateTaxAmount($invoiceItemSubTotal);
+            $entry['date'] = $this->addNowTimeToDate($invoice->date);
             $invoice->items()->create($entry);
 
             $invoiceSubTotal += $invoiceItemSubTotal;
@@ -132,5 +134,28 @@ class InvoiceItemsService
         }
 
         return $productUnit;
+    }
+
+    /**
+     * Update All invoiceItem Balance depend on current balance
+     * @param currentQuantity,Array_of_invoiceItem
+     * @return Void
+     */
+    function updateInvoiceItemQuantity($currentQuantity, $invoiceItems)
+    {
+        foreach ($invoiceItems as $key => $invoiceItem) {
+            if (
+                $invoiceItem->invoice->type == InvoiceType::SALES->value ||
+                $invoiceItem->invoice->type == InvoiceType::PURCHASE_RETURN->value
+            ) {
+                $currentInvoiceItemQuantity = +$invoiceItem->quantity;
+            } else {
+                $currentInvoiceItemQuantity = -$invoiceItem->quantity;
+            }
+
+            $invoiceItem->update(['product_unit_new_quantity' => $currentQuantity]);
+
+            $currentQuantity += $currentInvoiceItemQuantity;
+        }
     }
 }

@@ -6,6 +6,7 @@ namespace Database\Seeders;
 
 use Database\Seeders\Inventory\CategorySeeder;
 use Database\Seeders\Inventory\ProductSeeder;
+use Database\Seeders\Inventory\ProductUnitSeeder;
 use Database\Seeders\Inventory\StoreSeeder;
 use Database\Seeders\Inventory\UnitSeeder;
 use Illuminate\Database\Seeder;
@@ -23,5 +24,6 @@ class DatabaseSeeder extends Seeder
         $this->call(CategorySeeder::class);
         $this->call(UnitSeeder::class);
         $this->call(ProductSeeder::class);
+        $this->call(ProductUnitSeeder::class);
     }
 }

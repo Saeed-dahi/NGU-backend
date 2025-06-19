@@ -21,6 +21,8 @@ return new class extends Migration
             $table->double('tax_amount')->default(0);
             $table->double('discount_amount')->default(0);
             $table->double('total');
+            $table->double('product_unit_new_quantity')->default(0);
+            $table->datetime('date');
             $table->softDeletes();
 
             $table->foreign('invoice_id')->references('id')->on('invoices')->onDelete('cascade');
