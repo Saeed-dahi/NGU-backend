@@ -33,14 +33,9 @@ return new class extends Migration
             $table->unsignedBigInteger('tax_account_id');
             $table->double('tax_amount')->default(0);
 
-            $table->unsignedBigInteger('cheque_id')->nullable();
-
             $table->foreign('primary_account_id')->references('id')->on('accounts');
             $table->foreign('secondary_account_id')->references('id')->on('accounts');
             $table->foreign('tax_account_id')->references('id')->on('accounts');
-            $table->foreign('cheque_id')->references('id')->on('cheques');
-
-
             $table->timestamps();
         });
     }
