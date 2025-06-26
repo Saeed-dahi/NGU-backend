@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use app\Enum\Cheque\ChequeDiscountType;
+use App\Enum\Cheque\ChequeDiscountType;
 use App\Enum\Cheque\ChequeNature;
 use App\Enum\Cheque\ChequeStatus;
 use Illuminate\Foundation\Http\FormRequest;

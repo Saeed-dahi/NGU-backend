@@ -39,7 +39,7 @@ return new class extends Migration
             $table->unsignedBigInteger('issued_from_account_id');
             $table->unsignedBigInteger('issued_to_account_id');
             $table->unsignedBigInteger('target_bank_account_id');
-            $table->unsignedBigInteger('discount_account_id');
+            $table->unsignedBigInteger('discount_account_id')->nullable();
 
             $table->foreign('issued_from_account_id')->references('id')->on('accounts');
             $table->foreign('issued_to_account_id')->references('id')->on('accounts');

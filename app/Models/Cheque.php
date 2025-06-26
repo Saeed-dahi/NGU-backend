@@ -58,6 +58,11 @@ class Cheque extends Model
         return $this->belongsTo(Account::class, 'target_bank_account_id');
     }
 
+    public function discountAccount()
+    {
+        return $this->belongsTo(Account::class, 'discount_account_id');
+    }
+
     public function transactions()
     {
         return $this->morphMany(Transaction::class, 'transactable');

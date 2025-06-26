@@ -3,7 +3,7 @@
 namespace App\Services;
 
 use App\Enum\Account\AccountNature;
-use app\Enum\Cheque\ChequeDiscountType;
+use App\Enum\Cheque\ChequeDiscountType;
 use App\Enum\Cheque\ChequeNature;
 use App\Enum\Cheque\ChequePaymentCases;
 use App\Enum\Cheque\ChequeStatus;
@@ -35,6 +35,8 @@ class ChequeServices
                 $this->transactionService->createTransactions($cheque, $incomingChequeTransaction);
                 break;
         }
+        $chequeDiscountTransactions = $this->prepareDiscountTransactions($cheque);
+        $this->transactionService->createTransactions($cheque, $chequeDiscountTransactions);
     }
 
     function validateMultipleChequeRequest($request)
@@ -235,7 +237,7 @@ class ChequeServices
         return $transactions;
     }
 
-    function prepareDiscountTRansactions(Cheque $cheque)
+    function prepareDiscountTransactions(Cheque $cheque)
     {
         $transactions = [];
         switch ($cheque->discount_type) {
@@ -243,14 +245,14 @@ class ChequeServices
                 $transactions[] = [
                     'account_id' => $cheque->issued_from_account_id,
                     'type' => AccountNature::CREDIT,
-                    'amount' => $cheque->amount,
+                    'amount' => $cheque->discount_amount,
                     'description' => 'cheque',
                     'document_number' => $cheque->cheque_number,
                 ];
                 $transactions[] = [
                     'account_id' => $cheque->discount_account_id,
                     'type' => AccountNature::DEBIT,
-                    'amount' => $cheque->amount,
+                    'amount' => $cheque->discount_amount,
                     'description' => 'cheque',
                     'document_number' => $cheque->cheque_number,
                 ];
@@ -260,18 +262,20 @@ class ChequeServices
                 $transactions[] = [
                     'account_id' => $cheque->issued_from_account_id,
                     'type' => AccountNature::DEBIT,
-                    'amount' => $cheque->amount,
+                    'amount' => $cheque->discount_amount,
                     'description' => 'cheque',
                     'document_number' => $cheque->cheque_number,
                 ];
                 $transactions[] = [
                     'account_id' => $cheque->discount_account_id,
                     'type' => AccountNature::CREDIT,
-                    'amount' => $cheque->amount,
+                    'amount' => $cheque->discount_amount,
                     'description' => 'cheque',
                     'document_number' => $cheque->cheque_number,
                 ];
                 break;
         }
+
+        return $transactions;
     }
 }

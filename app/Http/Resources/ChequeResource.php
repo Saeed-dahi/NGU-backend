@@ -37,6 +37,7 @@ class ChequeResource extends JsonResource
             'notes' => $this->notes,
             'discount_type' => $this->discount_type,
             'discount_amount' => $this->discount_amount,
+            'discount_account' => $this->getCustomAccountResource($this->discountAccount),
             'issued_from_account' => $this->getCustomAccountResource($this->issuedFromAccount),
             'issued_to_account' => $this->getCustomAccountResource($this->issuedToAccount),
             'target_bank_account' => $this->getCustomAccountResource($this->targetBankAccount),
