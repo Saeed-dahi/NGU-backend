@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use app\Enum\Cheque\ChequeDiscountType;
 use App\Enum\Cheque\ChequeNature;
 use App\Enum\Cheque\ChequeStatus;
 use Illuminate\Foundation\Http\FormRequest;
@@ -24,7 +25,6 @@ class ChequeRequest extends FormRequest
      */
     public function rules(): array
     {
-        $chequeId = $this->route('cheque');
         return [
             'cheque_number' => [
                 'required',
@@ -36,6 +36,8 @@ class ChequeRequest extends FormRequest
             'image' => 'array', // Validate that it's an array of files
             'image.*' => 'file|mimes:jpeg,png,jpg,pdf|max:2048',
             'status' => [Rule::enum(ChequeStatus::class), 'required'],
+            'discount_type' => [Rule::enum(ChequeDiscountType::class), 'nullable'],
+            'discount_amount' => 'nullable|numeric',
             'nature' => [Rule::enum(ChequeNature::class), 'required'],
             'notes' => 'nullable|string|max:255',
             'issued_from_account_id' => 'required|exists:accounts,id',

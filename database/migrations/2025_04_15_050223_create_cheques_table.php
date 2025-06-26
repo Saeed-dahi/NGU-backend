@@ -1,5 +1,6 @@
 <?php
 
+use App\Enum\Cheque\ChequeDiscountType;
 use App\Enum\Cheque\ChequeNature;
 use App\Enum\Cheque\ChequeStatus;
 use Illuminate\Database\Migrations\Migration;
@@ -28,14 +29,22 @@ return new class extends Migration
                 ChequeStatus::CANCELED->value
             ]);
             $table->text('notes')->nullable();
+            $table->enum(
+                'discount_type',
+                [ChequeDiscountType::RECEIVED->value, ChequeDiscountType::ALLOWED->value]
+            )->nullable();
+            $table->double('discount_amount')->nullable();
+
 
             $table->unsignedBigInteger('issued_from_account_id');
             $table->unsignedBigInteger('issued_to_account_id');
             $table->unsignedBigInteger('target_bank_account_id');
+            $table->unsignedBigInteger('discount_account_id');
 
             $table->foreign('issued_from_account_id')->references('id')->on('accounts');
             $table->foreign('issued_to_account_id')->references('id')->on('accounts');
             $table->foreign('target_bank_account_id')->references('id')->on('accounts');
+            $table->foreign('discount_account_id')->references('id')->on('accounts');
             $table->timestamps();
         });
     }

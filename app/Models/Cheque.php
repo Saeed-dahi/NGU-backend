@@ -20,10 +20,13 @@ class Cheque extends Model
         'date',
         'due_date',
         'status',
+        'discount_type',
+        'discount_amount',
         'notes',
         'issued_from_account_id',
         'issued_to_account_id',
-        'target_bank_account_id'
+        'target_bank_account_id',
+        'discount_account_id'
     ];
 
 

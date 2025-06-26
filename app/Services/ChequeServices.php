@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Enum\Account\AccountNature;
+use app\Enum\Cheque\ChequeDiscountType;
 use App\Enum\Cheque\ChequeNature;
 use App\Enum\Cheque\ChequePaymentCases;
 use App\Enum\Cheque\ChequeStatus;
@@ -121,7 +122,6 @@ class ChequeServices
         ];
     }
 
-
     function prepareIncomingChequeTransactions(Cheque $cheque)
     {
         $transactions = [];
@@ -145,9 +145,6 @@ class ChequeServices
 
         return $transactions;
     }
-
-
-
 
     function prepareOutgoingChequeTransactions(Cheque $cheque)
     {
@@ -236,5 +233,45 @@ class ChequeServices
         }
 
         return $transactions;
+    }
+
+    function prepareDiscountTRansactions(Cheque $cheque)
+    {
+        $transactions = [];
+        switch ($cheque->discount_type) {
+            case ChequeDiscountType::ALLOWED->value:
+                $transactions[] = [
+                    'account_id' => $cheque->issued_from_account_id,
+                    'type' => AccountNature::CREDIT,
+                    'amount' => $cheque->amount,
+                    'description' => 'cheque',
+                    'document_number' => $cheque->cheque_number,
+                ];
+                $transactions[] = [
+                    'account_id' => $cheque->discount_account_id,
+                    'type' => AccountNature::DEBIT,
+                    'amount' => $cheque->amount,
+                    'description' => 'cheque',
+                    'document_number' => $cheque->cheque_number,
+                ];
+
+                break;
+            case ChequeDiscountType::RECEIVED->value:
+                $transactions[] = [
+                    'account_id' => $cheque->issued_from_account_id,
+                    'type' => AccountNature::DEBIT,
+                    'amount' => $cheque->amount,
+                    'description' => 'cheque',
+                    'document_number' => $cheque->cheque_number,
+                ];
+                $transactions[] = [
+                    'account_id' => $cheque->discount_account_id,
+                    'type' => AccountNature::CREDIT,
+                    'amount' => $cheque->amount,
+                    'description' => 'cheque',
+                    'document_number' => $cheque->cheque_number,
+                ];
+                break;
+        }
     }
 }
