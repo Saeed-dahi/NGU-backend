@@ -33,10 +33,9 @@ class ProductUnit extends Model
             ->where('invoice_items.product_unit_id', $this->id)
             ->where('invoices.type', InvoiceType::PURCHASE->value)
             ->where('invoices.status', Status::SAVED->value)
-            ->when($beforeDate, function ($query) use ($beforeDate) {
-                $query->whereDate('invoices.date', '<=', $beforeDate);
-            })
+            ->when($beforeDate, fn($q) => $q->whereDate('invoices.date', '<=', $beforeDate))
             ->orderByDesc('invoices.date')
+            ->orderByDesc('invoices.id')
             ->limit(1)
             ->first();
     }

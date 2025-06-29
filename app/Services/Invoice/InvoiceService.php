@@ -14,11 +14,12 @@ use Illuminate\Http\Request;
 class InvoiceService
 {
     use SharedFunctions;
-    protected $transactionService;
+    protected $transactionService, $invoiceCommissionsServices;
 
-    public function __construct(TransactionService $transactionService)
+    public function __construct(TransactionService $transactionService, InvoiceCommissionServices $invoiceCommissionsServices)
     {
         $this->transactionService = $transactionService;
+        $this->invoiceCommissionsServices = $invoiceCommissionsServices;
     }
 
     function createInvoiceTransaction($invoice)
@@ -27,6 +28,10 @@ class InvoiceService
             case InvoiceType::SALES->value:
                 $salesTransactions = $this->prepareSalesOrPurchaseReturnInvoiceTransactions($invoice, $invoice->type);
                 $this->transactionService->createTransactions($invoice, $salesTransactions);
+                if ($invoice->agent_id) {
+                    $commissionTransactions = $this->invoiceCommissionsServices->prepareInvoiceCommissionTransactions($invoice);
+                    $this->transactionService->createTransactions($invoice, $commissionTransactions);
+                }
                 break;
             case InvoiceType::PURCHASE->value:
                 $purchaseTransactions = $this->preparePurchaseOrSalesReturnInvoiceTransactions($invoice, $invoice->type);
@@ -193,7 +198,6 @@ class InvoiceService
         return $subTotal;
     }
 
-
     function getInvoiceCost($invoice)
     {
         $items = $invoice->items->map(function ($item) use ($invoice) {
@@ -207,7 +211,6 @@ class InvoiceService
                 'difference'          => $item->price - ($lastPurchase?->price ?? 0),
             ];
         });
-
 
         return [
             'items' => $items->toArray(),

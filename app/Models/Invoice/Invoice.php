@@ -30,7 +30,14 @@ class Invoice extends Model
         'tax_amount',
         'discount_account_id',
         'discount_amount',
-        'discount_type'
+        'discount_type',
+
+        'agent_id',
+        'commission_account_id',
+        'commission_type',
+        'commission_rate',
+        'commission_amount',
+
     ];
 
 

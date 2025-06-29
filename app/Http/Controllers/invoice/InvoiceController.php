@@ -8,6 +8,8 @@ use App\Http\Resources\Invoice\InvoiceResource;
 use App\Http\Traits\ApiResponser;
 use App\Http\Traits\SharedFunctions;
 use App\Models\Invoice\Invoice;
+use App\Models\Invoice\InvoiceCommission;
+use App\Services\Invoice\InvoiceCommissionServices;
 use App\Services\Invoice\InvoiceItemsService;
 use App\Services\Invoice\InvoiceService;
 use App\Services\TransactionService;
@@ -18,16 +20,18 @@ class InvoiceController extends Controller
     use ApiResponser, SharedFunctions;
 
 
-    protected $invoiceItemsService, $invoiceService, $transactionService;
+    protected $invoiceItemsService, $invoiceService, $transactionService, $invoiceCommissionServices;
 
     public function __construct(
         InvoiceItemsService $invoiceItemsService,
         InvoiceService $invoiceService,
-        TransactionService $transactionService
+        TransactionService $transactionService,
+        InvoiceCommissionServices $invoiceCommissionServices
     ) {
         $this->invoiceItemsService = $invoiceItemsService;
         $this->invoiceService = $invoiceService;
         $this->transactionService = $transactionService;
+        $this->invoiceCommissionServices = $invoiceCommissionServices;
     }
 
     /**
@@ -132,10 +136,9 @@ class InvoiceController extends Controller
         $this->invoiceItemsService->createInvoiceItems($invoice, $validatedData['items']);
         $invoice->load('items');
 
+        // Delete Invoice transactions
         $this->transactionService->deleteTransactions($invoice);
-
         $this->invoiceService->createInvoiceTransaction($invoice);
-        // update $journal->transaction
         $invoice->load('transactions');
 
         return $this->success(InvoiceResource::make($invoice));
@@ -144,9 +147,22 @@ class InvoiceController extends Controller
     public function getInvoiceCost(Invoice $invoice)
     {
         $invoice->loadMissing('items.productUnit.product');
-        $data = $this->invoiceService->getInvoiceCost($invoice);
+        $invoiceCost = $this->invoiceService->getInvoiceCost($invoice);
 
-        return $this->success($data);
+        $invoiceCommission = $this->invoiceCommissionServices->getCommissionData($invoice, $invoiceCost['profit_total']);
+
+        return $this->success(array_merge($invoiceCost, $invoiceCommission));
+    }
+
+
+    public function createInvoiceCommission($id)
+    {
+        $invoice = Invoice::findOrFail($id);
+        $invoice = $this->invoiceCommissionServices->createInvoiceCommission($invoice);
+
+
+
+        return InvoiceResource::make($invoice);
     }
 
     /**

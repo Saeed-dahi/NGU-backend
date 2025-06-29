@@ -56,7 +56,7 @@ Route::prefix('v1')->group(function () {
             Route::apiResource('invoice', InvoiceController::class)->only(['store', 'update', 'show', 'index']);
             Route::get('get-invoice-item-data', [InvoiceItemsController::class, 'invoiceItemPreview']);
             Route::get('get-invoice-cost/{invoice}', [InvoiceController::class, 'getInvoiceCost']);
-
+            Route::post('create-invoice-commission/{invoice}', [InvoiceController::class, 'createInvoiceCommission']);
 
             Route::get('adjustment-note/create', [AdjustmentNoteController::class, 'create']);
             Route::apiResource('adjustment-note', AdjustmentNoteController::class)->only(['store', 'update', 'show', 'index']);

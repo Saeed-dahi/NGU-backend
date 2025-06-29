@@ -7,6 +7,7 @@ use App\Enum\Cheque\ChequeStatus;
 use App\Models\Cheque;
 use App\Models\ClosingAccount;
 use App\Models\Invoice\Invoice;
+use App\Models\Invoice\InvoiceCommission;
 use App\Models\Transaction;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;

@@ -45,12 +45,12 @@ class TransactionService
      * @param Transactable,Data
      * @return Void
      */
-    function createTransactions($transactable, $validatedData)
+    function createTransactions($transactable, $validatedData, $date = null)
     {
         foreach ($validatedData as $key => $entry) {
             $account = Account::where('id', $entry['account_id'])->first();
             $entry['account_id'] = $account->id;
-            $entry['date'] = $this->addNowTimeToDate($transactable->date);
+            $entry['date'] = $this->addNowTimeToDate($date ?? $transactable->date);
             $transactable->transactions()->create($entry);
         }
     }
