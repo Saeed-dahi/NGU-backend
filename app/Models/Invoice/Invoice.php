@@ -34,6 +34,9 @@ class Invoice extends Model
     ];
 
 
+
+
+
     protected static function boot()
     {
         parent::boot();
@@ -41,6 +44,13 @@ class Invoice extends Model
             $lastInvoice = Invoice::latest()->firstWhere('type', $invoice->type);
             $newNumber = $invoice->invoice_number ?? ($lastInvoice ? $lastInvoice->invoice_number + 1 : 1);
             $invoice->invoice_number = $newNumber;
+        });
+    }
+
+    function invoiceCost($items)
+    {
+        return $items->sum(function ($item) {
+            return $item['last_purchase_price'] ?? 0;
         });
     }
 

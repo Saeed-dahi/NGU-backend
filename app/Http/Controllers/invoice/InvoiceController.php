@@ -141,6 +141,14 @@ class InvoiceController extends Controller
         return $this->success(InvoiceResource::make($invoice));
     }
 
+    public function getInvoiceCost(Invoice $invoice)
+    {
+        $invoice->loadMissing('items.productUnit.product');
+        $data = $this->invoiceService->getInvoiceCost($invoice);
+
+        return $this->success($data);
+    }
+
     /**
      * Remove the specified resource from storage.
      */

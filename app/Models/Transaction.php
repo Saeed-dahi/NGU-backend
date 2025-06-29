@@ -34,7 +34,6 @@ class Transaction extends Model
     public function scopeSavedTransactable($query)
     {
         return $query->whereHas('transactable', function ($query) {
-
             $query->whereIn(
                 'status',
                 array_merge(
