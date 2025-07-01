@@ -90,4 +90,12 @@ class Invoice extends Model
     {
         return $this->belongsTo(Account::class, 'discount_account_id');
     }
+    public function agentAccount()
+    {
+        return $this->belongsTo(Account::class, 'agent_id');
+    }
+    public function commissionAccount()
+    {
+        return $this->belongsTo(Account::class, 'commission_account_id');
+    }
 }

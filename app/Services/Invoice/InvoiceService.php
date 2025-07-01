@@ -207,16 +207,16 @@ class InvoiceService
                 'unit_name'           => $item->productUnit->unit->ar_name . ' - ' . $item->productUnit->unit->en_name,
                 'invoice_item_price'  => $item->price,
                 'last_purchase_price' => $lastPurchase?->price,
-                'last_purchase_date'  => $lastPurchase?->date,
+                'last_purchase_date'  => $this->customDateFormat($lastPurchase?->date),
                 'difference'          => $item->price - ($lastPurchase?->price ?? 0),
             ];
         });
 
         return [
-            'items' => $items->toArray(),
             'invoice_total' => $invoice->sub_total,
             'cost_total'    => $invoice->invoiceCost($items),
-            'profit_total'  =>  $invoice->sub_total -  $invoice->invoiceCost($items)
+            'profit_total'  =>  $invoice->sub_total -  $invoice->invoiceCost($items),
+            'items' => $items->toArray(),
         ];
     }
 }

@@ -149,9 +149,7 @@ class InvoiceController extends Controller
         $invoice->loadMissing('items.productUnit.product');
         $invoiceCost = $this->invoiceService->getInvoiceCost($invoice);
 
-        $invoiceCommission = $this->invoiceCommissionServices->getCommissionData($invoice, $invoiceCost['profit_total']);
-
-        return $this->success(array_merge($invoiceCost, $invoiceCommission));
+        return $this->success($invoiceCost);
     }
 
 
@@ -159,8 +157,6 @@ class InvoiceController extends Controller
     {
         $invoice = Invoice::findOrFail($id);
         $invoice = $this->invoiceCommissionServices->createInvoiceCommission($invoice);
-
-
 
         return InvoiceResource::make($invoice);
     }

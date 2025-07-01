@@ -4,6 +4,7 @@ namespace App\Services\Invoice;
 
 use App\Enum\Account\AccountNature;
 use App\Enum\Invoice\InvoiceCommissionType;
+use App\Http\Resources\Account\AccountResource;
 use App\Models\Invoice\Invoice;
 
 use Illuminate\Validation\Rule;
@@ -13,11 +14,13 @@ class InvoiceCommissionServices
     function getCommissionData(Invoice $invoice, $invoiceProfit)
     {
         $data = [];
+        $customAccountFields = ['id', 'code', 'ar_name', 'en_name'];
+
         if ($invoice->agent_id) {
             $this->setInvoiceCommissionAmount($invoice, $invoiceProfit);
             $data = [
-                'agent_id' => $invoice->agent_id,
-                'commission_account_id' => $invoice->commission_account_id,
+                'agent_account' => new AccountResource($invoice->agentAccount, $customAccountFields),
+                'commission_account' => new AccountResource($invoice->commissionAccount, $customAccountFields),
                 'commission_type' => $invoice->commission_type,
                 'commission_rate' => $invoice->commission_rate,
                 'commission_amount' => $invoice->commission_amount,
