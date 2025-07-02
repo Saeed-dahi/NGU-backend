@@ -100,13 +100,13 @@ class InvoiceController extends Controller
      */
     public function show($query, Request $request)
     {
-
         $request->validate(['type' => 'required']);
 
         $invoicesQuery = Invoice::where('type', $request->type);
         $invoices = $invoicesQuery->get();
 
         $invoice = $query == 1 ? $invoices->first() : $invoices->where($request->get_by, $query)->first();
+
         if (!$invoice) abort(404);
         $invoice = $this->invoiceService->customInvoiceNavigateRecord($invoicesQuery, $invoice, $request);
 
@@ -136,10 +136,7 @@ class InvoiceController extends Controller
         $this->invoiceItemsService->createInvoiceItems($invoice, $validatedData['items']);
         $invoice->load('items');
 
-        // Delete Invoice transactions
-        $this->transactionService->deleteTransactions($invoice);
-        $this->invoiceService->createInvoiceTransaction($invoice);
-        $invoice->load('transactions');
+        $this->updateInvoiceTransactions($invoice);
 
         return $this->success(InvoiceResource::make($invoice));
     }
@@ -153,19 +150,45 @@ class InvoiceController extends Controller
     }
 
 
+    public function getInvoiceCommission($id)
+    {
+        $invoice = Invoice::findOrFail($id);
+        $invoiceCost = $this->invoiceService->getInvoiceCost($invoice);
+        $invoiceCommission = $this->invoiceCommissionServices->getCommissionData($invoice, $invoiceCost['profit_total']);
+        $newCommissionAmount = $this->invoiceCommissionServices->getInvoiceCommissionAmount($invoice, $invoiceCost['profit_total']);
+
+        if ($invoiceCommission['commission_amount'] != $newCommissionAmount) {
+            $this->invoiceCommissionServices->setInvoiceCommissionAmount($invoice, $invoiceCost['profit_total']);
+            $invoiceCommission = $this->invoiceCommissionServices->getCommissionData($invoice, $invoiceCost['profit_total']);
+            $this->updateInvoiceTransactions($invoice);
+        }
+
+        return $this->success($invoiceCommission);
+    }
+
     public function createInvoiceCommission($id)
     {
         $invoice = Invoice::findOrFail($id);
-        $invoice = $this->invoiceCommissionServices->createInvoiceCommission($invoice);
+        $invoiceCost = $this->invoiceService->getInvoiceCost($invoice);
 
-        return InvoiceResource::make($invoice);
+        $invoice = $this->invoiceCommissionServices->createInvoiceCommission($invoice);
+        $this->invoiceCommissionServices->setInvoiceCommissionAmount($invoice, $invoiceCost['profit_total']);
+        $invoiceCommission = $this->invoiceCommissionServices->getCommissionData($invoice, $invoiceCost['profit_total']);
+
+        return $this->success($invoiceCommission);
+    }
+
+
+    function updateInvoiceTransactions(Invoice $invoice)
+    {
+        // Delete Invoice transactions
+        $this->transactionService->deleteTransactions($invoice);
+        $this->invoiceService->createInvoiceTransaction($invoice);
+        $invoice->load('transactions');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Invoice $invoice)
-    {
-        //
-    }
+    public function destroy(Invoice $invoice) {}
 }

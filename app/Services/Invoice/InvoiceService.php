@@ -206,8 +206,9 @@ class InvoiceService
                 'product_name'        => $item->productUnit->product->ar_name . ' - ' . $item->productUnit->product->en_name,
                 'unit_name'           => $item->productUnit->unit->ar_name . ' - ' . $item->productUnit->unit->en_name,
                 'invoice_item_price'  => $item->price,
+                'quantity'  => $item->quantity,
                 'last_purchase_price' => $lastPurchase?->price,
-                'last_purchase_date'  => $this->customDateFormat($lastPurchase?->date),
+                'last_purchase_date'  => $this->customDateFormat($lastPurchase?->date, 'Y-m-d'),
                 'difference'          => $item->price - ($lastPurchase?->price ?? 0),
             ];
         });

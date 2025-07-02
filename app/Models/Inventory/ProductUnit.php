@@ -28,7 +28,7 @@ class ProductUnit extends Model
 
     public function getLastPurchaseDetails($beforeDate)
     {
-        return $this->invoiceItems::select('invoice_items.price', 'invoices.date')
+        return $this->invoiceItems::select('invoice_items.price', 'invoices.date', 'invoice_items.quantity')
             ->join('invoices', 'invoices.id', '=', 'invoice_items.invoice_id')
             ->where('invoice_items.product_unit_id', $this->id)
             ->where('invoices.type', InvoiceType::PURCHASE->value)

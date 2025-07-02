@@ -17,7 +17,7 @@ class InvoiceCommissionServices
         $customAccountFields = ['id', 'code', 'ar_name', 'en_name'];
 
         if ($invoice->agent_id) {
-            $this->setInvoiceCommissionAmount($invoice, $invoiceProfit);
+
             $data = [
                 'agent_account' => new AccountResource($invoice->agentAccount, $customAccountFields),
                 'commission_account' => new AccountResource($invoice->commissionAccount, $customAccountFields),
@@ -42,6 +42,7 @@ class InvoiceCommissionServices
     function CreateInvoiceCommission(Invoice $invoice)
     {
         $validatedData = $this->ValidateInvoiceCommission();
+
         $invoice->update($validatedData);
 
         return $invoice;
@@ -49,16 +50,21 @@ class InvoiceCommissionServices
 
     function setInvoiceCommissionAmount(Invoice $invoice, $invoiceProfit)
     {
+        $invoice->commission_amount = $this->getInvoiceCommissionAmount($invoice, $invoiceProfit);
+        $invoice->save();
+    }
+
+    function getInvoiceCommissionAmount(Invoice $invoice, $invoiceProfit)
+    {
         switch ($invoice->commission_type) {
             case InvoiceCommissionType::TOTAL->value:
-                $invoice->commission_amount = ($invoice->sub_total * $invoice->commission_rate) / 100;
+                return ($invoice->sub_total * $invoice->commission_rate) / 100;
                 break;
             case InvoiceCommissionType::PROFIT->value:
                 // $invoiceCost ??= $this->invoiceServices->getInvoiceCost($invoiceCommission->invoice)['profit_total'];
-                $invoice->commission_amount = ($invoiceProfit * $invoice->commission_rate) / 100;
+                return ($invoiceProfit * $invoice->commission_rate) / 100;
                 break;
         }
-        $invoice->save();
     }
 
     function prepareInvoiceCommissionTransactions(Invoice $invoice)

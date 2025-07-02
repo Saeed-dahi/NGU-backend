@@ -57,7 +57,7 @@ class Invoice extends Model
     function invoiceCost($items)
     {
         return $items->sum(function ($item) {
-            return $item['last_purchase_price'] ?? 0;
+            return ($item['last_purchase_price'] * $item['quantity']) ?? 0;
         });
     }
 

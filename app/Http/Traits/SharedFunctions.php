@@ -69,7 +69,16 @@ trait SharedFunctions
 
     public function addNowTimeToDate($date)
     {
-        $currentDateTime = Carbon::createFromFormat('Y-m-d', $date);
+        // $currentDateTime = Carbon::createFromFormat('Y-m-d', $date);
+        $carbonDate = Carbon::parse($date)->startOfDay();
+
+        // 2. Get the current time (hours, minutes, seconds)
+        $now = Carbon::now();
+
+        // 3. Set the time of your $carbonDate to the current time
+        $carbonDate->setTime($now->hour, $now->minute, $now->second);
+
+        return $carbonDate;
 
         return $currentDateTime;
     }
