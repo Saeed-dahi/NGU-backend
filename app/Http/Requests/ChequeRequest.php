@@ -26,10 +26,7 @@ class ChequeRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'cheque_number' => [
-                'required',
-                'numeric',
-            ],
+            'cheque_number' => ['required','numeric'],
             'amount' => 'required|numeric|min:0',
             'date' => 'date',
             'due_date' => 'required|date',

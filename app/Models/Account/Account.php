@@ -7,8 +7,9 @@ use App\Enum\Cheque\ChequeStatus;
 use App\Models\Cheque;
 use App\Models\ClosingAccount;
 use App\Models\Invoice\Invoice;
-use App\Models\Invoice\InvoiceCommission;
 use App\Models\Transaction;
+use App\Models\VisaPayment\VisaPayment;
+use App\Models\VisaPayment\VisaPaymentItems;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -133,5 +134,18 @@ class Account extends Model
                 ->orWhere('issued_to_account_id', $this->id)
                 ->orWhere('target_bank_account_id', $this->id);
         })->where('status', '!=', ChequeStatus::DEPOSITED->value);
+    }
+
+    function VisaPayments()
+    {
+        return $this->hasMany(VisaPayment::class, 'bank_account_id')
+            ->orWhere('machine_account_id', $this->id)
+            ->orWhere('commission_account_id', $this->id)
+            ->orWhere('tax_account_id', $this->id);
+    }
+
+    function VisaPaymentItems()
+    {
+        return $this->hasMany(VisaPaymentItems::class, 'customer_account_id');
     }
 }
