@@ -16,6 +16,13 @@ class VisaPaymentRequest extends FormRequest
         return true;
     }
 
+    protected function prepareForValidation()
+    {
+        if ($this->has('visa_payment')) {
+            $this->merge($this->input('visa_payment'));
+        }
+    }
+
     /**
      * Get the validation rules that apply to the request.
      *

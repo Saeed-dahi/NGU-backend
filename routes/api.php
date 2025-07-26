@@ -15,6 +15,7 @@ use App\Http\Controllers\invoice\InvoiceController;
 use App\Http\Controllers\invoice\InvoiceItemsController;
 use App\Http\Controllers\JournalController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\VisaPaymentController;
 use App\Models\Cheque;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -28,6 +29,7 @@ Route::prefix('v1')->group(function () {
         Route::get('/profile', function (Request $request) {
             return  $request->user();
         });
+        Route::apiResource('journal', JournalController::class);
 
         // Accounts => {closing, account, account information}
         Route::prefix('')->group(function () {
@@ -64,12 +66,16 @@ Route::prefix('v1')->group(function () {
             Route::get('get-adjustment-note-item-data', [AdjustmentNoteItemController::class, 'previewAdjustmentNoteItem']);
         });
 
-        Route::apiResource('journal', JournalController::class);
+        // Cheques
+        Route::prefix('')->group(function () {
+            Route::apiResource('cheque', ChequeController::class)->only(['index', 'store', 'show']);
+            Route::post('cheque/{id}', [ChequeController::class, 'update']);
+            Route::put('deposit-cheque/{id}', [ChequeController::class, 'depositCheque']);
+            Route::get('account-cheques/{account}', [ChequeController::class, 'getChequesPerAccount']);
+            Route::post('create-multiple-cheques', [ChequeController::class, 'createMultipleCHeques']);
+        });
 
-        Route::apiResource('cheque', ChequeController::class)->only(['index', 'store', 'show']);
-        Route::post('cheque/{id}', [ChequeController::class, 'update']);
-        Route::put('deposit-cheque/{id}', [ChequeController::class, 'depositCheque']);
-        Route::get('account-cheques/{account}', [ChequeController::class, 'getChequesPerAccount']);
-        Route::post('create-multiple-cheques', [ChequeController::class, 'createMultipleCHeques']);
+        Route::apiResource('visa-payment', VisaPaymentController::class)->only(['index', 'store', 'show', 'update']);
+        Route::put('deposit-visa-payment/{id}', [VisaPaymentController::class, 'depositVisaPayment']);
     });
 });
